@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@use('App\Enums\LibyanCity')
+
 @section('title', 'Edit profile')
 
 @section('content')
@@ -37,8 +39,14 @@
                 </div>
                 <div class="flex flex-col gap-2">
                     <label for="location" class="text-sm font-medium text-stone-700">Location</label>
-                    <input id="location" name="location" type="text" value="{{ old('location', $user->location) }}" required
-                           class="rounded-lg border border-stone-300 px-3 py-2 text-stone-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30">
+                    @php($selectedCity = old('location', $user->location?->value))
+                    <select id="location" name="location" required
+                            class="rounded-lg border border-stone-300 bg-white px-3 py-2 text-stone-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30">
+                        <option value="" disabled @selected(! $selectedCity)>Choose a city</option>
+                        @foreach (LibyanCity::cases() as $city)
+                            <option value="{{ $city->value }}" @selected($selectedCity === $city->value)>{{ $city->value }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
 

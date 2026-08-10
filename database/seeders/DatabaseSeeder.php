@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Enums\LibyanCity;
+use App\Enums\UserRole;
 use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Event;
@@ -25,17 +27,52 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Site Admin', 'password' => Hash::make('password')],
         );
 
-        // A known user to sign in with.
+        // A known user to sign in with. Pre-verified so the verification gate
+        // does not block a fresh local checkout.
         $user = User::firstOrCreate(
             ['email' => 'user@example.com'],
             [
                 'name' => 'Test User',
                 'phone_number' => '+15551234567',
                 'dob' => '1995-05-20',
-                'location' => 'Tripoli',
+                'location' => LibyanCity::Tripoli,
+                'email_verified_at' => now(),
                 'password' => Hash::make('password'),
             ],
         );
+
+        // An approved organizer, to exercise the organizer area.
+        $organizer = User::firstOrCreate(
+            ['email' => 'organizer@example.com'],
+            [
+                'name' => 'Amal Zarrouk',
+                'phone_number' => '+218911234567',
+                'dob' => '1990-02-11',
+                'location' => LibyanCity::Benghazi,
+                'email_verified_at' => now(),
+                'password' => Hash::make('password'),
+            ],
+        );
+        $organizer->forceFill(['role' => UserRole::Organizer])->save();
+
+        // An attendee with an application still waiting in the admin queue.
+        $applicant = User::firstOrCreate(
+            ['email' => 'applicant@example.com'],
+            [
+                'name' => 'Yusra Ben Khalifa',
+                'phone_number' => '+218921234567',
+                'dob' => '1998-09-03',
+                'location' => LibyanCity::Misrata,
+                'email_verified_at' => now(),
+                'password' => Hash::make('password'),
+            ],
+        );
+
+        if ($applicant->pendingOrganizerApplication() === null && ! $applicant->isOrganizer()) {
+            $applicant->organizerApplications()->create([
+                'message' => 'I run a monthly meetup for web developers in Misrata and would like to list it here.',
+            ]);
+        }
 
         // Categories from the brief.
         $categories = collect(['Music', 'Tech', 'Sports', 'Arts', 'Business'])
@@ -50,6 +87,13 @@ class DatabaseSeeder extends Seeder
         // A couple of inactive and past events to exercise the rules.
         Event::factory()->count(2)->inactive()->recycle([$admin, ...$categories])->create();
         Event::factory()->count(2)->past()->recycle([$admin, ...$categories])->create();
+
+        // Events owned by the organizer rather than the admin.
+        Event::factory()
+            ->count(3)
+            ->organizedBy($organizer)
+            ->recycle($categories)
+            ->create();
 
         // Register the test user for a few upcoming events.
         Event::where('is_active', true)

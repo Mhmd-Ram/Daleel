@@ -73,13 +73,56 @@
                         <dd class="text-sm font-medium text-stone-900">{{ $user->dob->format('M j, Y') }}</dd>
                     </div>
                 </dl>
-
-                {{-- Barcode --}}
-                <div class="mt-6 border-t border-dashed border-stone-300 pt-5">
-                    <div class="barcode h-12 w-full rounded"></div>
-                    <p class="mt-2 text-center font-mono text-[10px] uppercase tracking-[0.25em] text-stone-400">PASS · {{ str_pad($user->id, 6, '0', STR_PAD_LEFT) }}</p>
-                </div>
             </div>
+        </div>
+
+        {{-- Organizer status: promoted, waiting on a decision, or free to apply. --}}
+        <div class="mt-6 rounded-2xl border border-stone-200 bg-white p-6">
+            @if ($user->isOrganizer())
+                <h2 class="text-lg font-semibold tracking-tight text-stone-900">You are an organizer</h2>
+                <p class="mt-1 text-sm text-stone-500">Publish your own events and track who signs up.</p>
+                <a href="{{ route('organizer.events.index') }}"
+                   class="mt-4 inline-flex rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-700 active:scale-[0.98]">
+                    Manage your events
+                </a>
+            @elseif ($organizerApplication?->isPending())
+                <h2 class="text-lg font-semibold tracking-tight text-stone-900">Application under review</h2>
+                <p class="mt-1 text-sm text-stone-500">
+                    Sent {{ $organizerApplication->created_at->diffForHumans() }}. An admin will get back to you.
+                </p>
+            @elseif (! $user->hasVerifiedEmail())
+                <h2 class="text-lg font-semibold tracking-tight text-stone-900">Want to run your own events?</h2>
+                <p class="mt-1 text-sm text-stone-500">
+                    Verify your email first, then you can apply to become an organizer.
+                </p>
+                <a href="{{ route('verification.notice') }}"
+                   class="mt-4 inline-flex rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-700 active:scale-[0.98]">
+                    Verify your email
+                </a>
+            @else
+                <h2 class="text-lg font-semibold tracking-tight text-stone-900">Become an organizer</h2>
+                <p class="mt-1 text-sm text-stone-500">
+                    @if ($organizerApplication)
+                        Your last application was not approved. You are welcome to apply again.
+                    @else
+                        Tell the admins what you would like to run and they will review your request.
+                    @endif
+                </p>
+
+                <form method="POST" action="{{ route('organizer.apply') }}" class="mt-4">
+                    @csrf
+                    <div class="flex flex-col gap-2">
+                        <label for="message" class="text-sm font-medium text-stone-700">Why you want to organize</label>
+                        <textarea id="message" name="message" rows="4" required
+                                  class="rounded-lg border border-stone-300 px-3 py-2 text-stone-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30">{{ old('message') }}</textarea>
+                        <span class="text-xs text-stone-400">A few sentences is plenty.</span>
+                    </div>
+                    <button type="submit"
+                            class="mt-4 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-700 active:scale-[0.98]">
+                        Send application
+                    </button>
+                </form>
+            @endif
         </div>
     </div>
 @endsection

@@ -51,8 +51,8 @@
     --page-base: #f1e9da;
 }
 
-/* Heavy condensed display face, shared by the preloader wordmark and the
-   landing-page headlines. The @fonts directive injects the Anton @font-face. */
+/* Heavy condensed display face for the landing-page headlines. The @fonts
+   directive injects the Anton @font-face. */
 .font-display {
     font-family: 'Anton', system-ui, sans-serif;
     font-weight: 400;
@@ -358,41 +358,18 @@
 
 /*
 |--------------------------------------------------------------------------
-| Living event cards: cursor tilt + spotlight glow
+| Event cards
 |--------------------------------------------------------------------------
+| The card is a link, so hover gets one quiet signal: the border warms to the
+| brand accent. No lift, no tilt, no cursor glow.
 */
 .event-card {
     position: relative;
-    transition:
-        transform 0.4s var(--ease-reveal),
-        box-shadow 0.4s var(--ease-reveal),
-        border-color 0.4s ease;
-}
-
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-    .event-card.is-tilting {
-        transform: perspective(900px) rotateX(var(--ry, 0deg)) rotateY(var(--rx, 0deg));
-        transition: box-shadow 0.4s var(--ease-reveal), border-color 0.4s ease;
-    }
+    transition: border-color 0.3s ease;
 }
 
 .event-card:hover {
     border-color: rgb(168 47 49 / 0.45);
-    box-shadow: 0 26px 60px -28px rgb(168 47 49 / 0.4);
-}
-
-.event-card__glow {
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    opacity: 0;
-    background: radial-gradient(200px circle at var(--mx, 50%) var(--my, 50%), rgb(168 47 49 / 0.16), transparent 60%);
-    transition: opacity 0.4s ease;
-}
-
-.event-card:hover .event-card__glow {
-    opacity: 1;
 }
 
 /*
@@ -426,23 +403,9 @@
 
 /*
 |--------------------------------------------------------------------------
-| Attendee pass / barcode
+| Attendee pass
 |--------------------------------------------------------------------------
 */
-.barcode {
-    background-image: repeating-linear-gradient(
-        90deg,
-        #1c1917 0 2px,
-        transparent 2px 5px,
-        #1c1917 5px 8px,
-        transparent 8px 10px,
-        #1c1917 10px 11px,
-        transparent 11px 15px,
-        #1c1917 15px 18px,
-        transparent 18px 20px
-    );
-}
-
 .pass-shine {
     position: absolute;
     inset: 0;
@@ -497,124 +460,3 @@
     background: #ffffff;
     will-change: transform, opacity;
 }
-
-/*
-|--------------------------------------------------------------------------
-| Intro preloader
-|--------------------------------------------------------------------------
-| Plays once per session (guarded by an inline <head> script). The light panel
-| assembles the wordmark, holds, then wipes away with an angled, stepped clip.
-*/
-@property --cr {
-    syntax: '<number>';
-    initial-value: 0;
-    inherits: true;
-}
-
-/* Hidden when already shown this session or under reduced motion. */
-html.eh-loaded #eh-preloader {
-    display: none;
-}
-
-/* Lock scroll only while the panel is actually covering the page. */
-html.eh-preloading {
-    overflow: hidden;
-}
-
-#eh-preloader {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    background: #f6efe1;
-    clip-path: polygon(
-        100% 0%, 100% 100%,
-        -2.17% 100%, -2.17% 83.33%, -6.5% 83.33%, -6.5% 66.67%,
-        -10.83% 66.67%, -10.83% 50%, -15.17% 50%, -15.17% 33.33%,
-        -19.5% 33.33%, -19.5% 16.67%, -23.83% 16.67%, -23.83% 0%
-    );
-    animation:
-        eh-wipe 0.95s cubic-bezier(0.76, 0, 0.24, 1) 1.85s forwards,
-        eh-unblock 0s linear 2.8s forwards;
-}
-
-.eh-wordmark {
-    margin: 0;
-    display: flex;
-    align-items: flex-end;
-    white-space: nowrap;
-    font-family: 'Anton', system-ui, sans-serif;
-    font-weight: 400;
-    text-transform: uppercase;
-    line-height: 1;
-    letter-spacing: 0.01em;
-    color: var(--color-emerald-600);
-    font-size: clamp(2.75rem, 13vw, 120px);
-    --cr: 4;
-    text-shadow:
-        calc(var(--cr) * 1px) 0 rgba(255, 0, 80, 0.5),
-        calc(var(--cr) * -1px) 0 rgba(0, 210, 255, 0.5);
-    animation: eh-shimmer 1.5s linear forwards;
-}
-
-.eh-space {
-    display: inline-block;
-    width: 0.35em;
-}
-
-.eh-letter {
-    display: inline-block;
-    transform-origin: 50% 100%;
-    transform: scaleY(0.04) translateY(28%);
-    opacity: 0;
-    animation: eh-letter-in 0.55s cubic-bezier(0.2, 1.5, 0.3, 1) forwards;
-    animation-delay: calc(var(--i) * 0.075s + 0.15s);
-    will-change: transform, opacity;
-}
-
-/* Hold the intro paused until the Anton font is ready, so the letters never
-   flash in a fallback face. Scoped to the JS-managed window only, so a no-JS
-   page still plays (just with whatever font has loaded). */
-html.eh-preloading:not(.eh-fonts-ready) #eh-preloader,
-html.eh-preloading:not(.eh-fonts-ready) .eh-wordmark,
-html.eh-preloading:not(.eh-fonts-ready) .eh-letter {
-    animation-play-state: paused;
-}
-
-@keyframes eh-letter-in {
-    0% { transform: scaleY(0.04) translateY(28%); opacity: 0; }
-    55% { transform: scaleY(1.12) translateY(-4%) translateX(var(--jx, 0)); opacity: 1; }
-    70% { transform: scaleY(0.9) translateY(2%) translateX(calc(var(--jx, 0) * -0.7)); }
-    84% { transform: scaleY(1.05) translateX(calc(var(--jx, 0) * 0.4)); }
-    100% { transform: none; opacity: 1; }
-}
-
-@keyframes eh-shimmer {
-    0% { --cr: 4; }
-    20% { --cr: 1; }
-    35% { --cr: 3; }
-    55% { --cr: 0.6; }
-    75% { --cr: 2; }
-    100% { --cr: 0; }
-}
-
-@keyframes eh-wipe {
-    to {
-        clip-path: polygon(
-            100% 0%, 100% 100%,
-            158.95% 100%, 158.95% 83.33%, 154.62% 83.33%, 154.62% 66.67%,
-            150.29% 66.67%, 150.29% 50%, 145.95% 50%, 145.95% 33.33%,
-            141.62% 33.33%, 141.62% 16.67%, 137.29% 16.67%, 137.29% 0%
-        );
-    }
-}
-
-@keyframes eh-unblock {
-    to { pointer-events: none; }
-}
-
-/* Reduced motion: the inline head script skips the preloader entirely, so no
-   animation runs. Nothing to animate for the dots either. */

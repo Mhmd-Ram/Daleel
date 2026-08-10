@@ -36,4 +36,14 @@ class Admin extends Authenticatable
     {
         return $this->hasMany(Event::class);
     }
+
+    /**
+     * The organizer applications this admin has decided on.
+     *
+     * @return HasMany<OrganizerApplication, $this>
+     */
+    public function reviewedApplications(): HasMany
+    {
+        return $this->hasMany(OrganizerApplication::class, 'reviewed_by');
+    }
 }

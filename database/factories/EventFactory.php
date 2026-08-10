@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Event;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -33,7 +34,19 @@ class EventFactory extends Factory
             'is_active' => true,
             'category_id' => Category::factory(),
             'admin_id' => Admin::factory(),
+            'organizer_id' => null,
         ];
+    }
+
+    /**
+     * Indicate that the event is owned by an organizer rather than an admin.
+     */
+    public function organizedBy(User $organizer): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'admin_id' => null,
+            'organizer_id' => $organizer->id,
+        ]);
     }
 
     /**

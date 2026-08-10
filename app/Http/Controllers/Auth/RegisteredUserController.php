@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -20,14 +21,18 @@ class RegisteredUserController extends Controller
     }
 
     /**
-     * Store a new user and log them in.
+     * Store a new user, log them in, and send them off to verify their email.
      */
     public function store(StoreUserRequest $request): RedirectResponse
     {
         $user = User::create($request->validated());
 
+        // Laravel's SendEmailVerificationNotification listener picks this up.
+        event(new Registered($user));
+
         Auth::login($user);
 
-        return redirect()->route('home')->with('success', 'Welcome, '.$user->name.'!');
+        return redirect()->route('verification.notice')
+            ->with('success', 'Welcome, '.$user->name.'! Check your inbox to verify your email.');
     }
 }

@@ -37,9 +37,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        // Replay the intro preloader on the page the user lands on after login.
-        $request->session()->flash('eh_play_preloader', true);
-
         return redirect()->intended(route('home'));
     }
 

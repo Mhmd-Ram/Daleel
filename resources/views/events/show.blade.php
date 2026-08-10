@@ -134,11 +134,6 @@
                     </form>
                 @endif
             </div>
-
-            <div class="mt-8 border-t border-dashed border-stone-300 pt-5">
-                <div class="barcode h-12 w-full rounded"></div>
-                <p class="mt-2 text-center font-mono text-[10px] uppercase tracking-[0.25em] text-stone-400">EVT · {{ str_pad($event->id, 6, '0', STR_PAD_LEFT) }}</p>
-            </div>
         </aside>
     </article>
 @endsection

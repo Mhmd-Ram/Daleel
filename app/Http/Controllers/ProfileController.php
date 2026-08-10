@@ -15,7 +15,12 @@ class ProfileController extends Controller
     {
         $user = auth()->user()->loadCount('registrations');
 
-        return view('profile.show', ['user' => $user]);
+        return view('profile.show', [
+            'user' => $user,
+            // The relation is ordered newest-first, so this is the latest decision
+            // or the one still awaiting review.
+            'organizerApplication' => $user->organizerApplications()->first(),
+        ]);
     }
 
     /**

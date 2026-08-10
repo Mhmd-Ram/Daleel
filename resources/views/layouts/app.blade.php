@@ -7,39 +7,10 @@
     <title>@yield('title', 'Events')  ·  {{ config('app.name') }}</title>
     {{-- Mark JS as available before paint so reveal states never flash. --}}
     <script>document.documentElement.classList.add('js')</script>
-    {{-- Decide the intro preloader before paint: skip it if already shown this
-         session or if the visitor prefers reduced motion; otherwise play it once. --}}
-    <script>
-        (function () {
-            var html = document.documentElement;
-            // Server forces a replay right after the user logs in.
-            var forcePlay = @json((bool) session('eh_play_preloader'));
-            var preload = false;
-            try {
-                var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-                if (reduce) {
-                    html.classList.add('eh-loaded');
-                } else if (forcePlay || !sessionStorage.getItem('eh_preloaded')) {
-                    sessionStorage.setItem('eh_preloaded', '1');
-                    preload = true;
-                } else {
-                    html.classList.add('eh-loaded');
-                }
-            } catch (e) {
-                preload = true; // storage blocked (private mode): still show the intro
-            }
-            if (preload) {
-                html.classList.add('eh-preloading');
-                // Safety net: start the intro even if the font API or app.js never runs.
-                window.setTimeout(function () { html.classList.add('eh-fonts-ready'); }, 1000);
-            }
-        })();
-    </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @fonts
 </head>
 <body class="min-h-full bg-transparent text-stone-800 antialiased flex flex-col">
-    @include('partials.preloader')
     @include('partials.backdrop')
 
     <div data-scroll-sentinel aria-hidden="true" class="absolute top-0 h-px w-px"></div>
@@ -79,6 +50,9 @@
 
                 @auth
                     <div class="menu-item"><x-menu-link :href="route('my-events')" label="My events" /></div>
+                    @if (auth()->user()->isOrganizer())
+                        <div class="menu-item"><x-menu-link :href="route('organizer.events.index')" label="Organize" /></div>
+                    @endif
                     <div class="menu-item"><x-menu-link :href="route('profile.show')" label="Profile" /></div>
                     <div class="menu-item">
                         <form method="POST" action="{{ route('logout') }}">

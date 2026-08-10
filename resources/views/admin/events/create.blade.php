@@ -9,7 +9,7 @@
 
         <form method="POST" action="{{ route('admin.events.store') }}" class="mt-8 rounded-2xl border border-stone-200 bg-white p-6">
             @csrf
-            @include('admin.events._form')
+            @include('partials.event-form')
             <div class="mt-6 flex items-center gap-3">
                 <button type="submit" class="rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-700 active:scale-[0.98]">Create event</button>
                 <a href="{{ route('admin.events.index') }}" class="text-sm text-stone-500 transition hover:text-stone-900">Cancel</a>

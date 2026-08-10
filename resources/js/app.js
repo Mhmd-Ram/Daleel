@@ -4,15 +4,12 @@
  * - Scroll-reveal: `.reveal` elements fade/slide in once as they enter view.
  * - Header: gains `.is-scrolled` once a top sentinel leaves the viewport.
  * - Menu: a toggle opens/closes a full-screen overlay menu (desktop + mobile).
- * - Tilt: `.event-card` leans toward the cursor with a spotlight glow.
- * - Preloader: removes the intro panel after its CSS wipe finishes.
  * - Particles: a field of soft, multi-colored dots that fall continuously.
  *
  * Everything degrades gracefully: without JS the page is fully visible, and
- * users who prefer reduced motion get content revealed instantly with no tilt.
+ * users who prefer reduced motion get content revealed instantly.
  */
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
 function setupScrollReveal() {
     const targets = document.querySelectorAll('.reveal');
@@ -87,75 +84,6 @@ function setupMenu() {
             toggle.focus();
         }
     });
-}
-
-function setupTilt() {
-    if (!supportsHover || prefersReducedMotion) {
-        return;
-    }
-
-    document.querySelectorAll('[data-tilt]').forEach((card) => {
-        let frame = null;
-
-        const onMove = (event) => {
-            if (frame) {
-                return;
-            }
-            frame = requestAnimationFrame(() => {
-                frame = null;
-                const rect = card.getBoundingClientRect();
-                const px = (event.clientX - rect.left) / rect.width;
-                const py = (event.clientY - rect.top) / rect.height;
-                card.style.setProperty('--rx', `${(px - 0.5) * 10}deg`);
-                card.style.setProperty('--ry', `${(0.5 - py) * 10}deg`);
-                card.style.setProperty('--mx', `${px * 100}%`);
-                card.style.setProperty('--my', `${py * 100}%`);
-            });
-        };
-
-        const reset = () => {
-            card.classList.remove('is-tilting');
-            card.style.removeProperty('--rx');
-            card.style.removeProperty('--ry');
-        };
-
-        card.addEventListener('pointerenter', () => card.classList.add('is-tilting'));
-        card.addEventListener('pointermove', onMove);
-        card.addEventListener('pointerleave', reset);
-    });
-}
-
-function setupPreloader() {
-    const html = document.documentElement;
-    const el = document.getElementById('eh-preloader');
-
-    if (!el || !html.classList.contains('eh-preloading')) {
-        return;
-    }
-
-    // Start the intro only once the Anton font is ready, so the letters never
-    // animate in a fallback face. (The inline head script also sets a timeout
-    // fallback in case this never resolves.)
-    const reveal = () => html.classList.add('eh-fonts-ready');
-    if (document.fonts && document.fonts.load) {
-        document.fonts.load('400 80px Anton').then(reveal, reveal);
-    } else {
-        reveal();
-    }
-
-    const cleanup = () => {
-        el.remove();
-        html.classList.remove('eh-preloading');
-    };
-
-    // Remove the panel once its exit wipe finishes; a timer is the safety net
-    // in case the animationend event is missed.
-    el.addEventListener('animationend', (event) => {
-        if (event.animationName === 'eh-wipe') {
-            cleanup();
-        }
-    });
-    window.setTimeout(cleanup, 6000);
 }
 
 function setupParticles() {
@@ -242,6 +170,4 @@ function setupParticles() {
 setupScrollReveal();
 setupHeaderState();
 setupMenu();
-setupTilt();
-setupPreloader();
 setupParticles();

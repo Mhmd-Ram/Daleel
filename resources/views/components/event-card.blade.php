@@ -1,13 +1,11 @@
 @props(['event', 'index' => 0])
 
 <a href="{{ route('events.show', $event) }}" style="--reveal-delay: {{ ($index % 3) * 90 }}ms"
-   class="reveal group block [perspective:1000px]">
-    <article data-tilt class="event-card relative flex h-full flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white/90 shadow-sm backdrop-blur-sm">
-        <span class="event-card__glow"></span>
-
+   class="reveal group block">
+    <article class="event-card relative flex h-full flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white/90 shadow-sm backdrop-blur-sm">
         <div class="relative aspect-[16/10] overflow-hidden bg-stone-100">
             <img src="https://picsum.photos/seed/event-{{ $event->id }}/800/500" alt=""
-                 class="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.06]" loading="lazy">
+                 class="h-full w-full object-cover" loading="lazy">
             <div class="absolute inset-0 bg-gradient-to-t from-stone-900/35 via-transparent to-transparent"></div>
 
             <div class="absolute left-3 top-3 grid place-items-center rounded-xl bg-white/95 px-3 py-1.5 text-center shadow-md shadow-stone-900/10">

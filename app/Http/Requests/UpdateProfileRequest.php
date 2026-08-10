@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\LibyanCity;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -29,7 +30,7 @@ class UpdateProfileRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($userId)],
             'phone_number' => ['required', 'string', 'max:255', Rule::unique('users', 'phone_number')->ignore($userId)],
             'dob' => ['required', 'date', 'before:today'],
-            'location' => ['required', 'string', 'max:255'],
+            'location' => ['required', Rule::enum(LibyanCity::class)],
         ];
     }
 }

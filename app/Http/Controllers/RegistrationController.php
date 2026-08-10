@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EventRegistered;
 use App\Models\Event;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class RegistrationController extends Controller
@@ -46,9 +48,13 @@ class RegistrationController extends Controller
             return back()->with('error', 'This event has reached its capacity.');
         }
 
-        $event->registeredUsers()->attach(auth()->id(), ['created_at' => now()]);
+        $user = auth()->user();
 
-        return back()->with('success', 'You are registered for this event.');
+        $event->registeredUsers()->attach($user->id, ['created_at' => now()]);
+
+        Mail::to($user)->queue(new EventRegistered($user, $event));
+
+        return back()->with('success', 'You are registered for this event. A confirmation email is on its way.');
     }
 
     /**

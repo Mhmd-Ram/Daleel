@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\LibyanCity;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
 class StoreUserRequest extends FormRequest
@@ -27,7 +29,7 @@ class StoreUserRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'phone_number' => ['required', 'string', 'max:255', 'unique:users,phone_number'],
             'dob' => ['required', 'date', 'before:today'],
-            'location' => ['required', 'string', 'max:255'],
+            'location' => ['required', Rule::enum(LibyanCity::class)],
             'password' => ['required', 'confirmed', Password::defaults()],
         ];
     }
