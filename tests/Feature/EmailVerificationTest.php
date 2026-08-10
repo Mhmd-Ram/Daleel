@@ -2,7 +2,22 @@
 
 use App\Models\Event;
 use App\Models\User;
+use Illuminate\Contracts\Notifications\Dispatcher;
 use Illuminate\Support\Facades\URL;
+use Mockery\MockInterface;
+use Symfony\Component\Mailer\Exception\TransportException;
+
+/**
+ * Make every notification send blow up the way a refused SMTP connection does,
+ * so the controllers' transport-failure handling can be exercised.
+ */
+function failTheMailTransport(): void
+{
+    test()->mock(Dispatcher::class, function (MockInterface $mock) {
+        $mock->shouldReceive('send')->andThrow(new TransportException('Connection refused'));
+        $mock->shouldIgnoreMissing();
+    });
+}
 
 it('blocks an unverified user from registering for an event', function () {
     $user = User::factory()->unverified()->create();
@@ -73,4 +88,42 @@ it('lets a verified user register for an event', function () {
     $this->actingAs($user)->post(route('events.register', $event));
 
     expect($event->registeredUsers()->whereKey($user->id)->exists())->toBeTrue();
+});
+
+it('says the resend worked when it did', function () {
+    $this->actingAs(User::factory()->unverified()->create())
+        ->post(route('verification.send'))
+        ->assertRedirect()
+        ->assertSessionHas('success')
+        ->assertSessionMissing('error');
+});
+
+it('admits it when the resend cannot reach the mail server', function () {
+    failTheMailTransport();
+
+    $this->actingAs(User::factory()->unverified()->create())
+        ->post(route('verification.send'))
+        ->assertRedirect()
+        ->assertSessionHas('error')
+        ->assertSessionMissing('success');
+});
+
+it('still creates the account and signs the user in when the welcome email fails', function () {
+    failTheMailTransport();
+
+    $this->post(route('register'), [
+        'name' => 'Nour Belkacem',
+        'email' => 'nour@example.com',
+        'phone_number' => '+218914445555',
+        'dob' => '1994-11-02',
+        'location' => 'Misrata',
+        'password' => 'password123',
+        'password_confirmation' => 'password123',
+    ])
+        ->assertRedirect(route('verification.notice'))
+        ->assertSessionHas('error');
+
+    // The account is real and usable even though the email never left.
+    $this->assertAuthenticated();
+    expect(User::where('email', 'nour@example.com')->exists())->toBeTrue();
 });

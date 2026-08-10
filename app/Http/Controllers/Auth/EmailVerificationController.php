@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 class EmailVerificationController extends Controller
 {
@@ -36,6 +37,10 @@ class EmailVerificationController extends Controller
 
     /**
      * Send a fresh verification link.
+     *
+     * A transport failure is reported rather than swallowed: telling someone the
+     * link is on its way when SMTP just refused it leaves them waiting on an
+     * email that will never arrive, with no way to tell the difference.
      */
     public function send(Request $request): RedirectResponse
     {
@@ -43,7 +48,13 @@ class EmailVerificationController extends Controller
             return redirect()->route('home');
         }
 
-        $request->user()->sendEmailVerificationNotification();
+        try {
+            $request->user()->sendEmailVerificationNotification();
+        } catch (TransportExceptionInterface $e) {
+            report($e);
+
+            return back()->with('error', 'We could not send the email just now. Please try again in a moment.');
+        }
 
         return back()->with('success', 'A new verification link is on its way.');
     }
