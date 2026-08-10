@@ -42,5 +42,9 @@
         @include('partials.flash')
         @yield('content')
     </main>
+
+    {{-- Page-specific bundles (currently the Leaflet map) push themselves here
+         so they are not loaded across the whole admin area. --}}
+    @stack('scripts')
 </body>
 </html>

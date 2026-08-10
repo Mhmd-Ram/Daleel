@@ -66,3 +66,46 @@
         <span class="text-sm text-stone-700">Published (visible to users)</span>
     </label>
 </div>
+
+{{-- Map pin. Optional: an event without one simply shows no map. --}}
+<div class="mt-5 flex flex-col gap-2">
+    <div class="flex flex-wrap items-baseline justify-between gap-2">
+        <span class="text-sm font-medium text-stone-700">Pin on the map</span>
+        <span class="text-xs text-stone-400">Optional. Search for the venue, or click the map.</span>
+    </div>
+
+    <div class="flex flex-col gap-2 sm:flex-row">
+        <input type="text" data-map-search="event-map" placeholder="Search an address or venue"
+               aria-label="Search for an address to place the pin"
+               class="flex-1 rounded-lg border border-stone-300 px-3 py-2 text-stone-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30">
+        {{-- type="button" matters: this must not submit the event form. --}}
+        <button type="button" data-map-search-go="event-map"
+                class="rounded-lg border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 transition hover:border-stone-400 hover:text-stone-900">
+            Search
+        </button>
+        <button type="button" data-map-clear="event-map"
+                class="rounded-lg border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 transition hover:border-rose-300 hover:text-rose-700">
+            Clear pin
+        </button>
+    </div>
+
+    <p data-map-search-status="event-map" role="status" aria-live="polite"
+       class="min-h-[1.25rem] text-xs text-stone-500"></p>
+
+    <div id="event-map" data-map-picker
+         data-map-lat-input="latitude" data-map-lng-input="longitude"
+         class="h-72 w-full overflow-hidden rounded-xl border border-stone-200 bg-stone-100"></div>
+
+    <input type="hidden" id="latitude" name="latitude" value="{{ old('latitude', $e?->latitude) }}">
+    <input type="hidden" id="longitude" name="longitude" value="{{ old('longitude', $e?->longitude) }}">
+
+    <noscript>
+        <p class="text-xs text-stone-500">
+            The map needs JavaScript. The event will save without a pin.
+        </p>
+    </noscript>
+</div>
+
+@push('scripts')
+    @vite(['resources/js/map.js'])
+@endpush

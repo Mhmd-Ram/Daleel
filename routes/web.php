@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\GeocodeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Organizer;
 use App\Http\Controllers\OrganizerApplicationController;
@@ -20,6 +21,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
+
+/*
+|--------------------------------------------------------------------------
+| Address lookup for the event form's map picker
+|--------------------------------------------------------------------------
+| Sits outside the groups below because the event form is reached from both
+| sides: organizers on the web guard, admins on the admin guard. Kept behind
+| authentication and throttled so it cannot be used as an open geocoding proxy.
+*/
+Route::get('/geocode', GeocodeController::class)
+    ->middleware(['auth:web,admin', 'throttle:20,1'])
+    ->name('geocode');
 
 /*
 |--------------------------------------------------------------------------

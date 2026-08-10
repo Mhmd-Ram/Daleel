@@ -10,9 +10,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use LogicException;
 
 #[Fillable([
-    'name', 'description', 'location', 'start_date_time', 'end_date_time',
-    'tiket_cost', 'max_capacity', 'is_active', 'category_id', 'admin_id',
-    'organizer_id',
+    'name', 'description', 'location', 'latitude', 'longitude',
+    'start_date_time', 'end_date_time', 'tiket_cost', 'max_capacity',
+    'is_active', 'category_id', 'admin_id', 'organizer_id',
 ])]
 class Event extends Model
 {
@@ -30,6 +30,10 @@ class Event extends Model
             'end_date_time' => 'datetime',
             'tiket_cost' => 'decimal:2',
             'is_active' => 'boolean',
+            // Float rather than decimal: the map needs JSON numbers, and a
+            // decimal cast hands back strings that Leaflet will not accept.
+            'latitude' => 'float',
+            'longitude' => 'float',
         ];
     }
 
@@ -104,6 +108,18 @@ class Event extends Model
     {
         return $this->belongsToMany(User::class, 'user_regestrations')
             ->withPivot('created_at');
+    }
+
+    /**
+     * Whether this event has a map pin.
+     *
+     * Coordinates are stored as a pair or not at all, but this checks both
+     * columns so a half-written row can never reach the map as a (0, lng) pin
+     * off the coast of Africa.
+     */
+    public function hasCoordinates(): bool
+    {
+        return $this->latitude !== null && $this->longitude !== null;
     }
 
     /**

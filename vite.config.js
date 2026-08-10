@@ -6,7 +6,9 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            // map.js is a separate entry so Leaflet only loads on the two pages
+            // that need it, rather than weighing down every page.
+            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/js/map.js'],
             refresh: true,
             fonts: [
                 bunny('Instrument Sans', {

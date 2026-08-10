@@ -64,6 +64,29 @@
                     </div>
                 </div>
 
+                @if ($event->hasCoordinates())
+                    <div class="mt-8">
+                        <h2 class="flex items-center gap-2 text-lg font-semibold text-stone-900">
+                            <x-icon name="pin" class="h-5 w-5 text-emerald-600" /> Getting there
+                        </h2>
+                        <div id="event-location-map" data-map-view
+                             data-map-lat="{{ $event->latitude }}"
+                             data-map-lng="{{ $event->longitude }}"
+                             data-map-label="{{ $event->location }}"
+                             class="mt-3 h-64 w-full overflow-hidden rounded-xl border border-stone-200 bg-stone-100 sm:h-80"></div>
+                        <p class="mt-2 text-xs text-stone-400">
+                            <a href="https://www.openstreetmap.org/?mlat={{ $event->latitude }}&amp;mlon={{ $event->longitude }}#map=16/{{ $event->latitude }}/{{ $event->longitude }}"
+                               target="_blank" rel="noopener noreferrer" class="underline hover:text-stone-600">
+                                Open in OpenStreetMap
+                            </a>
+                        </p>
+                    </div>
+
+                    @push('scripts')
+                        @vite(['resources/js/map.js'])
+                    @endpush
+                @endif
+
                 <div class="mt-8">
                     <h2 class="flex items-center gap-2 text-lg font-semibold text-stone-900">
                         <x-icon name="sparkles" class="h-5 w-5 text-emerald-600" /> About this event

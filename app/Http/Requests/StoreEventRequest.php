@@ -25,6 +25,10 @@ class StoreEventRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'location' => ['required', 'string', 'max:255'],
+            // The map pin is optional, but a lone coordinate is meaningless, so
+            // each half requires the other. Ranges are the real world's.
+            'latitude' => ['nullable', 'numeric', 'between:-90,90', 'required_with:longitude'],
+            'longitude' => ['nullable', 'numeric', 'between:-180,180', 'required_with:latitude'],
             'category_id' => ['required', 'exists:categories,id'],
             'start_date_time' => ['required', 'date'],
             // End must be after the start.

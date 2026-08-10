@@ -86,5 +86,9 @@
             {{ config('app.name') }}  ·  Find and join events near you.
         </div>
     </footer>
+
+    {{-- Page-specific bundles (currently the Leaflet map) push themselves here
+         so they are not loaded site-wide. --}}
+    @stack('scripts')
 </body>
 </html>
