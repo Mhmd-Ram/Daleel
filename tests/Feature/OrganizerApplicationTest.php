@@ -20,6 +20,30 @@ it('lets a verified user apply to become an organizer', function () use ($pitch)
         ->and($user->pendingOrganizerApplication())->not->toBeNull();
 });
 
+it('shows the right organizer prompt on the profile page for each kind of user', function () {
+    $this->actingAs(User::factory()->create())
+        ->get(route('profile.show'))
+        ->assertOk()
+        ->assertSee('Become an organizer');
+
+    $this->actingAs(User::factory()->unverified()->create())
+        ->get(route('profile.show'))
+        ->assertOk()
+        ->assertSee('Verify your email first', false);
+
+    $this->actingAs(User::factory()->organizer()->create())
+        ->get(route('profile.show'))
+        ->assertOk()
+        ->assertSee('You are an organizer');
+
+    $waiting = User::factory()->create();
+    OrganizerApplication::factory()->for($waiting)->create();
+    $this->actingAs($waiting)
+        ->get(route('profile.show'))
+        ->assertOk()
+        ->assertSee('Application under review');
+});
+
 it('rejects an application that is too short to review', function () {
     $user = User::factory()->create();
 

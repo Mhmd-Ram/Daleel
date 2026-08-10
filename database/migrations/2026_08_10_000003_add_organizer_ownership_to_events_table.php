@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -26,12 +27,14 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Organizer-owned events have no admin to fall back to, so they cannot
+        // survive the rollback. They have to go before `admin_id` is NOT NULL again.
+        DB::table('events')->whereNull('admin_id')->delete();
+
         Schema::table('events', function (Blueprint $table) {
             $table->dropConstrainedForeignId('organizer_id');
         });
 
-        // Organizer-owned events have no admin to fall back to, so they cannot
-        // survive the rollback; drop them before restoring the NOT NULL rule.
         Schema::table('events', function (Blueprint $table) {
             $table->foreignId('admin_id')->nullable(false)->change();
         });

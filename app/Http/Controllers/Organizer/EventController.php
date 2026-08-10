@@ -18,8 +18,8 @@ class EventController extends Controller
      */
     public function index(): View
     {
-        $events = Event::with('category')
-            ->where('organizer_id', Auth::id())
+        $events = Auth::user()->organizedEvents()
+            ->with('category')
             ->withCount('registeredUsers')
             ->latest()
             ->get();

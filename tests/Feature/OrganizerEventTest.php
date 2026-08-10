@@ -30,6 +30,22 @@ it('keeps the organizer area away from guests', function () {
     $this->get(route('organizer.events.index'))->assertRedirect(route('login'));
 });
 
+it('renders the organizer create and edit forms', function () {
+    $organizer = User::factory()->organizer()->create();
+    Category::factory()->create(['name' => 'Community']);
+    $event = Event::factory()->organizedBy($organizer)->create();
+
+    $this->actingAs($organizer)
+        ->get(route('organizer.events.create'))
+        ->assertOk()
+        ->assertSee('Community');
+
+    $this->actingAs($organizer)
+        ->get(route('organizer.events.edit', $event))
+        ->assertOk()
+        ->assertSee($event->name);
+});
+
 it('lets an organizer create an event they own', function () {
     $organizer = User::factory()->organizer()->create();
     $category = Category::factory()->create();

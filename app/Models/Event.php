@@ -79,19 +79,12 @@ class Event extends Model
     }
 
     /**
-     * The event's creator: exactly one of the admin or the organizer.
+     * The event's creator. The saving guard below means exactly one of the two
+     * owner columns is set, so this never comes back empty.
      */
-    public function owner(): Admin|User|null
+    public function owner(): Admin|User
     {
         return $this->admin_id !== null ? $this->admin : $this->organizer;
-    }
-
-    /**
-     * The creator's name, for listings that mix both kinds of owner.
-     */
-    public function ownerName(): string
-    {
-        return $this->owner()?->name ?? 'Unknown';
     }
 
     /**

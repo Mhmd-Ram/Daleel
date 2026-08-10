@@ -65,7 +65,7 @@
                             <tr>
                                 <td class="px-5 py-3 font-medium text-stone-900">{{ $event->name }}</td>
                                 <td class="px-5 py-3 text-stone-500">
-                                    {{ $event->ownerName() }}
+                                    {{ $event->owner()->name }}
                                     <span class="ml-1 text-xs text-stone-400">{{ $event->admin_id ? 'admin' : 'organizer' }}</span>
                                 </td>
                                 <td class="px-5 py-3 text-stone-500">{{ $event->start_date_time->format('M j, Y') }}</td>
