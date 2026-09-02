@@ -45,7 +45,7 @@ class ProfileController extends Controller
     {
         $request->user()->update($request->validated());
 
-        return redirect()->route('profile.show')->with('success', 'Profile updated.');
+        return redirect()->route('profile.show')->with('success', __('app.flash.profile_updated'));
     }
 
     /**
@@ -66,7 +66,7 @@ class ProfileController extends Controller
             'password' => $request->validated('password'),
         ])->save();
 
-        return redirect()->route('profile.show')->with('success', 'Password updated.');
+        return redirect()->route('profile.show')->with('success', __('app.flash.password_updated'));
     }
 
     /**
@@ -90,6 +90,6 @@ class ProfileController extends Controller
 
         $user->delete();
 
-        return redirect()->route('home')->with('success', 'Your account has been deleted.');
+        return redirect()->route('home')->with('success', __('app.flash.account_deleted'));
     }
 }

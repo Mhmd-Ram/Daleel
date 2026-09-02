@@ -1,19 +1,19 @@
 @extends('layouts.admin')
 
-@section('title', 'Organizer applications')
+@section('title', __('app.admin.applications_title'))
 
 @section('content')
     <div class="reveal mb-8">
-        <h1 class="text-2xl font-semibold tracking-tight text-stone-900">Organizer applications</h1>
-        <p class="mt-1 text-sm text-stone-500">Approve a user to let them create and manage their own events.</p>
+        <h1 class="text-2xl font-semibold tracking-tight text-stone-900">{{ __('app.admin.applications_title') }}</h1>
+        <p class="mt-1 text-sm text-stone-500">{{ __('app.admin.applications_subtitle') }}</p>
     </div>
 
-    <h2 class="mb-4 text-lg font-semibold tracking-tight text-stone-900">Awaiting review</h2>
+    <h2 class="mb-4 text-lg font-semibold tracking-tight text-stone-900">{{ __('app.admin.awaiting_review') }}</h2>
 
     @if ($pending->isEmpty())
         <div class="rounded-xl border border-dashed border-stone-300 bg-white px-6 py-16 text-center">
-            <p class="text-lg font-medium text-stone-900">Nothing to review</p>
-            <p class="mt-1 text-stone-500">New applications will appear here as users send them.</p>
+            <p class="text-lg font-medium text-stone-900">{{ __('app.admin.nothing_to_review') }}</p>
+            <p class="mt-1 text-stone-500">{{ __('app.admin.nothing_to_review_body') }}</p>
         </div>
     @else
         <div class="reveal grid gap-4" style="--reveal-delay: 60ms">
@@ -23,7 +23,7 @@
                         <div>
                             <p class="font-medium text-stone-900">{{ $application->user->name }}</p>
                             <p class="text-sm text-stone-500">{{ $application->user->email }}</p>
-                            <p class="mt-0.5 text-xs text-stone-400">Applied {{ $application->created_at->diffForHumans() }}</p>
+                            <p class="mt-0.5 text-xs text-stone-400">{{ __('app.admin.applied', ['when' => $application->created_at->diffForHumans()]) }}</p>
                         </div>
 
                         <div class="flex items-center gap-2">
@@ -32,7 +32,7 @@
                                 @method('PATCH')
                                 <button type="submit"
                                         class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700 active:scale-[0.98]">
-                                    Approve
+                                    {{ __('app.admin.approve') }}
                                 </button>
                             </form>
                             <form method="POST" action="{{ route('admin.organizer-applications.reject', $application) }}">
@@ -40,7 +40,7 @@
                                 @method('PATCH')
                                 <button type="submit"
                                         class="rounded-lg border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 transition hover:border-rose-300 hover:text-rose-700">
-                                    Reject
+                                    {{ __('app.admin.reject') }}
                                 </button>
                             </form>
                         </div>
@@ -55,16 +55,16 @@
     @endif
 
     @if ($reviewed->isNotEmpty())
-        <h2 class="mb-4 mt-10 text-lg font-semibold tracking-tight text-stone-900">Recent decisions</h2>
+        <h2 class="mb-4 mt-10 text-lg font-semibold tracking-tight text-stone-900">{{ __('app.admin.recent_decisions') }}</h2>
 
         <div class="overflow-hidden rounded-xl border border-stone-200 bg-white">
             <table class="w-full text-start text-sm">
                 <thead class="border-b border-stone-200 bg-stone-50 text-stone-500">
                     <tr>
-                        <th class="px-5 py-3 font-medium">Applicant</th>
-                        <th class="px-5 py-3 font-medium">Decision</th>
-                        <th class="px-5 py-3 font-medium">Reviewed by</th>
-                        <th class="px-5 py-3 font-medium">When</th>
+                        <th class="px-5 py-3 font-medium">{{ __('app.admin.applicant') }}</th>
+                        <th class="px-5 py-3 font-medium">{{ __('app.admin.decision') }}</th>
+                        <th class="px-5 py-3 font-medium">{{ __('app.admin.reviewed_by') }}</th>
+                        <th class="px-5 py-3 font-medium">{{ __('app.admin.when') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-stone-100">
@@ -76,12 +76,12 @@
                             </td>
                             <td class="px-5 py-3">
                                 @if ($application->status === \App\Enums\OrganizerApplicationStatus::Approved)
-                                    <span class="inline-flex rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">Approved</span>
+                                    <span class="inline-flex rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">{{ __('app.admin.approved') }}</span>
                                 @else
-                                    <span class="inline-flex rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-medium text-stone-500">Rejected</span>
+                                    <span class="inline-flex rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-medium text-stone-500">{{ __('app.admin.rejected') }}</span>
                                 @endif
                             </td>
-                            <td class="px-5 py-3 text-stone-500">{{ $application->reviewer?->name ?? 'Removed admin' }}</td>
+                            <td class="px-5 py-3 text-stone-500">{{ $application->reviewer?->name ?? __('app.admin.removed_admin') }}</td>
                             <td class="px-5 py-3 text-stone-500">{{ $application->reviewed_at->format('M j, Y') }}</td>
                         </tr>
                     @endforeach

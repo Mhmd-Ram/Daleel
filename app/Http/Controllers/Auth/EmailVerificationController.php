@@ -27,12 +27,12 @@ class EmailVerificationController extends Controller
     public function verify(EmailVerificationRequest $request): RedirectResponse
     {
         if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->route('home')->with('success', 'Your email is already verified.');
+            return redirect()->route('home')->with('success', __('app.flash.already_verified'));
         }
 
         $request->fulfill();
 
-        return redirect()->route('home')->with('success', 'Your email is verified. Welcome aboard.');
+        return redirect()->route('home')->with('success', __('app.flash.email_verified'));
     }
 
     /**
@@ -53,9 +53,9 @@ class EmailVerificationController extends Controller
         } catch (TransportExceptionInterface $e) {
             report($e);
 
-            return back()->with('error', 'We could not send the email just now. Please try again in a moment.');
+            return back()->with('error', __('app.flash.verification_failed'));
         }
 
-        return back()->with('success', 'A new verification link is on its way.');
+        return back()->with('success', __('app.flash.verification_sent'));
     }
 }

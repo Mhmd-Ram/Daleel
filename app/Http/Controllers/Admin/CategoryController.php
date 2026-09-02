@@ -36,7 +36,7 @@ class CategoryController extends Controller
         Category::create($request->validated());
 
         return redirect()->route('admin.categories.index')
-            ->with('success', 'Category created.');
+            ->with('success', __('app.flash.category_created'));
     }
 
     /**
@@ -55,7 +55,7 @@ class CategoryController extends Controller
         $category->update($request->validated());
 
         return redirect()->route('admin.categories.index')
-            ->with('success', 'Category updated.');
+            ->with('success', __('app.flash.category_updated'));
     }
 
     /**
@@ -69,6 +69,6 @@ class CategoryController extends Controller
         $category->delete();
 
         return redirect()->route('admin.categories.index')
-            ->with('success', 'Category deleted.');
+            ->with('success', __('app.flash.category_deleted'));
     }
 }

@@ -5,7 +5,7 @@
 @section('content')
     <div class="reveal mx-auto max-w-2xl">
         <a href="{{ route('organizer.events.index') }}" class="mb-6 inline-flex text-sm text-stone-500 transition hover:text-stone-900">&larr; {{ __('app.organizer.your_events') }}</a>
-        <h1 class="text-2xl font-semibold tracking-tight text-stone-900">New event</h1>
+        <h1 class="text-2xl font-semibold tracking-tight text-stone-900">{{ __('app.common.new_event') }}</h1>
 
         <form method="POST" action="{{ route('organizer.events.store') }}" class="mt-8 rounded-2xl border border-stone-200 bg-white p-6">
             @csrf

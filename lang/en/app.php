@@ -89,6 +89,7 @@ return [
     ],
 
     'admin' => [
+        // Navigation
         'label' => 'Admin',
         'dashboard' => 'Dashboard',
         'events' => 'Events',
@@ -97,10 +98,185 @@ return [
         'categories' => 'Categories',
         'organizers' => 'Organizers',
         'view_site' => 'View site',
+
+        // Sign in
+        'login_title' => 'Admin log in',
+        'sign_in_heading' => 'Admin sign in',
+        'sign_in_subtitle' => 'Staff access for managing events and categories.',
+        'sign_in' => 'Sign in',
+
+        // Dashboard
+        'review_now' => 'Review now',
+        'open_reports' => 'Open reports',
+        'latest_events' => 'Latest events',
+        'all_events' => 'All events',
+        'nothing_created' => 'Nothing has been created yet',
+        'nothing_created_body' => 'New events from you and from organizers will show up here.',
+        'created_by' => 'Created by',
+
+        // Events
+        'events_subtitle' => 'Every event on the platform.',
+        'filter_by_creator' => 'Filter by who created the event',
+        'all_creators' => 'All creators',
+        'admin_created' => 'Admin-created',
+        'organizer_created' => 'Organizer-created',
+        'filter_by_status' => 'Filter by publish status',
+        'all_status' => 'All status',
+        'filter' => 'Filter',
+        'events_empty_body' => 'Create your first event to get started.',
+        'owner' => 'Owner',
+        'active' => 'Active',
+        'inactive' => 'Inactive',
+        'publish' => 'Publish',
+        'unpublish' => 'Unpublish',
+        'reports_badge' => '{1}:count report|[2,*]:count reports',
+
+        // Registrations
+        'registrations_title' => 'Registrations',
+        'registered_attendees' => 'Registered attendees',
+        'no_registrations' => 'No registrations yet',
+        'no_registrations_body' => "When users register for this event, they'll appear here.",
+
+        // Categories
+        'categories_subtitle' => 'Organise events into browsable groups.',
+        'new_category' => 'New category',
+        'create_category' => 'Create category',
+        'edit_category' => 'Edit category',
+        'no_categories' => 'No categories yet',
+        'no_categories_body' => 'Create your first category to start grouping events.',
+        'category_name_placeholder' => 'e.g. Music',
+
+        // Users
+        'user_management' => 'User management',
+        'users_subtitle' => 'Everyone with an account. Administrators are managed separately.',
+        'search_users_label' => 'Search users by name or email',
+        'search_users_placeholder' => 'Search by name or email',
+        'filter_by_role' => 'Filter by role',
+        'all_roles' => 'All roles',
+        'banned' => 'Banned',
+        'no_users_match' => 'No users match',
+        'no_users_match_body' => 'Try a different search, role or status.',
+        'user' => 'User',
+        'role' => 'Role',
+        'joined' => 'Joined',
+        'actions' => 'Actions',
+        'organizer' => 'Organizer',
+        'attendee' => 'Attendee',
+        'revert_role' => 'Revert role',
+        'restore' => 'Restore',
+        'suspend' => 'Suspend',
+        'saved_count' => ':count saved',
+
+        // Reports
+        'reports_subtitle' => 'Events attendees have flagged for review.',
+        'most_reported' => 'Most reported',
+        'nothing_reported' => 'Nothing reported',
+        'nothing_reported_body' => 'Reports from attendees will appear here for review.',
+        'reported_by' => 'Reported by',
+        'reason' => 'Reason',
+        'when' => 'When',
+        'review_event' => 'Review event',
+        'dismiss' => 'Dismiss',
+
+        // Organizer applications
+        'applications_title' => 'Organizer applications',
+        'applications_subtitle' => 'Approve a user to let them create and manage their own events.',
+        'awaiting_review' => 'Awaiting review',
+        'nothing_to_review' => 'Nothing to review',
+        'nothing_to_review_body' => 'New applications will appear here as users send them.',
+        'applied' => 'Applied :when',
+        'approve' => 'Approve',
+        'reject' => 'Reject',
+        'recent_decisions' => 'Recent decisions',
+        'applicant' => 'Applicant',
+        'decision' => 'Decision',
+        'reviewed_by' => 'Reviewed by',
+        'approved' => 'Approved',
+        'rejected' => 'Rejected',
+        'removed_admin' => 'Removed admin',
+
+        'name' => 'Name',
+
+        // Dashboard stat cards
+        'card_events' => 'Events',
+        'card_events_note' => ':published published, :drafts draft',
+        'card_upcoming' => 'Upcoming',
+        'card_upcoming_note' => 'Published and not yet finished',
+        'card_registrations' => 'Registrations',
+        'card_registrations_note' => 'Across every event',
+        'card_users' => 'Users',
+        'card_users_note' => ':organizers organizers, :banned banned',
+        'applications_waiting' => '{1}:count organizer application waiting for review.|[2,*]:count organizer applications waiting for review.',
+        'reports_waiting' => '{1}:count report waiting for review.|[2,*]:count reports waiting for review.',
+    ],
+
+    'emails' => [
+        'saved_heading' => 'Saved to your calendar',
+        'saved_body' => 'Hi :name, your place at :event is confirmed. Here are the details.',
+        'reminder_heading' => 'Coming up soon',
+        'reminder_body' => 'Hi :name, :event starts soon. Here are the details again.',
+        'starts' => 'Starts',
+        'ends' => 'Ends',
+        'location' => 'Location',
+        'ticket' => 'Ticket',
+        'view_the_event' => 'View the event',
+        'cannot_make_it' => 'Cannot make it? Remove it from your calendar any time from',
+        'plans_changed' => 'Plans changed? Remove it from your calendar any time from',
+        'my_calendar' => 'My calendar',
+        'subject_saved' => 'Saved to your calendar: :event',
+        'subject_reminder' => 'Reminder: :event is coming up',
     ],
 
     'flash' => [
         'fix_the_following' => 'Please fix the following:',
+
+        // Categories
+        'category_created' => 'Category created.',
+        'category_updated' => 'Category updated.',
+        'category_deleted' => 'Category deleted.',
+
+        // Events
+        'event_created' => 'Event created.',
+        'event_updated' => 'Event updated.',
+        'event_deleted' => 'Event deleted.',
+        'event_published' => 'Event published.',
+        'event_unpublished' => 'Event unpublished.',
+
+        // Organizer applications
+        'application_sent' => 'Your organizer application has been sent for review.',
+        'application_rejected' => 'Application rejected.',
+        'now_an_organizer' => ':name is now an organizer.',
+
+        // User management
+        'user_banned' => ':name has been banned.',
+        'user_unbanned' => ':name can sign in again.',
+        'user_reverted' => ':name is an attendee again.',
+        'account_banned' => 'This account has been banned.',
+
+        // Email verification
+        'already_verified' => 'Your email is already verified.',
+        'email_verified' => 'Your email is verified. Welcome aboard.',
+        'verification_failed' => 'We could not send the email just now. Please try again in a moment.',
+        'verification_sent' => 'A new verification link is on its way.',
+        'registered_no_email' => 'Your account is ready, but we could not send the verification email. Use the resend button below.',
+        'welcome' => 'Welcome, :name! Check your inbox to verify your email.',
+
+        // Profile
+        'profile_updated' => 'Profile updated.',
+        'password_updated' => 'Password updated.',
+        'account_deleted' => 'Your account has been deleted.',
+
+        // Calendar
+        'cannot_save' => 'This event can no longer be saved.',
+        'already_saved' => 'This event is already on your calendar.',
+        'event_full' => 'This event is full.',
+        'saved' => 'Saved to your calendar. A confirmation email is on its way.',
+        'removed' => 'Removed from your calendar.',
+
+        // Reports
+        'report_sent' => 'Thanks. Your report has been sent to the administrators.',
+        'already_reported' => 'You have already reported this event. An admin will review it.',
+        'report_dismissed' => 'Report dismissed.',
     ],
 
     'auth' => [

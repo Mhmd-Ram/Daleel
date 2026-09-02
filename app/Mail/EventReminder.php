@@ -29,7 +29,7 @@ class EventReminder extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reminder: '.$this->event->name.' is coming up',
+            subject: __('app.emails.subject_reminder', ['event' => $this->event->name]),
         );
     }
 

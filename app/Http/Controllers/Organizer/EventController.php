@@ -45,7 +45,7 @@ class EventController extends Controller
         $event->save();
 
         return redirect()->route('organizer.events.index')
-            ->with('success', 'Event created.');
+            ->with('success', __('app.flash.event_created'));
     }
 
     /**
@@ -71,7 +71,7 @@ class EventController extends Controller
         $event->update($request->validated());
 
         return redirect()->route('organizer.events.index')
-            ->with('success', 'Event updated.');
+            ->with('success', __('app.flash.event_updated'));
     }
 
     /**
@@ -84,7 +84,7 @@ class EventController extends Controller
         $event->delete();
 
         return redirect()->route('organizer.events.index')
-            ->with('success', 'Event deleted.');
+            ->with('success', __('app.flash.event_deleted'));
     }
 
     /**

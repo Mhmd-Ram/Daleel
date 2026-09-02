@@ -29,7 +29,7 @@ class EventRegistered extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Saved to your calendar: '.$this->event->name,
+            subject: __('app.emails.subject_saved', ['event' => $this->event->name]),
         );
     }
 

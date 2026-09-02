@@ -1,7 +1,10 @@
 <?php
 
+use App\Mail\EventRegistered;
+use App\Models\Admin;
 use App\Models\Event;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 
 it('serves the site in English by default', function () {
     $this->get(route('login'))
@@ -133,4 +136,43 @@ it('keeps the delete confirmation usable in Arabic', function () {
         ->get(route('organizer.events.index'))
         ->assertOk()
         ->assertDontSee('&#039;', false);
+});
+
+it('renders the admin area in Arabic', function () {
+    $this->actingAs(Admin::factory()->create(), 'admin')
+        ->withSession(['locale' => 'ar'])
+        ->get(route('admin.users.index'))
+        ->assertOk()
+        ->assertSee('إدارة المستخدمين', false)
+        ->assertDontSee('User management');
+});
+
+it('sends the confirmation email in the language the user was browsing', function () {
+    Mail::fake();
+
+    $user = User::factory()->create();
+    $event = Event::factory()->create();
+
+    $this->actingAs($user)
+        ->withSession(['locale' => 'ar'])
+        ->from(route('events.show', $event))
+        ->post(route('events.register', $event));
+
+    // The queue has no session, so the locale must be pinned at dispatch or
+    // the mail silently renders in English.
+    Mail::assertQueued(
+        EventRegistered::class,
+        fn ($mail) => $mail->locale === 'ar',
+    );
+});
+
+it('translates a controller flash message', function () {
+    $user = User::factory()->create();
+    $event = Event::factory()->create();
+
+    $this->actingAs($user)
+        ->withSession(['locale' => 'ar'])
+        ->from(route('events.show', $event))
+        ->post(route('events.register', $event))
+        ->assertSessionHas('success', fn ($message) => str_contains($message, 'محفوظة في تقويمك'));
 });

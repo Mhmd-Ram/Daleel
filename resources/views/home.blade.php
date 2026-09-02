@@ -11,7 +11,7 @@
             </span>
 
             <h1 class="font-display mt-5 text-5xl uppercase leading-[0.92] tracking-tight text-stone-900 sm:text-6xl lg:text-7xl">
-                Go where<br><span class="text-emerald-600">it's happening</span>
+                {{ __('app.home.hero_line_1') }}<br><span class="text-emerald-600">{{ __('app.home.hero_line_2') }}</span>
             </h1>
 
             <p class="mt-5 max-w-md text-lg leading-relaxed text-stone-600">

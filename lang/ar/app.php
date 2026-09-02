@@ -89,6 +89,7 @@ return [
     ],
 
     'admin' => [
+        // التنقل
         'label' => 'المشرف',
         'dashboard' => 'لوحة التحكم',
         'events' => 'الفعاليات',
@@ -97,10 +98,185 @@ return [
         'categories' => 'التصنيفات',
         'organizers' => 'المنظّمون',
         'view_site' => 'عرض الموقع',
+
+        // تسجيل الدخول
+        'login_title' => 'دخول المشرفين',
+        'sign_in_heading' => 'دخول المشرفين',
+        'sign_in_subtitle' => 'دخول الموظفين لإدارة الفعاليات والتصنيفات.',
+        'sign_in' => 'دخول',
+
+        // لوحة التحكم
+        'review_now' => 'راجع الآن',
+        'open_reports' => 'فتح البلاغات',
+        'latest_events' => 'أحدث الفعاليات',
+        'all_events' => 'كل الفعاليات',
+        'nothing_created' => 'لم يُنشأ أي شيء بعد',
+        'nothing_created_body' => 'ستظهر هنا الفعاليات الجديدة منك ومن المنظّمين.',
+        'created_by' => 'أنشأها',
+
+        // الفعاليات
+        'events_subtitle' => 'كل فعالية على المنصة.',
+        'filter_by_creator' => 'التصفية حسب من أنشأ الفعالية',
+        'all_creators' => 'كل المنشئين',
+        'admin_created' => 'من إنشاء المشرفين',
+        'organizer_created' => 'من إنشاء المنظّمين',
+        'filter_by_status' => 'التصفية حسب حالة النشر',
+        'all_status' => 'كل الحالات',
+        'filter' => 'تصفية',
+        'events_empty_body' => 'أنشئ فعاليتك الأولى للبدء.',
+        'owner' => 'المالك',
+        'active' => 'نشطة',
+        'inactive' => 'غير نشطة',
+        'publish' => 'نشر',
+        'unpublish' => 'إلغاء النشر',
+        'reports_badge' => '{1}بلاغ واحد|{2}بلاغان|[3,10]:count بلاغات|[11,*]:count بلاغًا',
+
+        // التسجيلات
+        'registrations_title' => 'التسجيلات',
+        'registered_attendees' => 'الحضور المسجّلون',
+        'no_registrations' => 'لا توجد تسجيلات بعد',
+        'no_registrations_body' => 'عندما يسجّل المستخدمون في هذه الفعالية سيظهرون هنا.',
+
+        // التصنيفات
+        'categories_subtitle' => 'نظّم الفعاليات في مجموعات قابلة للتصفح.',
+        'new_category' => 'تصنيف جديد',
+        'create_category' => 'إنشاء التصنيف',
+        'edit_category' => 'تعديل التصنيف',
+        'no_categories' => 'لا توجد تصنيفات بعد',
+        'no_categories_body' => 'أنشئ تصنيفك الأول لتبدأ بتجميع الفعاليات.',
+        'category_name_placeholder' => 'مثال: موسيقى',
+
+        // المستخدمون
+        'user_management' => 'إدارة المستخدمين',
+        'users_subtitle' => 'كل من لديه حساب. تُدار حسابات المشرفين بشكل منفصل.',
+        'search_users_label' => 'البحث عن المستخدمين بالاسم أو البريد',
+        'search_users_placeholder' => 'ابحث بالاسم أو البريد',
+        'filter_by_role' => 'التصفية حسب الدور',
+        'all_roles' => 'كل الأدوار',
+        'banned' => 'محظور',
+        'no_users_match' => 'لا يوجد مستخدمون مطابقون',
+        'no_users_match_body' => 'جرّب بحثًا أو دورًا أو حالة مختلفة.',
+        'user' => 'المستخدم',
+        'role' => 'الدور',
+        'joined' => 'تاريخ الانضمام',
+        'actions' => 'إجراءات',
+        'organizer' => 'منظّم',
+        'attendee' => 'حاضر',
+        'revert_role' => 'إرجاع الدور',
+        'restore' => 'استعادة',
+        'suspend' => 'حظر',
+        'saved_count' => ':count محفوظة',
+
+        // البلاغات
+        'reports_subtitle' => 'الفعاليات التي أبلغ عنها الحاضرون للمراجعة.',
+        'most_reported' => 'الأكثر إبلاغًا',
+        'nothing_reported' => 'لا توجد بلاغات',
+        'nothing_reported_body' => 'ستظهر هنا بلاغات الحاضرين للمراجعة.',
+        'reported_by' => 'أبلغ عنها',
+        'reason' => 'السبب',
+        'when' => 'التاريخ',
+        'review_event' => 'مراجعة الفعالية',
+        'dismiss' => 'تجاهل',
+
+        // طلبات التنظيم
+        'applications_title' => 'طلبات التنظيم',
+        'applications_subtitle' => 'وافق على مستخدم ليتمكن من إنشاء فعالياته وإدارتها.',
+        'awaiting_review' => 'في انتظار المراجعة',
+        'nothing_to_review' => 'لا يوجد ما يُراجع',
+        'nothing_to_review_body' => 'ستظهر الطلبات الجديدة هنا عندما يرسلها المستخدمون.',
+        'applied' => 'تقدّم :when',
+        'approve' => 'موافقة',
+        'reject' => 'رفض',
+        'recent_decisions' => 'القرارات الأخيرة',
+        'applicant' => 'مقدّم الطلب',
+        'decision' => 'القرار',
+        'reviewed_by' => 'راجعه',
+        'approved' => 'مقبول',
+        'rejected' => 'مرفوض',
+        'removed_admin' => 'مشرف محذوف',
+
+        'name' => 'الاسم',
+
+        // بطاقات لوحة التحكم
+        'card_events' => 'الفعاليات',
+        'card_events_note' => ':published منشورة، :drafts مسودة',
+        'card_upcoming' => 'القادمة',
+        'card_upcoming_note' => 'منشورة ولم تنتهِ بعد',
+        'card_registrations' => 'التسجيلات',
+        'card_registrations_note' => 'عبر كل الفعاليات',
+        'card_users' => 'المستخدمون',
+        'card_users_note' => ':organizers منظّمين، :banned محظورين',
+        'applications_waiting' => '{1}طلب تنظيم واحد في انتظار المراجعة.|{2}طلبا تنظيم في انتظار المراجعة.|[3,10]:count طلبات تنظيم في انتظار المراجعة.|[11,*]:count طلب تنظيم في انتظار المراجعة.',
+        'reports_waiting' => '{1}بلاغ واحد في انتظار المراجعة.|{2}بلاغان في انتظار المراجعة.|[3,10]:count بلاغات في انتظار المراجعة.|[11,*]:count بلاغًا في انتظار المراجعة.',
+    ],
+
+    'emails' => [
+        'saved_heading' => 'محفوظة في تقويمك',
+        'saved_body' => 'مرحبًا :name، تم تأكيد مكانك في :event. إليك التفاصيل.',
+        'reminder_heading' => 'تبدأ قريبًا',
+        'reminder_body' => 'مرحبًا :name، تبدأ :event قريبًا. إليك التفاصيل مرة أخرى.',
+        'starts' => 'تبدأ',
+        'ends' => 'تنتهي',
+        'location' => 'المكان',
+        'ticket' => 'التذكرة',
+        'view_the_event' => 'عرض الفعالية',
+        'cannot_make_it' => 'لا تستطيع الحضور؟ أزلها من تقويمك في أي وقت من',
+        'plans_changed' => 'تغيّرت خططك؟ أزلها من تقويمك في أي وقت من',
+        'my_calendar' => 'تقويمي',
+        'subject_saved' => 'محفوظة في تقويمك: :event',
+        'subject_reminder' => 'تذكير: :event تبدأ قريبًا',
     ],
 
     'flash' => [
         'fix_the_following' => 'يرجى تصحيح ما يلي:',
+
+        // التصنيفات
+        'category_created' => 'تم إنشاء التصنيف.',
+        'category_updated' => 'تم تحديث التصنيف.',
+        'category_deleted' => 'تم حذف التصنيف.',
+
+        // الفعاليات
+        'event_created' => 'تم إنشاء الفعالية.',
+        'event_updated' => 'تم تحديث الفعالية.',
+        'event_deleted' => 'تم حذف الفعالية.',
+        'event_published' => 'تم نشر الفعالية.',
+        'event_unpublished' => 'تم إلغاء نشر الفعالية.',
+
+        // طلبات التنظيم
+        'application_sent' => 'تم إرسال طلب التنظيم للمراجعة.',
+        'application_rejected' => 'تم رفض الطلب.',
+        'now_an_organizer' => ':name أصبح منظّمًا الآن.',
+
+        // إدارة المستخدمين
+        'user_banned' => 'تم حظر :name.',
+        'user_unbanned' => 'يمكن لـ :name تسجيل الدخول مرة أخرى.',
+        'user_reverted' => 'عاد :name حاضرًا.',
+        'account_banned' => 'تم حظر هذا الحساب.',
+
+        // تأكيد البريد
+        'already_verified' => 'بريدك الإلكتروني مؤكد بالفعل.',
+        'email_verified' => 'تم تأكيد بريدك الإلكتروني. أهلًا بك.',
+        'verification_failed' => 'تعذّر إرسال البريد الآن. حاول مرة أخرى بعد قليل.',
+        'verification_sent' => 'رابط تأكيد جديد في طريقه إليك.',
+        'registered_no_email' => 'حسابك جاهز، لكن تعذّر إرسال بريد التأكيد. استخدم زر إعادة الإرسال أدناه.',
+        'welcome' => 'أهلًا :name! تحقق من بريدك لتأكيد حسابك.',
+
+        // الملف الشخصي
+        'profile_updated' => 'تم تحديث الملف الشخصي.',
+        'password_updated' => 'تم تحديث كلمة المرور.',
+        'account_deleted' => 'تم حذف حسابك.',
+
+        // التقويم
+        'cannot_save' => 'لم يعد من الممكن حفظ هذه الفعالية.',
+        'already_saved' => 'هذه الفعالية موجودة في تقويمك بالفعل.',
+        'event_full' => 'اكتمل العدد في هذه الفعالية.',
+        'saved' => 'محفوظة في تقويمك. رسالة التأكيد في طريقها إليك.',
+        'removed' => 'تمت إزالتها من تقويمك.',
+
+        // البلاغات
+        'report_sent' => 'شكرًا. تم إرسال بلاغك إلى المشرفين.',
+        'already_reported' => 'لقد أبلغت عن هذه الفعالية من قبل. سيراجعها أحد المشرفين.',
+        'report_dismissed' => 'تم تجاهل البلاغ.',
     ],
 
     'auth' => [

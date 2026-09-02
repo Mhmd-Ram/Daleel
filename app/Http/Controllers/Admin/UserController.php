@@ -64,7 +64,7 @@ class UserController extends Controller
 
         $user->forceFill(['is_banned' => true])->save();
 
-        return back()->with('success', $user->name.' has been banned.');
+        return back()->with('success', __('app.flash.user_banned', ['name' => $user->name]));
     }
 
     /**
@@ -77,7 +77,7 @@ class UserController extends Controller
 
         $user->forceFill(['is_banned' => false])->save();
 
-        return back()->with('success', $user->name.' can sign in again.');
+        return back()->with('success', __('app.flash.user_unbanned', ['name' => $user->name]));
     }
 
     /**
@@ -94,7 +94,7 @@ class UserController extends Controller
 
         $user->forceFill(['role' => UserRole::Attendee])->save();
 
-        return back()->with('success', $user->name.' is an attendee again.');
+        return back()->with('success', __('app.flash.user_reverted', ['name' => $user->name]));
     }
 
     /**

@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'Users')
+@section('title', __('app.admin.users'))
 
 @section('content')
     <div class="reveal mb-8">
-        <h1 class="text-2xl font-semibold tracking-tight text-stone-900">User management</h1>
-        <p class="mt-1 text-sm text-stone-500">Everyone with an account. Administrators are managed separately.</p>
+        <h1 class="text-2xl font-semibold tracking-tight text-stone-900">{{ __('app.admin.user_management') }}</h1>
+        <p class="mt-1 text-sm text-stone-500">{{ __('app.admin.users_subtitle') }}</p>
     </div>
 
     {{-- Filters (FR-10.1, FR-10.2). GET, so a filtered view stays linkable. --}}
@@ -13,17 +13,17 @@
           class="reveal mb-6 rounded-xl border border-stone-200 bg-white p-4" style="--reveal-delay: 40ms">
         <div class="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto_auto_auto]">
             <div>
-                <label for="q" class="sr-only">Search users by name or email</label>
+                <label for="q" class="sr-only">{{ __('app.admin.search_users_label') }}</label>
                 <input id="q" name="q" type="search" value="{{ $keyword }}"
-                       placeholder="Search by name or email"
+                       placeholder="{{ __('app.admin.search_users_placeholder') }}"
                        class="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm text-stone-900 placeholder:text-stone-500 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30">
             </div>
 
             <div>
-                <label for="role" class="sr-only">Filter by role</label>
+                <label for="role" class="sr-only">{{ __('app.admin.filter_by_role') }}</label>
                 <select id="role" name="role"
                         class="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30">
-                    <option value="">All roles</option>
+                    <option value="">{{ __('app.admin.all_roles') }}</option>
                     @foreach ($roles as $role)
                         <option value="{{ $role->value }}" @selected($selectedRole === $role)>{{ ucfirst($role->value) }}</option>
                     @endforeach
@@ -31,38 +31,38 @@
             </div>
 
             <div>
-                <label for="status" class="sr-only">Filter by status</label>
+                <label for="status" class="sr-only">{{ __('app.admin.filter_by_status') }}</label>
                 <select id="status" name="status"
                         class="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30">
-                    <option value="" @selected($selectedStatus === null)>All status</option>
-                    <option value="active" @selected($selectedStatus === 'active')>Active</option>
-                    <option value="banned" @selected($selectedStatus === 'banned')>Banned</option>
+                    <option value="" @selected($selectedStatus === null)>{{ __('app.admin.all_status') }}</option>
+                    <option value="active" @selected($selectedStatus === 'active')>{{ __('app.admin.active') }}</option>
+                    <option value="banned" @selected($selectedStatus === 'banned')>{{ __('app.admin.banned') }}</option>
                 </select>
             </div>
 
             <button type="submit"
                     class="rounded-lg border border-emerald-600 bg-emerald-600 px-5 py-2 text-sm font-medium text-white transition hover:bg-emerald-700 active:translate-y-px">
-                Filter
+                {{ __('app.admin.filter') }}
             </button>
         </div>
     </form>
 
     @if ($users->isEmpty())
         <div class="rounded-xl border border-dashed border-stone-300 bg-white px-6 py-16 text-center">
-            <p class="text-lg font-medium text-stone-900">No users match</p>
-            <p class="mt-1 text-stone-500">Try a different search, role or status.</p>
+            <p class="text-lg font-medium text-stone-900">{{ __('app.admin.no_users_match') }}</p>
+            <p class="mt-1 text-stone-500">{{ __('app.admin.no_users_match_body') }}</p>
         </div>
     @else
         <div class="reveal overflow-hidden rounded-xl border border-stone-200 bg-white" style="--reveal-delay: 80ms">
             <table class="w-full text-start text-sm">
                 <thead class="border-b border-stone-200 bg-stone-50 text-stone-500">
                     <tr>
-                        <th class="px-5 py-3 font-medium">User</th>
-                        <th class="px-5 py-3 font-medium">Email</th>
-                        <th class="px-5 py-3 font-medium">Role</th>
-                        <th class="px-5 py-3 font-medium">Status</th>
-                        <th class="px-5 py-3 font-medium">Joined</th>
-                        <th class="px-5 py-3 font-medium">Actions</th>
+                        <th class="px-5 py-3 font-medium">{{ __('app.admin.user') }}</th>
+                        <th class="px-5 py-3 font-medium">{{ __('app.common.email') }}</th>
+                        <th class="px-5 py-3 font-medium">{{ __('app.admin.role') }}</th>
+                        <th class="px-5 py-3 font-medium">{{ __('app.common.status') }}</th>
+                        <th class="px-5 py-3 font-medium">{{ __('app.admin.joined') }}</th>
+                        <th class="px-5 py-3 font-medium">{{ __('app.admin.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-stone-100">
@@ -70,21 +70,21 @@
                         <tr>
                             <td class="px-5 py-3">
                                 <span class="font-medium text-stone-900">{{ $listedUser->name }}</span>
-                                <span class="block text-xs text-stone-400">{{ $listedUser->registrations_count }} saved</span>
+                                <span class="block text-xs text-stone-400">{{ __('app.admin.saved_count', ['count' => $listedUser->registrations_count]) }}</span>
                             </td>
                             <td class="px-5 py-3 text-stone-500">{{ $listedUser->email }}</td>
                             <td class="px-5 py-3">
                                 @if ($listedUser->isOrganizer())
-                                    <span class="inline-flex rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">Organizer</span>
+                                    <span class="inline-flex rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">{{ __('app.admin.organizer') }}</span>
                                 @else
-                                    <span class="inline-flex rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-medium text-stone-500">Attendee</span>
+                                    <span class="inline-flex rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-medium text-stone-500">{{ __('app.admin.attendee') }}</span>
                                 @endif
                             </td>
                             <td class="px-5 py-3">
                                 @if ($listedUser->isBanned())
-                                    <span class="inline-flex rounded-full bg-rose-50 px-2.5 py-0.5 text-xs font-medium text-rose-700">Banned</span>
+                                    <span class="inline-flex rounded-full bg-rose-50 px-2.5 py-0.5 text-xs font-medium text-rose-700">{{ __('app.admin.banned') }}</span>
                                 @else
-                                    <span class="inline-flex rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">Active</span>
+                                    <span class="inline-flex rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">{{ __('app.admin.active') }}</span>
                                 @endif
                             </td>
                             <td class="px-5 py-3 text-stone-500">{{ $listedUser->created_at->format('M j, Y') }}</td>
@@ -96,7 +96,7 @@
                                             @method('PATCH')
                                             <button type="submit"
                                                     class="rounded-lg border border-stone-300 px-3 py-1.5 text-xs font-medium text-stone-700 transition hover:border-stone-400 hover:text-stone-900">
-                                                Revert role
+                                                {{ __('app.admin.revert_role') }}
                                             </button>
                                         </form>
                                     @endif
@@ -107,7 +107,7 @@
                                             @method('PATCH')
                                             <button type="submit"
                                                     class="rounded-lg border border-stone-300 px-3 py-1.5 text-xs font-medium text-stone-700 transition hover:border-stone-400 hover:text-stone-900">
-                                                Restore
+                                                {{ __('app.admin.restore') }}
                                             </button>
                                         </form>
                                     @else
@@ -116,7 +116,7 @@
                                             @method('PATCH')
                                             <button type="submit"
                                                     class="rounded-lg border border-rose-200 bg-rose-50 px-3 py-1.5 text-xs font-medium text-rose-700 transition hover:border-rose-300 hover:bg-rose-100">
-                                                Suspend
+                                                {{ __('app.admin.suspend') }}
                                             </button>
                                         </form>
                                     @endif

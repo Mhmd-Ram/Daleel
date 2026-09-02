@@ -43,10 +43,10 @@ class RegisteredUserController extends Controller
             report($e);
 
             return redirect()->route('verification.notice')
-                ->with('error', 'Your account is ready, but we could not send the verification email. Use the resend button below.');
+                ->with('error', __('app.flash.registered_no_email'));
         }
 
         return redirect()->route('verification.notice')
-            ->with('success', 'Welcome, '.$user->name.'! Check your inbox to verify your email.');
+            ->with('success', __('app.flash.welcome', ['name' => $user->name]));
     }
 }

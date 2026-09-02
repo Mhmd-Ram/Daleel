@@ -46,6 +46,6 @@ class ReportController extends Controller
     {
         $report->delete();
 
-        return back()->with('success', 'Report dismissed.');
+        return back()->with('success', __('app.flash.report_dismissed'));
     }
 }

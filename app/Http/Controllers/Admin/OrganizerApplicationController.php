@@ -34,7 +34,7 @@ class OrganizerApplicationController extends Controller
 
         $application->approve(Auth::guard('admin')->user());
 
-        return back()->with('success', $application->user->name.' is now an organizer.');
+        return back()->with('success', __('app.flash.now_an_organizer', ['name' => $application->user->name]));
     }
 
     /**
@@ -46,7 +46,7 @@ class OrganizerApplicationController extends Controller
 
         $application->reject(Auth::guard('admin')->user());
 
-        return back()->with('success', 'Application rejected.');
+        return back()->with('success', __('app.flash.application_rejected'));
     }
 
     /**

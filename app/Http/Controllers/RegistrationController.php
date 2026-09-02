@@ -53,7 +53,7 @@ class RegistrationController extends Controller
     public function store(Event $event): RedirectResponse
     {
         if (! $event->is_active || $event->hasFinished()) {
-            return back()->with('error', 'This event can no longer be saved.');
+            return back()->with('error', __('app.flash.cannot_save'));
         }
 
         $alreadyRegistered = $event->registeredUsers()
@@ -61,20 +61,22 @@ class RegistrationController extends Controller
             ->exists();
 
         if ($alreadyRegistered) {
-            return back()->with('error', 'This event is already on your calendar.');
+            return back()->with('error', __('app.flash.already_saved'));
         }
 
         if ($event->isFull()) {
-            return back()->with('error', 'This event is full.');
+            return back()->with('error', __('app.flash.event_full'));
         }
 
         $user = auth()->user();
 
         $event->registeredUsers()->attach($user->id, ['created_at' => now()]);
 
-        Mail::to($user)->queue(new EventRegistered($user, $event));
+        // The queue has no session, so the language the user was browsing in
+        // is captured here rather than looked up when the job runs.
+        Mail::to($user)->locale(app()->getLocale())->queue(new EventRegistered($user, $event));
 
-        return back()->with('success', 'Saved to your calendar. A confirmation email is on its way.');
+        return back()->with('success', __('app.flash.saved'));
     }
 
     /**
@@ -84,7 +86,7 @@ class RegistrationController extends Controller
     {
         $event->registeredUsers()->detach(auth()->id());
 
-        return back()->with('success', 'Removed from your calendar.');
+        return back()->with('success', __('app.flash.removed'));
     }
 
     /**

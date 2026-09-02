@@ -15,6 +15,6 @@ class OrganizerApplicationController extends Controller
         $request->user()->organizerApplications()->create($request->validated());
 
         return redirect()->route('profile.show')
-            ->with('success', 'Your organizer application has been sent for review.');
+            ->with('success', __('app.flash.application_sent'));
     }
 }

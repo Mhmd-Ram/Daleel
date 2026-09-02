@@ -67,7 +67,7 @@ class EventController extends Controller
         $event->save();
 
         return redirect()->route('admin.events.index')
-            ->with('success', 'Event created.');
+            ->with('success', __('app.flash.event_created'));
     }
 
     /**
@@ -93,7 +93,7 @@ class EventController extends Controller
         $event->update($request->validated());
 
         return redirect()->route('admin.events.index')
-            ->with('success', 'Event updated.');
+            ->with('success', __('app.flash.event_updated'));
     }
 
     /**
@@ -104,7 +104,7 @@ class EventController extends Controller
         $event->delete();
 
         return redirect()->route('admin.events.index')
-            ->with('success', 'Event deleted.');
+            ->with('success', __('app.flash.event_deleted'));
     }
 
     /**
@@ -114,7 +114,7 @@ class EventController extends Controller
     {
         $event->update(['is_active' => ! $event->is_active]);
 
-        return back()->with('success', $event->is_active ? 'Event published.' : 'Event unpublished.');
+        return back()->with('success', $event->is_active ? __('app.flash.event_published') : __('app.flash.event_unpublished'));
     }
 
     /**

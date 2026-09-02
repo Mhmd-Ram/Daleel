@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="reveal mb-8">
-        <h1 class="text-2xl font-semibold tracking-tight text-stone-900">My events</h1>
+        <h1 class="text-2xl font-semibold tracking-tight text-stone-900">{{ __('app.calendar.title') }}</h1>
         <p class="mt-1 text-sm text-stone-500">{{ __('app.calendar.subtitle') }}</p>
     </div>
 
@@ -89,7 +89,7 @@
         <div class="reveal rounded-xl border border-dashed border-stone-300 bg-white px-6 py-16 text-center">
             <p class="text-lg font-medium text-stone-900">{{ __('app.calendar.empty') }}</p>
             <p class="mt-1 text-stone-500">{{ __('app.calendar.empty_body') }}</p>
-            <a href="{{ route('events.index') }}" class="mt-5 inline-flex rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-700">Browse events</a>
+            <a href="{{ route('events.index') }}" class="mt-5 inline-flex rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-700">{{ __('app.events.browse_events') }}</a>
         </div>
     @else
         <h2 class="reveal mb-4 text-base font-semibold text-stone-900">{{ __('app.calendar.all_registrations') }}</h2>

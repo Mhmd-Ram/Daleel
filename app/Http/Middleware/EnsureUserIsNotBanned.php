@@ -29,7 +29,7 @@ class EnsureUserIsNotBanned
             $request->session()->regenerateToken();
 
             return redirect()->route('login')
-                ->with('error', 'This account has been banned.');
+                ->with('error', __('app.flash.account_banned'));
         }
 
         return $next($request);
