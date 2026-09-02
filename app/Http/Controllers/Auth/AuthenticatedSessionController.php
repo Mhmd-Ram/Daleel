@@ -35,6 +35,17 @@ class AuthenticatedSessionController extends Controller
             ]);
         }
 
+        // A ban is checked after the credentials, not before: answering "banned"
+        // to a wrong password would confirm to an attacker that the account
+        // exists (SRS FR-1.5, UC2 exception E2).
+        if (Auth::guard('web')->user()->isBanned()) {
+            Auth::guard('web')->logout();
+
+            throw ValidationException::withMessages([
+                'email' => __('This account has been banned. Contact the site administrators if you believe this is a mistake.'),
+            ]);
+        }
+
         $request->session()->regenerate();
 
         return redirect()->intended(route('home'));

@@ -34,6 +34,7 @@ class UserFactory extends Factory
             'location' => fake()->randomElement(LibyanCity::cases()),
             'email_verified_at' => now(),
             'role' => UserRole::Attendee,
+            'is_banned' => false,
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];
@@ -56,6 +57,16 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'role' => UserRole::Organizer,
+        ]);
+    }
+
+    /**
+     * Indicate that an admin has banned the account.
+     */
+    public function banned(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'is_banned' => true,
         ]);
     }
 }

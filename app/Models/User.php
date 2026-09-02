@@ -15,8 +15,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-// `role` is deliberately not fillable: it is only ever set by an admin
-// approving an organizer application.
+// `role` and `is_banned` are deliberately not fillable: they are only ever set
+// by an admin, approving an organizer application or blocking an account.
 #[Fillable(['name', 'email', 'phone_number', 'dob', 'location', 'password'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements MustVerifyEmail
@@ -36,6 +36,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'dob' => 'date',
             'location' => LibyanCity::class,
             'role' => UserRole::class,
+            'is_banned' => 'boolean',
             'password' => 'hashed',
         ];
     }
@@ -77,6 +78,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isOrganizer(): bool
     {
         return $this->role === UserRole::Organizer;
+    }
+
+    /**
+     * Whether an admin has blocked this account from signing in.
+     */
+    public function isBanned(): bool
+    {
+        return $this->is_banned;
     }
 
     /**

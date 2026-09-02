@@ -51,7 +51,7 @@ Route::middleware('guest')->group(function () {
 | Authenticated users
 |--------------------------------------------------------------------------
 */
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'not-banned'])->group(function () {
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
     // Email verification. These have to stay reachable while unverified.
