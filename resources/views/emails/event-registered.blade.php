@@ -9,10 +9,9 @@
 <body style="margin:0; padding:24px; background-color:#fafaf9; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; color:#1c1917;">
     <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:560px; margin:0 auto; border-collapse:collapse;">
         <tr>
-            <td style="padding:24px 28px; background-color:#059669; border-radius:16px 16px 0 0;">
-                <p style="margin:0; font-size:13px; font-weight:600; letter-spacing:0.16em; text-transform:uppercase; color:rgba(255,255,255,0.85);">
-                    {{ config('app.name') }}
-                </p>
+            <td style="padding:24px 28px; background-color:#a82f31; border-radius:16px 16px 0 0;">
+                <img src="{{ asset('wordmark-light.png') }}" alt="{{ config('app.name') }}"
+                     width="120" height="41" style="display:block; border:0; height:auto; max-width:120px;">
                 <p style="margin:8px 0 0; font-size:22px; font-weight:700; color:#ffffff;">
                     {{ __('app.emails.saved_heading') }}
                 </p>
@@ -50,14 +49,14 @@
 
                 <p style="margin:28px 0 0;">
                     <a href="{{ route('events.show', $event) }}"
-                       style="display:inline-block; padding:12px 20px; background-color:#059669; color:#ffffff; font-size:14px; font-weight:600; text-decoration:none; border-radius:8px;">
+                       style="display:inline-block; padding:12px 20px; background-color:#a82f31; color:#ffffff; font-size:14px; font-weight:600; text-decoration:none; border-radius:8px;">
                         {{ __('app.emails.view_the_event') }}
                     </a>
                 </p>
 
                 <p style="margin:24px 0 0; font-size:13px; line-height:1.6; color:#78716c;">
                     {{ __('app.emails.cannot_make_it') }}
-                    <a href="{{ route('my-events') }}" style="color:#047857;">{{ __('app.emails.my_calendar') }}</a>.
+                    <a href="{{ route('my-events') }}" style="color:#8a2228;">{{ __('app.emails.my_calendar') }}</a>.
                 </p>
             </td>
         </tr>

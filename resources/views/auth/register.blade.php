@@ -6,6 +6,8 @@
 
 @section('content')
     <div class="reveal mx-auto max-w-md">
+        <img src="{{ asset('wordmark.png') }}" alt="{{ config('app.name') }}"
+             width="144" height="49" class="mb-6 h-11 w-auto">
         <h1 class="text-2xl font-semibold tracking-tight text-stone-900">{{ __('app.auth.create_your_account') }}</h1>
         <p class="mt-1 text-sm text-stone-500">{{ __('app.auth.register_subtitle') }}</p>
 
