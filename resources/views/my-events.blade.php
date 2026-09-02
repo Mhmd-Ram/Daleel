@@ -21,7 +21,7 @@
                 <a href="{{ route('my-events', ['month' => $previousMonth]) }}" rel="prev"
                    aria-label="Previous month, {{ $month->subMonth()->format('F Y') }}"
                    class="grid h-9 w-9 place-items-center rounded-lg border border-stone-300 text-stone-600 transition hover:border-stone-400 hover:text-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700">
-                    <x-icon name="chevron-left" class="h-4 w-4" />
+                    <x-icon name="chevron-left" class="h-4 w-4 rtl:rotate-180" />
                 </a>
 
                 <a href="{{ route('my-events') }}"
@@ -32,7 +32,7 @@
                 <a href="{{ route('my-events', ['month' => $nextMonth]) }}" rel="next"
                    aria-label="Next month, {{ $month->addMonth()->format('F Y') }}"
                    class="grid h-9 w-9 place-items-center rounded-lg border border-stone-300 text-stone-600 transition hover:border-stone-400 hover:text-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700">
-                    <x-icon name="chevron-right" class="h-4 w-4" />
+                    <x-icon name="chevron-right" class="h-4 w-4 rtl:rotate-180" />
                 </a>
             </nav>
         </header>
@@ -49,7 +49,7 @@
             <div class="grid grid-cols-7 border-b border-stone-100 last:border-b-0">
                 @foreach ($week as $day)
                     <div @class([
-                        'min-h-[4.75rem] border-r border-stone-100 p-1 last:border-r-0 sm:min-h-[6.5rem] sm:p-1.5',
+                        'min-h-[4.75rem] border-e border-stone-100 p-1 last:border-e-0 sm:min-h-[6.5rem] sm:p-1.5',
                         'bg-stone-50/70' => ! $day['inMonth'],
                     ])>
                         <time datetime="{{ $day['date']->toDateString() }}"

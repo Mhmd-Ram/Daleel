@@ -58,7 +58,7 @@
         <h2 class="mb-4 mt-10 text-lg font-semibold tracking-tight text-stone-900">Recent decisions</h2>
 
         <div class="overflow-hidden rounded-xl border border-stone-200 bg-white">
-            <table class="w-full text-left text-sm">
+            <table class="w-full text-start text-sm">
                 <thead class="border-b border-stone-200 bg-stone-50 text-stone-500">
                     <tr>
                         <th class="px-5 py-3 font-medium">Applicant</th>
@@ -72,7 +72,7 @@
                         <tr>
                             <td class="px-5 py-3">
                                 <span class="font-medium text-stone-900">{{ $application->user->name }}</span>
-                                <span class="ml-1 text-stone-400">{{ $application->user->email }}</span>
+                                <span class="ms-1 text-stone-400">{{ $application->user->email }}</span>
                             </td>
                             <td class="px-5 py-3">
                                 @if ($application->status === \App\Enums\OrganizerApplicationStatus::Approved)

@@ -29,14 +29,4 @@ class DeleteAccountRequest extends FormRequest
             'password' => ['required', 'current_password'],
         ];
     }
-
-    /**
-     * @return array<string, string>
-     */
-    public function messages(): array
-    {
-        return [
-            'password.current_password' => 'Enter your current password to confirm.',
-        ];
-    }
 }

@@ -460,3 +460,11 @@
     background: #ffffff;
     will-change: transform, opacity;
 }
+
+/* Latin faces have no Arabic coverage, so RTL pages would otherwise fall back
+   to whatever system font the browser picks. Name the Arabic face explicitly
+   and keep the Latin face after it for mixed text and numerals, which stay in
+   Latin digits in both languages. */
+[dir="rtl"] body {
+    font-family: 'Noto Sans Arabic', 'Instrument Sans', system-ui, sans-serif;
+}

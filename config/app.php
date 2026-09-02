@@ -86,6 +86,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Supported Locales
+    |--------------------------------------------------------------------------
+    |
+    | The languages a visitor may switch between (M2 §3.4). Anything outside
+    | this list is refused by the locale switch route and ignored by the
+    | SetLocale middleware.
+    |
+    */
+
+    'supported_locales' => ['en', 'ar'],
+
+    /*
+    |--------------------------------------------------------------------------
     | Encryption Key
     |--------------------------------------------------------------------------
     |

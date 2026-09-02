@@ -36,12 +36,4 @@ class UpdateProfileRequest extends FormRequest
             'location' => ['required', Rule::enum(LibyanCity::class)],
         ];
     }
-
-    /**
-     * @return array<string, string>
-     */
-    public function messages(): array
-    {
-        return $this->phoneNumberMessages();
-    }
 }

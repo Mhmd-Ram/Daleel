@@ -48,13 +48,13 @@
 
         {{-- Image collage --}}
         <div class="reveal reveal--right relative hidden h-[420px] lg:block" style="--reveal-delay: 120ms" aria-hidden="true">
-            <div class="absolute left-0 top-6 h-56 w-44 -rotate-6 overflow-hidden rounded-2xl border-4 border-white shadow-xl shadow-stone-300/50">
+            <div class="absolute start-0 top-6 h-56 w-44 -rotate-6 overflow-hidden rounded-2xl border-4 border-white shadow-xl shadow-stone-300/50">
                 <img src="https://picsum.photos/seed/eventhub-a/360/440" alt="" class="h-full w-full object-cover">
             </div>
-            <div class="absolute right-2 top-0 h-64 w-52 rotate-3 overflow-hidden rounded-2xl border-4 border-white shadow-xl shadow-stone-300/50">
+            <div class="absolute end-2 top-0 h-64 w-52 rotate-3 overflow-hidden rounded-2xl border-4 border-white shadow-xl shadow-stone-300/50">
                 <img src="https://picsum.photos/seed/eventhub-b/420/520" alt="" class="h-full w-full object-cover">
             </div>
-            <div class="absolute bottom-0 left-16 h-52 w-60 -rotate-2 overflow-hidden rounded-2xl border-4 border-white shadow-xl shadow-stone-300/50">
+            <div class="absolute bottom-0 start-16 h-52 w-60 -rotate-2 overflow-hidden rounded-2xl border-4 border-white shadow-xl shadow-stone-300/50">
                 <img src="https://picsum.photos/seed/eventhub-c/480/420" alt="" class="h-full w-full object-cover">
             </div>
             <span class="absolute -right-2 bottom-10 inline-flex items-center gap-1.5 rounded-full bg-stone-900 px-4 py-2 text-sm font-medium text-white shadow-lg">

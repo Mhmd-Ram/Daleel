@@ -20,6 +20,16 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Language switch. Public and outside every auth group: a visitor picks their
+// language before signing in, and the choice must survive signing in too.
+Route::get('/locale/{locale}', function (string $locale) {
+    abort_unless(in_array($locale, config('app.supported_locales'), true), 404);
+
+    session()->put('locale', $locale);
+
+    return back();
+})->name('locale.switch');
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
 // withTrashed so a removed event reaches the controller and can explain itself
 // (FR-5.4) instead of being turned away by route model binding.

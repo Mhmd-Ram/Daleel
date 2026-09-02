@@ -27,10 +27,10 @@
                  avatar that overlaps from the bottom edge. --}}
             <div class="relative h-36 overflow-hidden bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-600">
                 <x-icon name="ticket" class="absolute -bottom-5 -right-4 h-28 w-28 rotate-12 text-white/15" />
-                <p class="absolute left-6 top-5 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-white/85">
+                <p class="absolute start-6 top-5 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-white/85">
                     <x-icon name="ticket" class="h-4 w-4" /> Attendee pass
                 </p>
-                <x-icon name="sparkles" class="absolute right-6 top-5 h-6 w-6 text-white/35" />
+                <x-icon name="sparkles" class="absolute end-6 top-5 h-6 w-6 text-white/35" />
             </div>
 
             <div class="px-6 pb-6 sm:px-8">

@@ -17,6 +17,11 @@ export default defineConfig({
                 bunny('Anton', {
                     weights: [400],
                 }),
+                // The Latin faces have no Arabic coverage, so RTL pages would
+                // otherwise fall back to whatever the system provides.
+                bunny('Noto Sans Arabic', {
+                    weights: [400, 500, 600],
+                }),
             ],
         }),
         tailwindcss(),

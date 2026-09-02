@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\EnsureUserIsNotBanned;
 use App\Http\Middleware\EnsureUserIsOrganizer;
+use App\Http\Middleware\SetLocale;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -21,6 +22,12 @@ return Application::configure(basePath: dirname(__DIR__))
                 ? route('admin.login')
                 : route('login');
         });
+
+        // Appended, not prepended: the locale lives in the session, and
+        // prepending would run this before StartSession, where
+        // $request->session() throws. Appending still leaves it ahead of the
+        // route action, so views and validation see the right locale.
+        $middleware->web(append: [SetLocale::class]);
 
         $middleware->alias([
             'not-banned' => EnsureUserIsNotBanned::class,

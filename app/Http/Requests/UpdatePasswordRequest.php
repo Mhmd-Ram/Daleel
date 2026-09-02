@@ -31,14 +31,4 @@ class UpdatePasswordRequest extends FormRequest
             'password' => ['required', 'confirmed', Password::defaults()],
         ];
     }
-
-    /**
-     * @return array<string, string>
-     */
-    public function messages(): array
-    {
-        return [
-            'current_password.current_password' => 'That is not your current password.',
-        ];
-    }
 }

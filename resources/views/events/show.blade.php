@@ -8,7 +8,7 @@
 
 @section('content')
     <a href="{{ route('events.index') }}" class="mb-6 inline-flex items-center gap-1.5 text-sm text-stone-500 transition hover:text-stone-900">
-        <x-icon name="arrow-right" class="h-4 w-4 rotate-180" /> Back to events
+        <x-icon name="arrow-right" class="h-4 w-4 rotate-180 rtl:rotate-0" /> Back to events
     </a>
 
     <article class="reveal relative flex flex-col overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-xl shadow-stone-300/30 lg:flex-row">
@@ -97,10 +97,10 @@
         </div>
 
         {{-- Admission stub --}}
-        <aside class="relative shrink-0 border-t-2 border-dashed border-stone-300 bg-stone-50/40 p-6 sm:p-8 lg:w-[340px] lg:border-l-2 lg:border-t-0">
+        <aside class="relative shrink-0 border-t-2 border-dashed border-stone-300 bg-stone-50/40 p-6 sm:p-8 lg:w-[340px] lg:border-s-2 lg:border-t-0">
             {{-- Punch holes at the tear-line ends: top corners on mobile, left edge on desktop. --}}
-            <span class="ticket-notch left-[-15px] top-[-15px]"></span>
-            <span class="ticket-notch right-[-15px] top-[-15px] lg:bottom-[-15px] lg:left-[-15px] lg:right-auto lg:top-auto"></span>
+            <span class="ticket-notch start-[-15px] top-[-15px]"></span>
+            <span class="ticket-notch end-[-15px] top-[-15px] lg:bottom-[-15px] lg:start-[-15px] lg:end-auto lg:top-auto"></span>
 
             <p class="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-stone-400">
                 <x-icon name="ticket" class="h-4 w-4 text-emerald-600" /> Admission

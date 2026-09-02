@@ -70,7 +70,7 @@
             </div>
         @else
             <div class="overflow-hidden rounded-xl border border-stone-200 bg-white">
-                <table class="w-full text-left text-sm">
+                <table class="w-full text-start text-sm">
                     <thead class="border-b border-stone-200 bg-stone-50 text-stone-500">
                         <tr>
                             <th class="px-5 py-3 font-medium">Event</th>
@@ -86,7 +86,7 @@
                                 <td class="px-5 py-3 font-medium text-stone-900">{{ $event->name }}</td>
                                 <td class="px-5 py-3 text-stone-500">
                                     {{ $event->owner()->name }}
-                                    <span class="ml-1 text-xs text-stone-400">{{ $event->admin_id ? 'admin' : 'organizer' }}</span>
+                                    <span class="ms-1 text-xs text-stone-400">{{ $event->admin_id ? 'admin' : 'organizer' }}</span>
                                 </td>
                                 <td class="px-5 py-3 text-stone-500">{{ $event->start_date_time->format('M j, Y') }}</td>
                                 <td class="px-5 py-3">

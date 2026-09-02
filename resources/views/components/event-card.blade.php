@@ -8,12 +8,12 @@
                  class="h-full w-full object-cover" loading="lazy">
             <div class="absolute inset-0 bg-gradient-to-t from-stone-900/35 via-transparent to-transparent"></div>
 
-            <div class="absolute left-3 top-3 grid place-items-center rounded-xl bg-white/95 px-3 py-1.5 text-center shadow-md shadow-stone-900/10">
+            <div class="absolute start-3 top-3 grid place-items-center rounded-xl bg-white/95 px-3 py-1.5 text-center shadow-md shadow-stone-900/10">
                 <span class="text-[10px] font-semibold uppercase tracking-wide text-emerald-600">{{ $event->start_date_time->format('M') }}</span>
                 <span class="-mt-0.5 text-lg font-bold leading-none text-stone-900">{{ $event->start_date_time->format('j') }}</span>
             </div>
 
-            <span class="absolute bottom-3 left-3 inline-flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-xs font-medium text-emerald-700 shadow-sm backdrop-blur">
+            <span class="absolute bottom-3 start-3 inline-flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-xs font-medium text-emerald-700 shadow-sm backdrop-blur">
                 <x-icon name="tag" class="h-3.5 w-3.5" /> {{ $event->category->name }}
             </span>
         </div>
@@ -33,7 +33,7 @@
                 </span>
                 <span class="inline-flex items-center gap-1 text-sm font-medium text-emerald-700">
                     Details
-                    <x-icon name="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    <x-icon name="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
                 </span>
             </div>
         </div>

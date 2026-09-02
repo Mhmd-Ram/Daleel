@@ -21,14 +21,4 @@ trait ValidatesLibyanPhoneNumbers
     {
         return ['required', 'string', 'regex:'.self::PHONE_PATTERN];
     }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function phoneNumberMessages(): array
-    {
-        return [
-            'phone_number.regex' => 'Enter a Libyan mobile number, for example +218911234567 or 0911234567.',
-        ];
-    }
 }

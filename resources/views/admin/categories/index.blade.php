@@ -21,7 +21,7 @@
         </div>
     @else
         <div class="reveal overflow-hidden rounded-xl border border-stone-200 bg-white" style="--reveal-delay: 80ms">
-            <table class="w-full text-left text-sm">
+            <table class="w-full text-start text-sm">
                 <thead class="border-b border-stone-200 bg-stone-50 text-stone-500">
                     <tr>
                         <th class="px-5 py-3 font-medium">Name</th>
