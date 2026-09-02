@@ -6,6 +6,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
     <title>@yield('title', 'Admin')  ·  {{ config('app.name') }}</title>
     <script>document.documentElement.classList.add('js')</script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -19,7 +23,7 @@
     <header data-header class="sticky top-0 z-40 border-b border-stone-700 bg-stone-900 text-stone-100">
         <nav class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-4">
             <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2 font-semibold tracking-tight">
-                <span class="grid h-8 w-8 place-items-center rounded-lg bg-emerald-600 text-sm font-bold text-white">E</span>
+                <img src="{{ asset('logo-64.png') }}" alt="" width="32" height="32" class="h-8 w-8 rounded-lg">
                 <span>{{ config('app.name') }} <span class="text-stone-400">{{ __('app.admin.label') }}</span></span>
             </a>
 
