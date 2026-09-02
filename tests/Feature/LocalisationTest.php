@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Event;
 use App\Models\User;
 
 it('serves the site in English by default', function () {
@@ -85,4 +86,26 @@ it('offers a reachable language switch in the menu', function () {
         ->assertOk()
         ->assertSee(route('locale.switch', 'ar'), false)
         ->assertSee(route('locale.switch', 'en'), false);
+});
+
+it('renders the public pages in Arabic', function () {
+    Event::factory()->create();
+
+    $this->withSession(['locale' => 'ar'])
+        ->get(route('events.index'))
+        ->assertOk()
+        ->assertSee('اعثر على فعاليتك القادمة', false)
+        ->assertDontSee('Find your next event');
+});
+
+it('pluralises a count in Arabic', function () {
+    Event::factory()->create(['city' => 'Benghazi']);
+
+    // Arabic has more plural forms than English; trans_choice picks between
+    // them, so a filtered listing must not fall back to the English string.
+    $this->withSession(['locale' => 'ar'])
+        ->get(route('events.index', ['city' => 'Benghazi']))
+        ->assertOk()
+        ->assertDontSee('event found')
+        ->assertDontSee('events found');
 });

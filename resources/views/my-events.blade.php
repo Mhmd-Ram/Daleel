@@ -1,23 +1,23 @@
 @extends('layouts.app')
 
-@section('title', 'My events')
+@section('title', __('app.calendar.title'))
 
 @section('content')
     <div class="reveal mb-8">
         <h1 class="text-2xl font-semibold tracking-tight text-stone-900">My events</h1>
-        <p class="mt-1 text-sm text-stone-500">Events you've saved to your calendar.</p>
+        <p class="mt-1 text-sm text-stone-500">{{ __('app.calendar.subtitle') }}</p>
     </div>
 
     {{-- Month calendar. Renders whether or not the user has registrations, so an
          empty month still reads as a working calendar rather than a broken page. --}}
     <section class="reveal mb-10 overflow-hidden rounded-xl border border-stone-200 bg-white"
-             aria-label="Calendar of your saved events">
+             aria-label="{{ __('app.calendar.aria_calendar') }}">
         <header class="flex items-center justify-between gap-3 border-b border-stone-200 px-4 py-3 sm:px-5">
             <h2 class="text-base font-semibold text-stone-900">
                 <time datetime="{{ $month->format('Y-m') }}">{{ $month->format('F Y') }}</time>
             </h2>
 
-            <nav class="flex items-center gap-1.5" aria-label="Change month">
+            <nav class="flex items-center gap-1.5" aria-label="{{ __('app.calendar.change_month') }}">
                 <a href="{{ route('my-events', ['month' => $previousMonth]) }}" rel="prev"
                    aria-label="Previous month, {{ $month->subMonth()->format('F Y') }}"
                    class="grid h-9 w-9 place-items-center rounded-lg border border-stone-300 text-stone-600 transition hover:border-stone-400 hover:text-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700">
@@ -26,7 +26,7 @@
 
                 <a href="{{ route('my-events') }}"
                    class="rounded-lg border border-stone-300 px-3 py-2 text-sm font-medium text-stone-700 transition hover:border-stone-400 hover:text-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700">
-                    Today
+                    {{ __('app.calendar.today') }}
                 </a>
 
                 <a href="{{ route('my-events', ['month' => $nextMonth]) }}" rel="next"
@@ -87,12 +87,12 @@
 
     @if ($events->isEmpty())
         <div class="reveal rounded-xl border border-dashed border-stone-300 bg-white px-6 py-16 text-center">
-            <p class="text-lg font-medium text-stone-900">You haven't saved anything yet</p>
-            <p class="mt-1 text-stone-500">Browse events and save them to see them here.</p>
+            <p class="text-lg font-medium text-stone-900">{{ __('app.calendar.empty') }}</p>
+            <p class="mt-1 text-stone-500">{{ __('app.calendar.empty_body') }}</p>
             <a href="{{ route('events.index') }}" class="mt-5 inline-flex rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-700">Browse events</a>
         </div>
     @else
-        <h2 class="reveal mb-4 text-base font-semibold text-stone-900">All registrations</h2>
+        <h2 class="reveal mb-4 text-base font-semibold text-stone-900">{{ __('app.calendar.all_registrations') }}</h2>
 
         <div class="space-y-4">
             @foreach ($events as $event)
@@ -105,16 +105,16 @@
                         <h3 class="mt-2 text-lg font-semibold text-stone-900">{{ $event->name }}</h3>
                         <p class="text-sm text-stone-500">{{ $event->start_date_time->format('D, M j Y · g:i A') }} &middot; {{ $event->location }}</p>
                         @if ($event->hasFinished())
-                            <span class="mt-1 inline-flex text-xs font-medium text-stone-400">This event has ended</span>
+                            <span class="mt-1 inline-flex text-xs font-medium text-stone-400">{{ __('app.calendar.has_ended') }}</span>
                         @endif
                     </div>
                     <div class="flex items-center gap-2">
-                        <a href="{{ route('events.show', $event) }}" class="rounded-lg border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 transition hover:border-stone-400">Details</a>
+                        <a href="{{ route('events.show', $event) }}" class="rounded-lg border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 transition hover:border-stone-400">{{ __('app.common.details') }}</a>
                         <form method="POST" action="{{ route('events.cancel', $event) }}"
                               onsubmit="return confirm('Remove this event from your calendar?')">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="rounded-lg border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 transition hover:border-rose-300 hover:text-rose-700">Cancel</button>
+                            <button type="submit" class="rounded-lg border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 transition hover:border-rose-300 hover:text-rose-700">{{ __('app.common.cancel') }}</button>
                         </form>
                     </div>
                 </div>

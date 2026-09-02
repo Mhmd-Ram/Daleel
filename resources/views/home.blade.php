@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Discover events near you')
+@section('title', __('app.home.title'))
 
 @section('content')
     {{-- Hero --}}
@@ -15,7 +15,7 @@
             </h1>
 
             <p class="mt-5 max-w-md text-lg leading-relaxed text-stone-600">
-                Discover concerts, talks, and meetups near you, then register in a couple of clicks.
+                {{ __('app.home.hero_subtitle') }}
             </p>
 
             <div class="mt-7 flex flex-wrap items-center gap-3">
@@ -37,11 +37,11 @@
             <dl class="mt-9 flex gap-10">
                 <div>
                     <dt class="font-display text-3xl text-stone-900">{{ $stats['events'] }}</dt>
-                    <dd class="text-sm text-stone-500">Upcoming events</dd>
+                    <dd class="text-sm text-stone-500">{{ __('app.home.stat_upcoming') }}</dd>
                 </div>
                 <div>
                     <dt class="font-display text-3xl text-stone-900">{{ $stats['categories'] }}</dt>
-                    <dd class="text-sm text-stone-500">Categories</dd>
+                    <dd class="text-sm text-stone-500">{{ __('app.home.stat_categories') }}</dd>
                 </div>
             </dl>
         </div>
@@ -58,7 +58,7 @@
                 <img src="https://picsum.photos/seed/eventhub-c/480/420" alt="" class="h-full w-full object-cover">
             </div>
             <span class="absolute -right-2 bottom-10 inline-flex items-center gap-1.5 rounded-full bg-stone-900 px-4 py-2 text-sm font-medium text-white shadow-lg">
-                <x-icon name="ticket" class="h-4 w-4 text-emerald-400" /> Live this week
+                <x-icon name="ticket" class="h-4 w-4 text-emerald-400" /> {{ __('app.home.stat_live') }}
             </span>
         </div>
     </section>
@@ -68,8 +68,8 @@
         <section class="py-12">
             <div class="reveal mb-8 flex items-end justify-between gap-4">
                 <div>
-                    <h2 class="text-2xl font-semibold tracking-tight text-stone-900 sm:text-3xl">Happening soon</h2>
-                    <p class="mt-1 text-stone-600">The next few events on the calendar.</p>
+                    <h2 class="text-2xl font-semibold tracking-tight text-stone-900 sm:text-3xl">{{ __('app.home.happening_soon') }}</h2>
+                    <p class="mt-1 text-stone-600">{{ __('app.home.happening_soon_sub') }}</p>
                 </div>
                 <a href="{{ route('events.index') }}" class="hidden shrink-0 items-center gap-1 text-sm font-medium text-emerald-700 hover:underline sm:inline-flex">
                     View all <x-icon name="arrow-right" class="h-4 w-4" />
@@ -88,8 +88,8 @@
     @if ($categories->isNotEmpty())
         <section class="py-12">
             <div class="reveal mb-8">
-                <h2 class="text-2xl font-semibold tracking-tight text-stone-900 sm:text-3xl">Browse by category</h2>
-                <p class="mt-1 text-stone-600">Jump straight to the kind of event you're after.</p>
+                <h2 class="text-2xl font-semibold tracking-tight text-stone-900 sm:text-3xl">{{ __('app.home.browse_by_category') }}</h2>
+                <p class="mt-1 text-stone-600">{{ __('app.home.browse_by_category_sub') }}</p>
             </div>
 
             <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
@@ -113,15 +113,15 @@
     {{-- How it works --}}
     <section class="py-12">
         <div class="reveal mb-8">
-            <h2 class="text-2xl font-semibold tracking-tight text-stone-900 sm:text-3xl">How it works</h2>
-            <p class="mt-1 text-stone-600">From browsing to attending in three simple moves.</p>
+            <h2 class="text-2xl font-semibold tracking-tight text-stone-900 sm:text-3xl">{{ __('app.home.how_it_works') }}</h2>
+            <p class="mt-1 text-stone-600">{{ __('app.home.how_it_works_sub') }}</p>
         </div>
 
         <div class="grid gap-6 md:grid-cols-3">
             @foreach ([
-                ['icon' => 'calendar', 'title' => 'Browse', 'body' => 'Filter by category and find events that fit your schedule.'],
-                ['icon' => 'ticket', 'title' => 'Register', 'body' => 'Reserve your spot in a couple of clicks, free or paid.'],
-                ['icon' => 'check', 'title' => 'Show up', 'body' => 'Keep everything in My Events and turn up on the day.'],
+                ['icon' => 'calendar', 'title' => __('app.home.step_browse'), 'body' => __('app.home.step_browse_body')],
+                ['icon' => 'ticket', 'title' => __('app.home.step_register'), 'body' => __('app.home.step_register_body')],
+                ['icon' => 'check', 'title' => __('app.home.step_show_up'), 'body' => __('app.home.step_show_up_body')],
             ] as $step)
                 <div class="reveal rounded-2xl border border-stone-200 bg-white/80 p-6" style="--reveal-delay: {{ $loop->index * 90 }}ms">
                     <span class="grid h-12 w-12 place-items-center rounded-xl bg-emerald-600 text-white shadow-lg shadow-emerald-600/25">
@@ -138,9 +138,9 @@
     <section class="reveal my-12 overflow-hidden rounded-3xl bg-stone-900 text-white shadow-xl shadow-stone-900/20">
         <div class="grid items-center gap-8 p-8 sm:p-12 lg:grid-cols-2">
             <div>
-                <h2 class="font-display text-3xl uppercase leading-tight sm:text-4xl">Organizing an event?</h2>
+                <h2 class="font-display text-3xl uppercase leading-tight sm:text-4xl">{{ __('app.home.organizing') }}</h2>
                 <p class="mt-3 max-w-md text-stone-300">
-                    Create, publish and manage your events, and see exactly who's coming, all from one dashboard.
+                    {{ __('app.home.organizing_sub') }}
                 </p>
                 <a href="{{ route('admin.login') }}"
                    class="mt-6 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-3 font-medium text-white transition hover:bg-emerald-700 active:scale-[0.98]">
@@ -150,13 +150,13 @@
             <div class="hidden gap-3 sm:grid sm:grid-cols-2">
                 <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10">
                     <x-icon name="calendar" class="h-7 w-7 text-emerald-400" />
-                    <p class="mt-3 font-medium">Publish in minutes</p>
-                    <p class="mt-1 text-sm text-stone-400">Set the details, pick a category, go live.</p>
+                    <p class="mt-3 font-medium">{{ __('app.home.publish_minutes') }}</p>
+                    <p class="mt-1 text-sm text-stone-400">{{ __('app.home.publish_minutes_sub') }}</p>
                 </div>
                 <div class="mt-6 rounded-2xl bg-white/5 p-5 ring-1 ring-white/10">
                     <x-icon name="users" class="h-7 w-7 text-emerald-400" />
-                    <p class="mt-3 font-medium">Track attendees</p>
-                    <p class="mt-1 text-sm text-stone-400">See every registration at a glance.</p>
+                    <p class="mt-3 font-medium">{{ __('app.home.track_attendees') }}</p>
+                    <p class="mt-1 text-sm text-stone-400">{{ __('app.home.track_attendees_sub') }}</p>
                 </div>
             </div>
         </div>

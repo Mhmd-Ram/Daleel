@@ -8,7 +8,7 @@
 
 @section('content')
     <a href="{{ route('events.index') }}" class="mb-6 inline-flex items-center gap-1.5 text-sm text-stone-500 transition hover:text-stone-900">
-        <x-icon name="arrow-right" class="h-4 w-4 rotate-180 rtl:rotate-0" /> Back to events
+        <x-icon name="arrow-right" class="h-4 w-4 rotate-180 rtl:rotate-0" /> {{ __('app.events.back_to_events') }}
     </a>
 
     <article class="reveal relative flex flex-col overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-xl shadow-stone-300/30 lg:flex-row">
@@ -37,28 +37,28 @@
                     <div class="flex items-start gap-3 rounded-xl border border-stone-200 bg-stone-50/60 p-4">
                         <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-emerald-100 text-emerald-700"><x-icon name="calendar" class="h-5 w-5" /></span>
                         <div>
-                            <p class="text-xs uppercase tracking-wide text-stone-400">Starts</p>
+                            <p class="text-xs uppercase tracking-wide text-stone-400">{{ __('app.common.starts') }}</p>
                             <p class="mt-0.5 text-sm font-medium text-stone-900">{{ $event->start_date_time->format('M j, Y · g:i A') }}</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-3 rounded-xl border border-stone-200 bg-stone-50/60 p-4">
                         <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-amber-100 text-amber-700"><x-icon name="clock" class="h-5 w-5" /></span>
                         <div>
-                            <p class="text-xs uppercase tracking-wide text-stone-400">Ends</p>
+                            <p class="text-xs uppercase tracking-wide text-stone-400">{{ __('app.common.ends') }}</p>
                             <p class="mt-0.5 text-sm font-medium text-stone-900">{{ $event->end_date_time->format('M j, Y · g:i A') }}</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-3 rounded-xl border border-stone-200 bg-stone-50/60 p-4">
                         <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-stone-200 text-stone-600"><x-icon name="pin" class="h-5 w-5" /></span>
                         <div>
-                            <p class="text-xs uppercase tracking-wide text-stone-400">Location</p>
+                            <p class="text-xs uppercase tracking-wide text-stone-400">{{ __('app.common.location') }}</p>
                             <p class="mt-0.5 text-sm font-medium text-stone-900">{{ $event->location }}</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-3 rounded-xl border border-stone-200 bg-stone-50/60 p-4">
                         <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-emerald-100 text-emerald-700"><x-icon name="users" class="h-5 w-5" /></span>
                         <div>
-                            <p class="text-xs uppercase tracking-wide text-stone-400">Saved</p>
+                            <p class="text-xs uppercase tracking-wide text-stone-400">{{ __('app.events.saved') }}</p>
                             <p class="mt-0.5 text-sm font-medium text-stone-900">{{ $event->registered_users_count }}{{ $event->max_capacity ? ' / '.$event->max_capacity : '' }}</p>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                 @if ($event->hasCoordinates())
                     <div class="mt-8">
                         <h2 class="flex items-center gap-2 text-lg font-semibold text-stone-900">
-                            <x-icon name="pin" class="h-5 w-5 text-emerald-600" /> Getting there
+                            <x-icon name="pin" class="h-5 w-5 text-emerald-600" /> {{ __('app.events.getting_there') }}
                         </h2>
                         <div id="event-location-map" data-map-view
                              data-map-lat="{{ $event->latitude }}"
@@ -77,7 +77,7 @@
                         <p class="mt-2 text-xs text-stone-400">
                             <a href="https://www.openstreetmap.org/?mlat={{ $event->latitude }}&amp;mlon={{ $event->longitude }}#map=16/{{ $event->latitude }}/{{ $event->longitude }}"
                                target="_blank" rel="noopener noreferrer" class="underline hover:text-stone-600">
-                                Open in OpenStreetMap
+                                {{ __('app.events.open_in_osm') }}
                             </a>
                         </p>
                     </div>
@@ -89,7 +89,7 @@
 
                 <div class="mt-8">
                     <h2 class="flex items-center gap-2 text-lg font-semibold text-stone-900">
-                        <x-icon name="sparkles" class="h-5 w-5 text-emerald-600" /> About this event
+                        <x-icon name="sparkles" class="h-5 w-5 text-emerald-600" /> {{ __('app.events.about') }}
                     </h2>
                     <p class="mt-3 whitespace-pre-line leading-relaxed text-stone-600">{{ $event->description }}</p>
                 </div>
@@ -103,17 +103,17 @@
             <span class="ticket-notch end-[-15px] top-[-15px] lg:bottom-[-15px] lg:start-[-15px] lg:end-auto lg:top-auto"></span>
 
             <p class="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-stone-400">
-                <x-icon name="ticket" class="h-4 w-4 text-emerald-600" /> Admission
+                <x-icon name="ticket" class="h-4 w-4 text-emerald-600" /> {{ __('app.events.admission') }}
             </p>
             <p class="mt-3 text-4xl font-bold tracking-tight text-stone-900">
-                {{ $event->tiket_cost > 0 ? '$'.number_format($event->tiket_cost, 2) : 'Free' }}
+                {{ $event->tiket_cost > 0 ? '$'.number_format($event->tiket_cost, 2) : __('app.common.free') }}
             </p>
 
             @if ($event->max_capacity)
                 <div class="mt-5">
                     <div class="flex items-center justify-between text-xs text-stone-500">
-                        <span>{{ $event->registered_users_count }} saved</span>
-                        <span>{{ $event->max_capacity }} cap</span>
+                        <span>{{ __('app.events.saved_count', ['count' => $event->registered_users_count]) }}</span>
+                        <span>{{ __('app.events.capacity', ['count' => $event->max_capacity]) }}</span>
                     </div>
                     <div class="mt-1.5 h-2 overflow-hidden rounded-full bg-stone-200">
                         <div class="meter__fill h-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600" style="--pct: {{ $pct }}%; width: {{ $pct }}%"></div>
@@ -121,38 +121,38 @@
                 </div>
             @else
                 <p class="mt-3 inline-flex items-center gap-1.5 text-sm text-stone-500">
-                    <x-icon name="users" class="h-4 w-4 text-stone-400" /> {{ $event->registered_users_count }} have saved this
+                    <x-icon name="users" class="h-4 w-4 text-stone-400" /> {{ __('app.events.have_saved_this', ['count' => $event->registered_users_count]) }}
                 </p>
             @endif
 
             <div class="mt-6">
                 @if ($event->hasFinished())
-                    <p class="rounded-xl bg-stone-200 px-4 py-3 text-center text-sm font-medium text-stone-600">This event has ended.</p>
+                    <p class="rounded-xl bg-stone-200 px-4 py-3 text-center text-sm font-medium text-stone-600">{{ __('app.events.has_ended') }}</p>
                 @elseif (! auth()->check())
                     <a href="{{ route('login') }}"
                        class="flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 font-medium text-white shadow-lg shadow-emerald-600/25 transition hover:bg-emerald-700 hover:shadow-emerald-600/40 active:scale-[0.98]">
-                        <x-icon name="ticket" class="h-5 w-5" /> Log in to save
+                        <x-icon name="ticket" class="h-5 w-5" /> {{ __('app.events.log_in_to_save') }}
                     </a>
                 @elseif ($isRegistered)
                     <p class="mb-3 flex items-center justify-center gap-1.5 rounded-xl bg-emerald-50 px-4 py-3 text-center text-sm font-medium text-emerald-700">
-                        <x-icon name="check" class="h-4 w-4" /> Saved to your calendar
+                        <x-icon name="check" class="h-4 w-4" /> {{ __('app.events.saved_to_calendar') }}
                     </p>
                     <form method="POST" action="{{ route('events.cancel', $event) }}">
                         @csrf
                         @method('DELETE')
                         <button type="submit"
                                 class="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 font-medium text-stone-700 transition hover:border-rose-300 hover:text-rose-700 active:scale-[0.98]">
-                            Remove from calendar
+                            {{ __('app.events.remove_from_calendar') }}
                         </button>
                     </form>
                 @elseif ($event->isFull())
-                    <p class="rounded-xl bg-stone-200 px-4 py-3 text-center text-sm font-medium text-stone-600">This event is full.</p>
+                    <p class="rounded-xl bg-stone-200 px-4 py-3 text-center text-sm font-medium text-stone-600">{{ __('app.events.is_full') }}</p>
                 @else
                     <form method="POST" action="{{ route('events.register', $event) }}">
                         @csrf
                         <button type="submit"
                                 class="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 font-medium text-white shadow-lg shadow-emerald-600/25 transition hover:bg-emerald-700 hover:shadow-emerald-600/40 active:scale-[0.98]">
-                            <x-icon name="ticket" class="h-5 w-5" /> Save to Calendar
+                            <x-icon name="ticket" class="h-5 w-5" /> {{ __('app.events.save_to_calendar') }}
                         </button>
                     </form>
                 @endif
@@ -164,11 +164,11 @@
                     <div class="mt-6 border-t border-stone-200 pt-5">
                         <details class="group">
                             <summary class="cursor-pointer text-xs font-medium text-stone-400 transition hover:text-rose-700">
-                                Report this event
+                                {{ __('app.events.report_this') }}
                             </summary>
                             <form method="POST" action="{{ route('events.report', $event) }}" class="mt-3 space-y-3">
                                 @csrf
-                                <label for="reason" class="sr-only">Reason for reporting</label>
+                                <label for="reason" class="sr-only">{{ __('app.events.report_reason_label') }}</label>
                                 <select id="reason" name="reason" required
                                         class="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30">
                                     @foreach (\App\Enums\ReportReason::cases() as $reason)
@@ -177,7 +177,7 @@
                                 </select>
                                 <button type="submit"
                                         class="w-full rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-sm font-medium text-stone-700 transition hover:border-rose-300 hover:text-rose-700 active:scale-[0.98]">
-                                    Send report
+                                    {{ __('app.events.send_report') }}
                                 </button>
                             </form>
                         </details>

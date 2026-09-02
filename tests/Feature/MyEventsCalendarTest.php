@@ -154,7 +154,9 @@ it('shows an empty but valid calendar to a user with no registrations', function
         ->assertOk()
         ->assertSee('August 2026')
         // Literal template text, so the needle must not be HTML-escaped.
-        ->assertSee("You haven't saved anything yet", false);
+        // Escaped needle: the string comes through __() and {{ }}, so the
+        // apostrophe renders as an HTML entity rather than a literal quote.
+        ->assertSee("You haven't saved anything yet");
 
     $days = $response->viewData('weeks')->collapse();
 
