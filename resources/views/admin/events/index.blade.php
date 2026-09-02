@@ -90,7 +90,12 @@
                             </td>
                             <td class="px-5 py-3">
                                 <div class="flex items-center justify-end gap-2">
-                                    {{-- Phase 6 adds a Reports column here --}}
+                                    @if ($event->reports_count > 0)
+                                        <a href="{{ route('admin.reports.index') }}"
+                                           class="rounded-full bg-rose-50 px-2.5 py-0.5 text-xs font-medium text-rose-700 transition hover:bg-rose-100">
+                                            {{ $event->reports_count }} {{ Str::plural('report', $event->reports_count) }}
+                                        </a>
+                                    @endif
                                     <form method="POST" action="{{ route('admin.events.publish', $event) }}">
                                         @csrf
                                         @method('PATCH')

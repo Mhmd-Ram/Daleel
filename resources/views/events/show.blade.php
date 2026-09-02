@@ -156,6 +156,33 @@
                         </button>
                     </form>
                 @endif
+
+                {{-- Report this event (UC9). A details disclosure rather than a
+                     JS modal, and tucked under the primary action so it never
+                     competes with it. --}}
+                @auth
+                    <div class="mt-6 border-t border-stone-200 pt-5">
+                        <details class="group">
+                            <summary class="cursor-pointer text-xs font-medium text-stone-400 transition hover:text-rose-700">
+                                Report this event
+                            </summary>
+                            <form method="POST" action="{{ route('events.report', $event) }}" class="mt-3 space-y-3">
+                                @csrf
+                                <label for="reason" class="sr-only">Reason for reporting</label>
+                                <select id="reason" name="reason" required
+                                        class="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30">
+                                    @foreach (\App\Enums\ReportReason::cases() as $reason)
+                                        <option value="{{ $reason->value }}">{{ $reason->label() }}</option>
+                                    @endforeach
+                                </select>
+                                <button type="submit"
+                                        class="w-full rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-sm font-medium text-stone-700 transition hover:border-rose-300 hover:text-rose-700 active:scale-[0.98]">
+                                    Send report
+                                </button>
+                            </form>
+                        </details>
+                    </div>
+                @endauth
             </div>
         </aside>
     </article>

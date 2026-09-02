@@ -6,6 +6,7 @@ use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\OrganizerApplication;
+use App\Models\Report;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -46,6 +47,7 @@ class DashboardController extends Controller
             'organizers' => User::where('role', UserRole::Organizer)->count(),
             'bannedUsers' => User::where('is_banned', true)->count(),
             'pendingApplications' => OrganizerApplication::pending()->count(),
+            'reports' => Report::count(),
         ];
     }
 }

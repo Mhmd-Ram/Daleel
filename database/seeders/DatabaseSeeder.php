@@ -3,10 +3,12 @@
 namespace Database\Seeders;
 
 use App\Enums\LibyanCity;
+use App\Enums\ReportReason;
 use App\Enums\UserRole;
 use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Event;
+use App\Models\Report;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -103,5 +105,28 @@ class DatabaseSeeder extends Seeder
             ->each(fn (Event $event) => $event->registeredUsers()->syncWithoutDetaching([
                 $user->id => ['created_at' => now()],
             ]));
+
+        // A couple of reports so the admin queue is not empty on a fresh
+        // checkout. Only `reason` is fillable on Report, so firstOrCreate would
+        // silently drop both foreign keys; the pair is set explicitly instead,
+        // and the existence check keeps the seeder re-runnable.
+        Event::where('is_active', true)
+            ->where('end_date_time', '>', now())
+            ->take(2)
+            ->get()
+            ->each(function (Event $event, int $index) use ($user, $applicant) {
+                $reporter = $index === 0 ? $user : $applicant;
+
+                if ($event->reports()->where('attendee_id', $reporter->id)->exists()) {
+                    return;
+                }
+
+                $report = new Report([
+                    'reason' => $index === 0 ? ReportReason::Spam : ReportReason::MisleadingDescription,
+                ]);
+                $report->attendee_id = $reporter->id;
+
+                $event->reports()->save($report);
+            });
     }
 }

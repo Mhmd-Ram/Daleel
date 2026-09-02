@@ -73,6 +73,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * The reports this user has filed against events.
+     *
+     * @return HasMany<Report, $this>
+     */
+    public function reports(): HasMany
+    {
+        return $this->hasMany(Report::class, 'attendee_id');
+    }
+
+    /**
      * Whether this user may create and manage their own events.
      */
     public function isOrganizer(): bool

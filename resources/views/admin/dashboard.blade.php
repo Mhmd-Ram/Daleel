@@ -41,6 +41,22 @@
         </div>
     @endif
 
+    {{-- A banner rather than a fifth stat card: reports are something to act
+         on, and the card row is for standing numbers. --}}
+    @if ($stats['reports'] > 0)
+        <div class="reveal mt-6 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-rose-200 bg-rose-50 px-5 py-4"
+             style="--reveal-delay: 100ms">
+            <p class="text-sm text-rose-800">
+                <span class="font-semibold">{{ $stats['reports'] }}</span>
+                {{ Str::plural('report', $stats['reports']) }} waiting for review.
+            </p>
+            <a href="{{ route('admin.reports.index') }}"
+               class="rounded-lg bg-rose-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-rose-800 active:scale-[0.98]">
+                Open reports
+            </a>
+        </div>
+    @endif
+
     <div class="reveal mt-10" style="--reveal-delay: 140ms">
         <div class="mb-4 flex items-center justify-between">
             <h2 class="text-lg font-semibold tracking-tight text-stone-900">Latest events</h2>

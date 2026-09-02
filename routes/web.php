@@ -11,6 +11,7 @@ use App\Http\Controllers\Organizer;
 use App\Http\Controllers\OrganizerApplicationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -75,6 +76,7 @@ Route::middleware(['auth', 'not-banned'])->group(function () {
     */
     Route::middleware('verified')->group(function () {
         Route::post('/events/{event}/register', [RegistrationController::class, 'store'])->name('events.register');
+        Route::post('/events/{event}/report', [ReportController::class, 'store'])->name('events.report');
         Route::post('/organizer/apply', [OrganizerApplicationController::class, 'store'])->name('organizer.apply');
     });
 
@@ -118,5 +120,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::patch('/users/{user}/ban', [Admin\UserController::class, 'ban'])->name('users.ban');
         Route::patch('/users/{user}/unban', [Admin\UserController::class, 'unban'])->name('users.unban');
         Route::patch('/users/{user}/revert-role', [Admin\UserController::class, 'revertRole'])->name('users.revert-role');
+
+        Route::get('/reports', [Admin\ReportController::class, 'index'])->name('reports.index');
+        Route::delete('/reports/{report}', [Admin\ReportController::class, 'destroy'])->name('reports.destroy');
     });
 });

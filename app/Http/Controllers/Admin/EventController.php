@@ -34,7 +34,7 @@ class EventController extends Controller
         $status = $this->status($request);
 
         $events = Event::with(['category', 'admin', 'organizer'])
-            ->withCount('registeredUsers')
+            ->withCount(['registeredUsers', 'reports'])
             ->when($owner === 'admin', fn ($query) => $query->whereNotNull('admin_id'))
             ->when($owner === 'organizer', fn ($query) => $query->whereNotNull('organizer_id'))
             ->when($status, fn ($query, $value) => $query->where('is_active', $value === 'published'))
