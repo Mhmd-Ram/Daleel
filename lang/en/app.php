@@ -307,6 +307,8 @@ return [
         'verify_body' => 'Open it to activate your account. If it has not arrived, check your spam folder or send yourself a new one.',
         'resend_the_link' => 'Resend the link',
         'wrong_address' => 'Wrong address? Update it',
+        'credentials_mismatch' => 'These credentials do not match our records.',
+        'account_banned' => 'This account has been banned. Contact the site administrators if you believe this is a mistake.',
     ],
 
     'events' => [

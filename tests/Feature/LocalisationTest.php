@@ -2,6 +2,7 @@
 
 use App\Mail\EventRegistered;
 use App\Models\Admin;
+use App\Models\Category;
 use App\Models\Event;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
@@ -175,4 +176,45 @@ it('translates a controller flash message', function () {
         ->from(route('events.show', $event))
         ->post(route('events.register', $event))
         ->assertSessionHas('success', fn ($message) => str_contains($message, 'محفوظة في تقويمك'));
+});
+
+it('translates the pagination controls', function () {
+    Event::factory()->count(13)->create();
+
+    $this->withSession(['locale' => 'ar'])
+        ->get(route('events.index'))
+        ->assertOk()
+        ->assertSee('التالي', false)
+        ->assertDontSee('Next');
+});
+
+it('translates the login failure message', function () {
+    $this->withSession(['locale' => 'ar'])
+        ->post(route('login'), ['email' => 'nobody@example.com', 'password' => 'wrong-password'])
+        ->assertInvalid(['email' => 'بيانات الدخول']);
+});
+
+it('translates the ban message on the login screen', function () {
+    $user = User::factory()->banned()->create();
+
+    $this->withSession(['locale' => 'ar'])
+        ->post(route('login'), ['email' => $user->email, 'password' => 'password'])
+        ->assertInvalid(['email' => 'تم حظر هذا الحساب']);
+});
+
+it('translates a validation message for the coordinate pair', function () {
+    $organizer = User::factory()->organizer()->create();
+    $category = Category::factory()->create();
+
+    // required_with fires when only half a map pin is submitted.
+    $this->actingAs($organizer)
+        ->withSession(['locale' => 'ar'])
+        ->post(route('organizer.events.store'), [
+            'name' => 'Test', 'description' => 'Test', 'location' => 'Tripoli', 'city' => 'Tripoli',
+            'category_id' => $category->id,
+            'start_date_time' => now()->addWeek()->format('Y-m-d\TH:i'),
+            'end_date_time' => now()->addWeek()->addHours(2)->format('Y-m-d\TH:i'),
+            'tiket_cost' => 0, 'latitude' => 32.8,
+        ])
+        ->assertInvalid(['longitude' => 'مطلوب']);
 });

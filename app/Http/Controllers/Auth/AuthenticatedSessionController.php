@@ -31,7 +31,7 @@ class AuthenticatedSessionController extends Controller
 
         if (! Auth::guard('web')->attempt($credentials, $request->boolean('remember'))) {
             throw ValidationException::withMessages([
-                'email' => __('These credentials do not match our records.'),
+                'email' => __('app.auth.credentials_mismatch'),
             ]);
         }
 
@@ -42,7 +42,7 @@ class AuthenticatedSessionController extends Controller
             Auth::guard('web')->logout();
 
             throw ValidationException::withMessages([
-                'email' => __('This account has been banned. Contact the site administrators if you believe this is a mistake.'),
+                'email' => __('app.auth.account_banned'),
             ]);
         }
 

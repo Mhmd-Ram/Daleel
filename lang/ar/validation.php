@@ -46,6 +46,7 @@ return [
     'numeric' => 'يجب أن يكون :attribute رقمًا.',
     'regex' => 'صيغة :attribute غير صالحة.',
     'required' => 'حقل :attribute مطلوب.',
+    'required_with' => 'حقل :attribute مطلوب عند وجود :values.',
     'string' => 'يجب أن يكون :attribute نصًا.',
     'unique' => ':attribute مستخدم من قبل.',
 

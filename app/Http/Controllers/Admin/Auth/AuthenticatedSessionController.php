@@ -31,7 +31,7 @@ class AuthenticatedSessionController extends Controller
 
         if (! Auth::guard('admin')->attempt($credentials, $request->boolean('remember'))) {
             throw ValidationException::withMessages([
-                'email' => __('These credentials do not match our records.'),
+                'email' => __('app.auth.credentials_mismatch'),
             ]);
         }
 
