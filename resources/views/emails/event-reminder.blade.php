@@ -43,7 +43,7 @@
                     <tr>
                         <td style="padding:10px 0; border-top:1px solid #f5f5f4; color:#78716c;">{{ __('app.emails.ticket') }}</td>
                         <td style="padding:10px 0; border-top:1px solid #f5f5f4; font-weight:600; color:#1c1917;">
-                            {{ (float) $event->tiket_cost > 0 ? number_format((float) $event->tiket_cost, 2).' LYD' : 'Free' }}
+                            {{ (float) $event->tiket_cost > 0 ? number_format((float) $event->tiket_cost, 2).' LYD' : __('app.common.free') }}
                         </td>
                     </tr>
                 </table>

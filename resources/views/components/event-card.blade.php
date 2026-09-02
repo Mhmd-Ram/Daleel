@@ -19,17 +19,17 @@
         </div>
 
         <div class="flex flex-1 flex-col p-5">
-            <h3 class="text-lg font-semibold text-stone-900 transition-colors duration-300 group-hover:text-emerald-700">{{ $event->name }}</h3>
+            <h3 class="text-lg font-semibold text-stone-900 transition-colors duration-300 group-hover:text-emerald-700" dir="auto">{{ $event->name }}</h3>
 
             <div class="mt-3 space-y-1.5 text-sm text-stone-500">
-                <p class="flex items-center gap-2"><x-icon name="clock" class="h-4 w-4 shrink-0 text-stone-400" /> {{ $event->start_date_time->format('D, M j · g:i A') }}</p>
-                <p class="flex items-center gap-2"><x-icon name="pin" class="h-4 w-4 shrink-0 text-stone-400" /> {{ $event->location }}</p>
+                <p class="flex items-center gap-2"><x-icon name="clock" class="h-4 w-4 shrink-0 text-stone-400" /> <bdi>{{ $event->start_date_time->format('D, M j · g:i A') }}</bdi></p>
+                <p class="flex items-center gap-2"><x-icon name="pin" class="h-4 w-4 shrink-0 text-stone-400" /> <bdi>{{ $event->location }}</bdi></p>
             </div>
 
             <div class="mt-4 flex items-center justify-between border-t border-stone-100 pt-4">
                 <span class="inline-flex items-center gap-1.5 text-sm font-semibold text-stone-900">
                     <x-icon name="ticket" class="h-4 w-4 text-emerald-600" />
-                    {{ $event->tiket_cost > 0 ? '$'.number_format($event->tiket_cost, 2) : 'Free' }}
+                    {{ $event->tiket_cost > 0 ? '$'.number_format($event->tiket_cost, 2) : __('app.common.free') }}
                 </span>
                 <span class="inline-flex items-center gap-1 text-sm font-medium text-emerald-700">
                     {{ __('app.common.details') }}

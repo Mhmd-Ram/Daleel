@@ -23,11 +23,11 @@
                     <span class="inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-emerald-700 shadow-sm">
                         <x-icon name="tag" class="h-3.5 w-3.5" /> {{ $event->category->name }}
                     </span>
-                    <h1 class="mt-3 max-w-2xl text-3xl font-bold tracking-tight text-white drop-shadow-sm sm:text-4xl">{{ $event->name }}</h1>
+                    <h1 class="mt-3 max-w-2xl text-3xl font-bold tracking-tight text-white drop-shadow-sm sm:text-4xl" dir="auto">{{ $event->name }}</h1>
                     <div class="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-sm text-white/90">
-                        <span class="inline-flex items-center gap-1.5"><x-icon name="calendar" class="h-4 w-4" /> {{ $event->start_date_time->format('D, M j Y') }}</span>
-                        <span class="inline-flex items-center gap-1.5"><x-icon name="clock" class="h-4 w-4" /> {{ $event->start_date_time->format('g:i A') }}</span>
-                        <span class="inline-flex items-center gap-1.5"><x-icon name="pin" class="h-4 w-4" /> {{ $event->location }}</span>
+                        <span class="inline-flex items-center gap-1.5"><x-icon name="calendar" class="h-4 w-4" /> <bdi>{{ $event->start_date_time->format('D, M j Y') }}</bdi></span>
+                        <span class="inline-flex items-center gap-1.5"><x-icon name="clock" class="h-4 w-4" /> <bdi>{{ $event->start_date_time->format('g:i A') }}</bdi></span>
+                        <span class="inline-flex items-center gap-1.5"><x-icon name="pin" class="h-4 w-4" /> <bdi>{{ $event->location }}</bdi></span>
                     </div>
                 </div>
             </div>
@@ -38,28 +38,28 @@
                         <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-emerald-100 text-emerald-700"><x-icon name="calendar" class="h-5 w-5" /></span>
                         <div>
                             <p class="text-xs uppercase tracking-wide text-stone-400">{{ __('app.common.starts') }}</p>
-                            <p class="mt-0.5 text-sm font-medium text-stone-900">{{ $event->start_date_time->format('M j, Y · g:i A') }}</p>
+                            <p class="mt-0.5 text-sm font-medium text-stone-900" dir="auto">{{ $event->start_date_time->format('M j, Y · g:i A') }}</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-3 rounded-xl border border-stone-200 bg-stone-50/60 p-4">
                         <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-amber-100 text-amber-700"><x-icon name="clock" class="h-5 w-5" /></span>
                         <div>
                             <p class="text-xs uppercase tracking-wide text-stone-400">{{ __('app.common.ends') }}</p>
-                            <p class="mt-0.5 text-sm font-medium text-stone-900">{{ $event->end_date_time->format('M j, Y · g:i A') }}</p>
+                            <p class="mt-0.5 text-sm font-medium text-stone-900" dir="auto">{{ $event->end_date_time->format('M j, Y · g:i A') }}</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-3 rounded-xl border border-stone-200 bg-stone-50/60 p-4">
                         <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-stone-200 text-stone-600"><x-icon name="pin" class="h-5 w-5" /></span>
                         <div>
                             <p class="text-xs uppercase tracking-wide text-stone-400">{{ __('app.common.location') }}</p>
-                            <p class="mt-0.5 text-sm font-medium text-stone-900">{{ $event->location }}</p>
+                            <p class="mt-0.5 text-sm font-medium text-stone-900" dir="auto">{{ $event->location }}</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-3 rounded-xl border border-stone-200 bg-stone-50/60 p-4">
                         <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-emerald-100 text-emerald-700"><x-icon name="users" class="h-5 w-5" /></span>
                         <div>
                             <p class="text-xs uppercase tracking-wide text-stone-400">{{ __('app.events.saved') }}</p>
-                            <p class="mt-0.5 text-sm font-medium text-stone-900">{{ $event->registered_users_count }}{{ $event->max_capacity ? ' / '.$event->max_capacity : '' }}</p>
+                            <p class="mt-0.5 text-sm font-medium text-stone-900" dir="ltr">{{ $event->registered_users_count }}{{ $event->max_capacity ? ' / '.$event->max_capacity : '' }}</p>
                         </div>
                     </div>
                 </div>
@@ -91,7 +91,7 @@
                     <h2 class="flex items-center gap-2 text-lg font-semibold text-stone-900">
                         <x-icon name="sparkles" class="h-5 w-5 text-emerald-600" /> {{ __('app.events.about') }}
                     </h2>
-                    <p class="mt-3 whitespace-pre-line leading-relaxed text-stone-600">{{ $event->description }}</p>
+                    <p class="mt-3 whitespace-pre-line leading-relaxed text-stone-600" dir="auto">{{ $event->description }}</p>
                 </div>
             </div>
         </div>
