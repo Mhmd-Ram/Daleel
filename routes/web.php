@@ -113,5 +113,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
             ->name('organizer-applications.approve');
         Route::patch('/organizer-applications/{application}/reject', [Admin\OrganizerApplicationController::class, 'reject'])
             ->name('organizer-applications.reject');
+
+        Route::get('/users', [Admin\UserController::class, 'index'])->name('users.index');
+        Route::patch('/users/{user}/ban', [Admin\UserController::class, 'ban'])->name('users.ban');
+        Route::patch('/users/{user}/unban', [Admin\UserController::class, 'unban'])->name('users.unban');
+        Route::patch('/users/{user}/revert-role', [Admin\UserController::class, 'revertRole'])->name('users.revert-role');
     });
 });

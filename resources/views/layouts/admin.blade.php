@@ -25,6 +25,7 @@
                 <div class="flex items-center gap-1 text-sm">
                     <a href="{{ route('admin.dashboard') }}" @class(['nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white']) @if(request()->routeIs('admin.dashboard')) aria-current="page" @endif>Dashboard</a>
                     <a href="{{ route('admin.events.index') }}" @class(['nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white']) @if(request()->routeIs('admin.events.*')) aria-current="page" @endif>Events</a>
+                    <a href="{{ route('admin.users.index') }}" @class(['nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white']) @if(request()->routeIs('admin.users.*')) aria-current="page" @endif>Users</a>
                     <a href="{{ route('admin.categories.index') }}" @class(['nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white']) @if(request()->routeIs('admin.categories.*')) aria-current="page" @endif>Categories</a>
                     <a href="{{ route('admin.organizer-applications.index') }}" @class(['nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white']) @if(request()->routeIs('admin.organizer-applications.*')) aria-current="page" @endif>Organizers</a>
                     <a href="{{ route('home') }}" class="nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white">View site</a>

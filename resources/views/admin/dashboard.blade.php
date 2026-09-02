@@ -13,11 +13,15 @@
             ['label' => 'Events', 'value' => $stats['events'], 'note' => $stats['published'].' published, '.$stats['drafts'].' draft'],
             ['label' => 'Upcoming', 'value' => $stats['upcoming'], 'note' => 'Published and not yet finished'],
             ['label' => 'Registrations', 'value' => $stats['registrations'], 'note' => 'Across every event'],
-            ['label' => 'Users', 'value' => $stats['users'], 'note' => $stats['organizers'].' organizers'],
+            ['label' => 'Users', 'value' => $stats['users'], 'note' => $stats['organizers'].' organizers, '.$stats['bannedUsers'].' banned', 'href' => route('admin.users.index')],
         ] as $card)
             <div class="rounded-xl border border-stone-200 bg-white p-5">
                 <p class="text-xs uppercase tracking-wide text-stone-400">{{ $card['label'] }}</p>
-                <p class="mt-2 text-3xl font-bold text-stone-900">{{ number_format($card['value']) }}</p>
+                @isset($card['href'])
+                    <a href="{{ $card['href'] }}" class="mt-2 block text-3xl font-bold text-stone-900 transition hover:text-emerald-700">{{ number_format($card['value']) }}</a>
+                @else
+                    <p class="mt-2 text-3xl font-bold text-stone-900">{{ number_format($card['value']) }}</p>
+                @endisset
                 <p class="mt-1 text-xs text-stone-500">{{ $card['note'] }}</p>
             </div>
         @endforeach
