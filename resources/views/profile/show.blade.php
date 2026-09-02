@@ -16,7 +16,7 @@
             <h1 class="text-2xl font-semibold tracking-tight text-stone-900">{{ __('app.profile.your_pass') }}</h1>
             <a href="{{ route('profile.edit') }}"
                class="inline-flex items-center gap-1.5 rounded-lg border border-stone-300 bg-white/80 px-4 py-2 text-sm font-medium text-stone-700 transition hover:border-stone-400 hover:shadow-sm">
-                Edit
+                {{ __('app.common.edit') }}
             </a>
         </div>
 

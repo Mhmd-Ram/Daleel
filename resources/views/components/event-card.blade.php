@@ -32,7 +32,7 @@
                     {{ $event->tiket_cost > 0 ? '$'.number_format($event->tiket_cost, 2) : 'Free' }}
                 </span>
                 <span class="inline-flex items-center gap-1 text-sm font-medium text-emerald-700">
-                    Details
+                    {{ __('app.common.details') }}
                     <x-icon name="arrow-right" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
                 </span>
             </div>

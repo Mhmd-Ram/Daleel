@@ -21,15 +21,15 @@
             <div class="mt-7 flex flex-wrap items-center gap-3">
                 <a href="{{ route('events.index') }}"
                    class="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-3 font-medium text-white shadow-lg shadow-emerald-600/25 transition hover:bg-emerald-700 hover:shadow-emerald-600/40 active:scale-[0.98]">
-                    Browse events <x-icon name="arrow-right" class="h-5 w-5" />
+                    {{ __('app.events.browse_events') }} <x-icon name="arrow-right" class="h-5 w-5" />
                 </a>
                 @auth
                     <a href="{{ route('my-events') }}" class="inline-flex items-center gap-2 rounded-full border border-stone-300 bg-white/80 px-6 py-3 font-medium text-stone-700 transition hover:border-stone-400 hover:shadow-sm">
-                        My events
+                        {{ __('app.home.my_events') }}
                     </a>
                 @else
                     <a href="{{ route('register') }}" class="inline-flex items-center gap-2 rounded-full border border-stone-300 bg-white/80 px-6 py-3 font-medium text-stone-700 transition hover:border-stone-400 hover:shadow-sm">
-                        Create account
+                        {{ __('app.auth.create_account') }}
                     </a>
                 @endauth
             </div>
@@ -72,7 +72,7 @@
                     <p class="mt-1 text-stone-600">{{ __('app.home.happening_soon_sub') }}</p>
                 </div>
                 <a href="{{ route('events.index') }}" class="hidden shrink-0 items-center gap-1 text-sm font-medium text-emerald-700 hover:underline sm:inline-flex">
-                    View all <x-icon name="arrow-right" class="h-4 w-4" />
+                    {{ __('app.home.view_all') }} <x-icon name="arrow-right" class="h-4 w-4" />
                 </a>
             </div>
 
@@ -144,7 +144,7 @@
                 </p>
                 <a href="{{ route('admin.login') }}"
                    class="mt-6 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-3 font-medium text-white transition hover:bg-emerald-700 active:scale-[0.98]">
-                    Admin sign in <x-icon name="arrow-right" class="h-5 w-5" />
+                    {{ __('app.home.admin_sign_in') }} <x-icon name="arrow-right" class="h-5 w-5" />
                 </a>
             </div>
             <div class="hidden gap-3 sm:grid sm:grid-cols-2">
@@ -165,16 +165,16 @@
     {{-- Final CTA --}}
     <section class="reveal py-14 text-center">
         <h2 class="font-display mx-auto max-w-3xl text-4xl uppercase leading-[0.95] tracking-tight text-stone-900 sm:text-5xl">
-            Ready to find your next event?
+            {{ __('app.home.ready') }}
         </h2>
         <div class="mt-7 flex flex-wrap items-center justify-center gap-3">
             <a href="{{ route('events.index') }}"
                class="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-7 py-3 font-medium text-white shadow-lg shadow-emerald-600/25 transition hover:bg-emerald-700 active:scale-[0.98]">
-                Browse events <x-icon name="arrow-right" class="h-5 w-5" />
+                {{ __('app.events.browse_events') }} <x-icon name="arrow-right" class="h-5 w-5" />
             </a>
             @guest
                 <a href="{{ route('register') }}" class="inline-flex items-center rounded-full border border-stone-300 bg-white/80 px-7 py-3 font-medium text-stone-700 transition hover:border-stone-400">
-                    Create account
+                    {{ __('app.auth.create_account') }}
                 </a>
             @endguest
         </div>
