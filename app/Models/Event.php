@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\LibyanCity;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use LogicException;
 
 #[Fillable([
-    'name', 'description', 'location', 'latitude', 'longitude',
+    'name', 'description', 'location', 'city', 'latitude', 'longitude',
     'start_date_time', 'end_date_time', 'tiket_cost', 'max_capacity',
     'is_active', 'category_id', 'admin_id', 'organizer_id',
 ])]
@@ -30,6 +31,10 @@ class Event extends Model
             'end_date_time' => 'datetime',
             'tiket_cost' => 'decimal:2',
             'is_active' => 'boolean',
+            // Casting to the enum means an unrecognised city throws on write
+            // rather than reaching the database, so the filter dropdown can
+            // trust every stored value. Legacy rows stay null.
+            'city' => LibyanCity::class,
             // Float rather than decimal: the map needs JSON numbers, and a
             // decimal cast hands back strings that Leaflet will not accept.
             'latitude' => 'float',

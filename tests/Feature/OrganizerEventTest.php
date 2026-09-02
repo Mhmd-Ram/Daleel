@@ -11,6 +11,7 @@ function eventPayload(Category $category): array
         'name' => 'Benghazi Design Jam',
         'description' => 'A hands-on afternoon for designers and developers.',
         'location' => 'Waha Cultural Centre',
+        'city' => 'Benghazi',
         'category_id' => $category->id,
         'start_date_time' => now()->addWeek()->format('Y-m-d\TH:i'),
         'end_date_time' => now()->addWeek()->addHours(4)->format('Y-m-d\TH:i'),

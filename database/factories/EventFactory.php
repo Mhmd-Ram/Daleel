@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\LibyanCity;
 use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Event;
@@ -26,7 +27,10 @@ class EventFactory extends Factory
         return [
             'name' => rtrim(fake()->sentence(4), '.'),
             'description' => fake()->paragraphs(3, true),
-            'location' => fake()->streetAddress().', '.fake()->city(),
+            'location' => fake()->streetAddress(),
+            // A real enum case, not fake()->city(): the model casts this column,
+            // so an invented city name would throw on write.
+            'city' => fake()->randomElement(LibyanCity::cases()),
             'start_date_time' => $start,
             'end_date_time' => $end,
             'tiket_cost' => fake()->randomElement([0, 0, 15, 25, 49.99, 99]),

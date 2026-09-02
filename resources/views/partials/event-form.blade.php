@@ -1,3 +1,5 @@
+@use('App\Enums\LibyanCity')
+
 @php($e = $event ?? null)
 
 <div class="grid gap-5 sm:grid-cols-2">
@@ -17,6 +19,17 @@
         <label for="location" class="text-sm font-medium text-stone-700">Location</label>
         <input id="location" name="location" type="text" value="{{ old('location', $e?->location) }}" required
                class="rounded-lg border border-stone-300 px-3 py-2 text-stone-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30">
+    </div>
+
+    <div class="flex flex-col gap-2">
+        <label for="city" class="text-sm font-medium text-stone-700">City</label>
+        <select id="city" name="city" required
+                class="rounded-lg border border-stone-300 bg-white px-3 py-2 text-stone-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30">
+            <option value="" disabled {{ old('city', $e?->city?->value) ? '' : 'selected' }}>Choose a city</option>
+            @foreach (LibyanCity::cases() as $city)
+                <option value="{{ $city->value }}" @selected(old('city', $e?->city?->value) === $city->value)>{{ $city->value }}</option>
+            @endforeach
+        </select>
     </div>
 
     <div class="flex flex-col gap-2">

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\LibyanCity;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreEventRequest extends FormRequest
 {
@@ -25,6 +27,9 @@ class StoreEventRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'location' => ['required', 'string', 'max:255'],
+            // Structured alongside the free-text address, because the public
+            // listing filters on it (FR-4.5) and free text cannot back a dropdown.
+            'city' => ['required', Rule::enum(LibyanCity::class)],
             // The map pin is optional, but a lone coordinate is meaningless, so
             // each half requires the other. Ranges are the real world's.
             'latitude' => ['nullable', 'numeric', 'between:-90,90', 'required_with:longitude'],

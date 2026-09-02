@@ -15,6 +15,7 @@ function mapEventPayload(Category $category, array $overrides = []): array
         'name' => 'Tripoli Street Food Night',
         'description' => 'An evening of food stalls along the corniche.',
         'location' => 'Martyrs Square, Tripoli',
+        'city' => 'Tripoli',
         'category_id' => $category->id,
         'start_date_time' => now()->addWeek()->format('Y-m-d\TH:i'),
         'end_date_time' => now()->addWeek()->addHours(4)->format('Y-m-d\TH:i'),
