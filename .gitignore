@@ -25,3 +25,15 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Documentation / write-up files — code only, except the README
+*.md
+!README.md
+*.doc
+*.docx
+*.pdf
+*.ppt
+*.pptx
+*.xls
+*.xlsx
+~$*
