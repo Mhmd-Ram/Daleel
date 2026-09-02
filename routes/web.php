@@ -21,7 +21,9 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
-Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
+// withTrashed so a removed event reaches the controller and can explain itself
+// (FR-5.4) instead of being turned away by route model binding.
+Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show')->withTrashed();
 
 /*
 |--------------------------------------------------------------------------

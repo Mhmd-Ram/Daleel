@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use LogicException;
 
 #[Fillable([
@@ -18,7 +19,7 @@ use LogicException;
 ])]
 class Event extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * Get the attributes that should be cast.
@@ -55,6 +56,15 @@ class Event extends Model
                     'An event must be owned by exactly one of an admin or an organizer.'
                 );
             }
+        });
+
+        static::deleting(function (Event $event): void {
+            // Soft deleting never reaches the database DELETE, so the reports
+            // foreign key cascade does not fire. Clearing them here keeps both
+            // delete paths identical and, more importantly, keeps the admin
+            // moderation queue from holding rows whose event it can no longer
+            // resolve.
+            $event->reports()->delete();
         });
     }
 

@@ -31,7 +31,10 @@ it('filters events by category', function () {
 it('returns 404 for an inactive event detail page', function () {
     $event = Event::factory()->inactive()->create();
 
-    $this->get(route('events.show', $event))->assertNotFound();
+    // Still 404 for crawlers, but a human now gets an explanation (FR-5.4).
+    $this->get(route('events.show', $event))
+        ->assertNotFound()
+        ->assertSee('Event Unavailable');
 });
 
 /*
@@ -230,4 +233,41 @@ it('filters events to this week', function () {
         ->assertOk()
         ->assertSee('Ceramics Workshop')
         ->assertDontSee('Startup Pitch Night');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Removed events (FR-5.4, UC7-E1)
+|--------------------------------------------------------------------------
+*/
+
+it('shows an Event Unavailable page for an event the organizer removed', function () {
+    $event = Event::factory()->create(['name' => 'Harbour Night Market']);
+    $event->delete();
+
+    $this->get(route('events.show', $event))
+        ->assertNotFound()
+        ->assertSee('Event Unavailable')
+        ->assertDontSee('Harbour Night Market');
+});
+
+it('hides soft-deleted events from the public listing', function () {
+    Event::factory()->create(['name' => 'Still Running Gig']);
+    $removed = Event::factory()->create(['name' => 'Withdrawn Gig']);
+    $removed->delete();
+
+    $this->get(route('events.index'))
+        ->assertOk()
+        ->assertSee('Still Running Gig')
+        ->assertDontSee('Withdrawn Gig');
+});
+
+it('keeps a removed event out of search results', function () {
+    $removed = Event::factory()->create(['name' => 'Withdrawn Gig']);
+    $removed->delete();
+
+    $this->get(route('events.index', ['q' => 'Withdrawn']))
+        ->assertOk()
+        ->assertSee('No results found')
+        ->assertDontSee('Withdrawn Gig');
 });

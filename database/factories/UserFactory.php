@@ -29,7 +29,7 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'phone_number' => fake()->unique()->numerify('+1##########'),
+            'phone_number' => '+2189'.fake()->numberBetween(1, 5).fake()->unique()->numerify('#######'),
             'dob' => fake()->dateTimeBetween('-60 years', '-18 years'),
             'location' => fake()->randomElement(LibyanCity::cases()),
             'email_verified_at' => now(),

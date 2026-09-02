@@ -141,7 +141,9 @@ it("lets an admin delete an organizer's event", function () {
         ->delete(route('admin.events.destroy', $event))
         ->assertRedirect(route('admin.events.index'));
 
-    $this->assertDatabaseMissing('events', ['id' => $event->id]);
+    // Soft-deleted since Phase 8: the row survives so the event page can
+    // explain itself, but it is gone from every listing.
+    $this->assertSoftDeleted('events', ['id' => $event->id]);
 });
 
 it("lets an admin unpublish an organizer's event", function () {

@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'user@example.com'],
             [
                 'name' => 'Test User',
-                'phone_number' => '+15551234567',
+                'phone_number' => '+218911111111',
                 'dob' => '1995-05-20',
                 'location' => LibyanCity::Tripoli,
                 'email_verified_at' => now(),

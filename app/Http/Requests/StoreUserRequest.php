@@ -3,12 +3,15 @@
 namespace App\Http\Requests;
 
 use App\Enums\LibyanCity;
+use App\Http\Requests\Concerns\ValidatesLibyanPhoneNumbers;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
 class StoreUserRequest extends FormRequest
 {
+    use ValidatesLibyanPhoneNumbers;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -27,10 +30,18 @@ class StoreUserRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'phone_number' => ['required', 'string', 'max:255', 'unique:users,phone_number'],
+            'phone_number' => [...$this->phoneNumberRules(), 'unique:users,phone_number'],
             'dob' => ['required', 'date', 'before:today'],
             'location' => ['required', Rule::enum(LibyanCity::class)],
             'password' => ['required', 'confirmed', Password::defaults()],
         ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return $this->phoneNumberMessages();
     }
 }

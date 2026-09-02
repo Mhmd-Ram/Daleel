@@ -112,9 +112,14 @@ it('shows the report form to a signed-in user', function () {
 
 it('deletes the reports when the event is deleted', function () {
     $report = Report::factory()->create();
+    $event = $report->event;
 
-    $report->event->delete();
+    $event->delete();
 
+    // Events soft delete since Phase 8, so the reports foreign key cascade
+    // never fires. An Event::deleting hook clears them instead, which keeps
+    // the moderation queue from holding rows whose event it cannot resolve.
+    $this->assertSoftDeleted('events', ['id' => $event->id]);
     $this->assertDatabaseMissing('reports', ['id' => $report->id]);
 });
 

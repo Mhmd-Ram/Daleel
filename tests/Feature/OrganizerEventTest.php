@@ -110,7 +110,10 @@ it('lets an organizer update and delete their own event', function () {
 
     $this->actingAs($organizer)->delete(route('organizer.events.destroy', $event));
 
+    // Gone from every ordinary query, and soft-deleted rather than erased, so
+    // the event page can still explain itself (FR-5.4).
     expect(Event::whereKey($event->id)->exists())->toBeFalse();
+    $this->assertSoftDeleted('events', ['id' => $event->id]);
 });
 
 it('still lets an admin create events alongside organizers', function () {
@@ -145,4 +148,17 @@ it('shows organizer-owned events on the public listing', function () {
     $event = Event::factory()->organizedBy($organizer)->create(['name' => 'Public Organizer Event']);
 
     $this->get(route('events.index'))->assertOk()->assertSee($event->name);
+});
+
+it("hides a removed event from the organizer's own list", function () {
+    $organizer = User::factory()->organizer()->create();
+    Event::factory()->organizedBy($organizer)->create(['name' => 'Still Running Gig']);
+    $removed = Event::factory()->organizedBy($organizer)->create(['name' => 'Withdrawn Gig']);
+    $removed->delete();
+
+    $this->actingAs($organizer)
+        ->get(route('organizer.events.index'))
+        ->assertOk()
+        ->assertSee('Still Running Gig')
+        ->assertDontSee('Withdrawn Gig');
 });

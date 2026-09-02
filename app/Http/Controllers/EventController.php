@@ -8,6 +8,7 @@ use App\Models\Event;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class EventController extends Controller
@@ -62,9 +63,14 @@ class EventController extends Controller
     /**
      * Show a single event's full details.
      */
-    public function show(Event $event): View
+    public function show(Event $event): View|Response
     {
-        abort_unless($event->is_active, 404);
+        // An unpublished or removed event gets the SRS's "Event Unavailable"
+        // page (FR-5.4) rather than a bare 404. The status stays 404 so
+        // crawlers still read it as gone, but a human gets an explanation.
+        if ($event->trashed() || ! $event->is_active) {
+            return response()->view('events.unavailable', [], 404);
+        }
 
         $event->loadCount('registeredUsers');
 

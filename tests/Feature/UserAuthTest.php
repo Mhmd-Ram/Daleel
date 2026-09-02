@@ -90,3 +90,72 @@ it('logs an existing user in with valid credentials', function () {
 
     $this->assertAuthenticatedAs($user);
 });
+
+/*
+|--------------------------------------------------------------------------
+| Libyan phone number format (FR-2.2, UC1 step 3 / UC1-E2)
+|--------------------------------------------------------------------------
+*/
+
+/**
+ * A valid registration payload with the phone number swapped in.
+ *
+ * @return array<string, string>
+ */
+function registrationWithPhone(string $phone): array
+{
+    return [
+        'name' => 'Nadia Barghathi',
+        'email' => 'nadia'.substr(md5($phone), 0, 6).'@example.com',
+        'phone_number' => $phone,
+        'dob' => '1994-07-02',
+        'location' => 'Tripoli',
+        'password' => 'password123',
+        'password_confirmation' => 'password123',
+    ];
+}
+
+it('accepts the +218 international form', function () {
+    $this->post(route('register'), registrationWithPhone('+218921234567'))
+        ->assertSessionHasNoErrors();
+
+    $this->assertDatabaseHas('users', ['phone_number' => '+218921234567']);
+});
+
+it('accepts the 0-prefixed local form', function () {
+    $this->post(route('register'), registrationWithPhone('0921234567'))
+        ->assertSessionHasNoErrors();
+
+    $this->assertDatabaseHas('users', ['phone_number' => '0921234567']);
+});
+
+it('rejects a phone number that is not Libyan', function (string $phone) {
+    $this->post(route('register'), registrationWithPhone($phone))
+        ->assertSessionHasErrors('phone_number');
+
+    $this->assertDatabaseMissing('users', ['phone_number' => $phone]);
+})->with([
+    'international non-Libyan' => '+15551234567',
+    'wrong operator digit' => '+218961234567',
+    'too short' => '+21891234567',
+    'too long' => '+2189112345678',
+    'no country or trunk prefix' => '911234567',
+    'letters' => '+21891abc4567',
+]);
+
+it('explains the expected phone format', function () {
+    $this->post(route('register'), registrationWithPhone('+15551234567'))
+        ->assertInvalid(['phone_number' => 'Libyan mobile number']);
+});
+
+it('applies the same phone rule when editing a profile', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)->put(route('profile.update'), [
+        'name' => $user->name,
+        'email' => $user->email,
+        'phone_number' => '+15551234567',
+        'dob' => '1994-07-02',
+        'location' => 'Tripoli',
+    ])->assertSessionHasErrors('phone_number');
+});
