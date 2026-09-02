@@ -41,6 +41,28 @@ php artisan boost:install
 
 Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
 
+## Background processes
+
+Two long-running processes are required in production. Without them the
+features that depend on them are only half-shipped.
+
+**Scheduler.** The event reminder email (`events:send-reminders`) is scheduled
+hourly. Nothing runs it unless the scheduler is running:
+
+```
+* * * * * cd /path-to-daleel && php artisan schedule:run >> /dev/null 2>&1
+```
+
+**Queue worker.** Both mailables are `ShouldQueue`, so confirmation and
+reminder emails sit in the queue until a worker picks them up:
+
+```
+php artisan queue:work --tries=3
+```
+
+The reminder command is idempotent: a `reminder_sent` flag on each calendar
+entry means an extra run, or a run after a failed one, never sends a duplicate.
+
 ## Contributing
 
 Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).

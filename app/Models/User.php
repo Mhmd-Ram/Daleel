@@ -49,7 +49,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function registrations(): BelongsToMany
     {
         return $this->belongsToMany(Event::class, 'user_regestrations')
-            ->withPivot('created_at');
+            ->withPivot('created_at', 'reminder_sent');
     }
 
     /**

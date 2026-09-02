@@ -154,7 +154,7 @@ it('shows an empty but valid calendar to a user with no registrations', function
         ->assertOk()
         ->assertSee('August 2026')
         // Literal template text, so the needle must not be HTML-escaped.
-        ->assertSee("You haven't registered for anything yet", false);
+        ->assertSee("You haven't saved anything yet", false);
 
     $days = $response->viewData('weeks')->collapse();
 

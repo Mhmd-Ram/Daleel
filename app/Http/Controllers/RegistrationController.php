@@ -53,7 +53,7 @@ class RegistrationController extends Controller
     public function store(Event $event): RedirectResponse
     {
         if (! $event->is_active || $event->hasFinished()) {
-            return back()->with('error', 'Registration for this event is closed.');
+            return back()->with('error', 'This event can no longer be saved.');
         }
 
         $alreadyRegistered = $event->registeredUsers()
@@ -61,11 +61,11 @@ class RegistrationController extends Controller
             ->exists();
 
         if ($alreadyRegistered) {
-            return back()->with('error', 'You are already registered for this event.');
+            return back()->with('error', 'This event is already on your calendar.');
         }
 
         if ($event->isFull()) {
-            return back()->with('error', 'This event has reached its capacity.');
+            return back()->with('error', 'This event is full.');
         }
 
         $user = auth()->user();
@@ -74,7 +74,7 @@ class RegistrationController extends Controller
 
         Mail::to($user)->queue(new EventRegistered($user, $event));
 
-        return back()->with('success', 'You are registered for this event. A confirmation email is on its way.');
+        return back()->with('success', 'Saved to your calendar. A confirmation email is on its way.');
     }
 
     /**
@@ -84,7 +84,7 @@ class RegistrationController extends Controller
     {
         $event->registeredUsers()->detach(auth()->id());
 
-        return back()->with('success', 'Your registration has been cancelled.');
+        return back()->with('success', 'Removed from your calendar.');
     }
 
     /**

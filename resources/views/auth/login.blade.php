@@ -5,7 +5,7 @@
 @section('content')
     <div class="reveal mx-auto max-w-md">
         <h1 class="text-2xl font-semibold tracking-tight text-stone-900">Welcome back</h1>
-        <p class="mt-1 text-sm text-stone-500">Log in to register for events and manage your tickets.</p>
+        <p class="mt-1 text-sm text-stone-500">Log in to save events to your calendar and manage your tickets.</p>
 
         <form method="POST" action="{{ route('login') }}" autocomplete="off" class="mt-8 space-y-5 rounded-2xl border border-stone-200 bg-white p-6">
             @csrf

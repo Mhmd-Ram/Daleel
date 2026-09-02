@@ -12,9 +12,9 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 /**
- * Confirmation sent to a user after they register for an event.
+ * The nudge sent shortly before an event someone saved (SRS FR-6.5).
  */
-class EventRegistered extends Mailable implements ShouldQueue
+class EventReminder extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -29,7 +29,7 @@ class EventRegistered extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Saved to your calendar: '.$this->event->name,
+            subject: 'Reminder: '.$this->event->name.' is coming up',
         );
     }
 
@@ -39,7 +39,7 @@ class EventRegistered extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            view: 'emails.event-registered',
+            view: 'emails.event-reminder',
         );
     }
 }

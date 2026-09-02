@@ -49,7 +49,7 @@
                 <div class="menu-item"><x-menu-link :href="route('events.index')" label="Events" /></div>
 
                 @auth
-                    <div class="menu-item"><x-menu-link :href="route('my-events')" label="My events" /></div>
+                    <div class="menu-item"><x-menu-link :href="route('my-events')" label="My calendar" /></div>
                     @if (auth()->user()->isOrganizer())
                         <div class="menu-item"><x-menu-link :href="route('organizer.events.index')" label="Organize" /></div>
                     @endif

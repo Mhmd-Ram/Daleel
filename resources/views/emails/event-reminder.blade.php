@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Saved to your calendar: {{ $event->name }}</title>
+    <title>Reminder: {{ $event->name }} is coming up</title>
 </head>
 <body style="margin:0; padding:24px; background-color:#fafaf9; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; color:#1c1917;">
     <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:560px; margin:0 auto; border-collapse:collapse;">
@@ -13,15 +13,15 @@
                     {{ config('app.name') }}
                 </p>
                 <p style="margin:8px 0 0; font-size:22px; font-weight:700; color:#ffffff;">
-                    Saved to your calendar
+                    Coming up soon
                 </p>
             </td>
         </tr>
         <tr>
             <td style="padding:28px; background-color:#ffffff; border:1px solid #e7e5e4; border-top:0; border-radius:0 0 16px 16px;">
                 <p style="margin:0 0 20px; font-size:15px; line-height:1.6; color:#44403c;">
-                    Hi {{ $user->name }}, your place at <strong style="color:#1c1917;">{{ $event->name }}</strong> is confirmed.
-                    Here are the details.
+                    Hi {{ $user->name }}, <strong style="color:#1c1917;">{{ $event->name }}</strong> starts soon.
+                    Here are the details again.
                 </p>
 
                 <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse; font-size:14px;">
@@ -53,7 +53,7 @@
                 </p>
 
                 <p style="margin:24px 0 0; font-size:13px; line-height:1.6; color:#78716c;">
-                    Cannot make it? Remove it from your calendar any time from
+                    Plans changed? Remove it from your calendar any time from
                     <a href="{{ route('my-events') }}" style="color:#047857;">My calendar</a>.
                 </p>
             </td>

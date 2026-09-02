@@ -5,13 +5,13 @@
 @section('content')
     <div class="reveal mb-8">
         <h1 class="text-2xl font-semibold tracking-tight text-stone-900">My events</h1>
-        <p class="mt-1 text-sm text-stone-500">Events you've registered to attend.</p>
+        <p class="mt-1 text-sm text-stone-500">Events you've saved to your calendar.</p>
     </div>
 
     {{-- Month calendar. Renders whether or not the user has registrations, so an
          empty month still reads as a working calendar rather than a broken page. --}}
     <section class="reveal mb-10 overflow-hidden rounded-xl border border-stone-200 bg-white"
-             aria-label="Calendar of your registered events">
+             aria-label="Calendar of your saved events">
         <header class="flex items-center justify-between gap-3 border-b border-stone-200 px-4 py-3 sm:px-5">
             <h2 class="text-base font-semibold text-stone-900">
                 <time datetime="{{ $month->format('Y-m') }}">{{ $month->format('F Y') }}</time>
@@ -87,8 +87,8 @@
 
     @if ($events->isEmpty())
         <div class="reveal rounded-xl border border-dashed border-stone-300 bg-white px-6 py-16 text-center">
-            <p class="text-lg font-medium text-stone-900">You haven't registered for anything yet</p>
-            <p class="mt-1 text-stone-500">Browse events and register to see them here.</p>
+            <p class="text-lg font-medium text-stone-900">You haven't saved anything yet</p>
+            <p class="mt-1 text-stone-500">Browse events and save them to see them here.</p>
             <a href="{{ route('events.index') }}" class="mt-5 inline-flex rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-700">Browse events</a>
         </div>
     @else
@@ -111,7 +111,7 @@
                     <div class="flex items-center gap-2">
                         <a href="{{ route('events.show', $event) }}" class="rounded-lg border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 transition hover:border-stone-400">Details</a>
                         <form method="POST" action="{{ route('events.cancel', $event) }}"
-                              onsubmit="return confirm('Cancel your registration for this event?')">
+                              onsubmit="return confirm('Remove this event from your calendar?')">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="rounded-lg border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 transition hover:border-rose-300 hover:text-rose-700">Cancel</button>

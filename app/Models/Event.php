@@ -113,7 +113,7 @@ class Event extends Model
     public function registeredUsers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_regestrations')
-            ->withPivot('created_at');
+            ->withPivot('created_at', 'reminder_sent');
     }
 
     /**

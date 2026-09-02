@@ -58,7 +58,7 @@
                     <div class="flex items-start gap-3 rounded-xl border border-stone-200 bg-stone-50/60 p-4">
                         <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-emerald-100 text-emerald-700"><x-icon name="users" class="h-5 w-5" /></span>
                         <div>
-                            <p class="text-xs uppercase tracking-wide text-stone-400">Attending</p>
+                            <p class="text-xs uppercase tracking-wide text-stone-400">Saved</p>
                             <p class="mt-0.5 text-sm font-medium text-stone-900">{{ $event->registered_users_count }}{{ $event->max_capacity ? ' / '.$event->max_capacity : '' }}</p>
                         </div>
                     </div>
@@ -112,7 +112,7 @@
             @if ($event->max_capacity)
                 <div class="mt-5">
                     <div class="flex items-center justify-between text-xs text-stone-500">
-                        <span>{{ $event->registered_users_count }} registered</span>
+                        <span>{{ $event->registered_users_count }} saved</span>
                         <span>{{ $event->max_capacity }} cap</span>
                     </div>
                     <div class="mt-1.5 h-2 overflow-hidden rounded-full bg-stone-200">
@@ -121,7 +121,7 @@
                 </div>
             @else
                 <p class="mt-3 inline-flex items-center gap-1.5 text-sm text-stone-500">
-                    <x-icon name="users" class="h-4 w-4 text-stone-400" /> {{ $event->registered_users_count }} attending
+                    <x-icon name="users" class="h-4 w-4 text-stone-400" /> {{ $event->registered_users_count }} have saved this
                 </p>
             @endif
 
@@ -131,18 +131,18 @@
                 @elseif (! auth()->check())
                     <a href="{{ route('login') }}"
                        class="flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 font-medium text-white shadow-lg shadow-emerald-600/25 transition hover:bg-emerald-700 hover:shadow-emerald-600/40 active:scale-[0.98]">
-                        <x-icon name="ticket" class="h-5 w-5" /> Log in to register
+                        <x-icon name="ticket" class="h-5 w-5" /> Log in to save
                     </a>
                 @elseif ($isRegistered)
                     <p class="mb-3 flex items-center justify-center gap-1.5 rounded-xl bg-emerald-50 px-4 py-3 text-center text-sm font-medium text-emerald-700">
-                        <x-icon name="check" class="h-4 w-4" /> You're registered
+                        <x-icon name="check" class="h-4 w-4" /> Saved to your calendar
                     </p>
                     <form method="POST" action="{{ route('events.cancel', $event) }}">
                         @csrf
                         @method('DELETE')
                         <button type="submit"
                                 class="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 font-medium text-stone-700 transition hover:border-rose-300 hover:text-rose-700 active:scale-[0.98]">
-                            Cancel registration
+                            Remove from calendar
                         </button>
                     </form>
                 @elseif ($event->isFull())
@@ -152,7 +152,7 @@
                         @csrf
                         <button type="submit"
                                 class="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 font-medium text-white shadow-lg shadow-emerald-600/25 transition hover:bg-emerald-700 hover:shadow-emerald-600/40 active:scale-[0.98]">
-                            <x-icon name="ticket" class="h-5 w-5" /> Register for this event
+                            <x-icon name="ticket" class="h-5 w-5" /> Save to Calendar
                         </button>
                     </form>
                 @endif
