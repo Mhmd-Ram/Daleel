@@ -8,23 +8,45 @@ use App\Http\Requests\UpdateEventRequest;
 use App\Models\Category;
 use App\Models\Event;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
+/**
+ * Event management for administrators.
+ *
+ * Unlike the organizer area, this is deliberately not ownership-scoped: the SRS
+ * makes the administrator the moderator of all content (FR-12.2, FR-12.3), so
+ * admins can review, unpublish and remove any event, including ones organizers
+ * created. `store()` still stamps the creating admin, so ownership is never lost.
+ */
 class EventController extends Controller
 {
     /**
-     * List the current admin's events with category and active status.
+     * Every event on the platform, whoever created it (SRS FR-12.2).
+     *
+     * Deliberately not scoped to the signed-in admin's own events. The owner
+     * column tells them apart.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $events = Event::with('category')
-            ->where('admin_id', Auth::guard('admin')->id())
-            ->withCount('registeredUsers')
-            ->latest()
-            ->get();
+        $owner = $this->owner($request);
+        $status = $this->status($request);
 
-        return view('admin.events.index', ['events' => $events]);
+        $events = Event::with(['category', 'admin', 'organizer'])
+            ->withCount('registeredUsers')
+            ->when($owner === 'admin', fn ($query) => $query->whereNotNull('admin_id'))
+            ->when($owner === 'organizer', fn ($query) => $query->whereNotNull('organizer_id'))
+            ->when($status, fn ($query, $value) => $query->where('is_active', $value === 'published'))
+            ->latest()
+            ->paginate(25)
+            ->withQueryString();
+
+        return view('admin.events.index', [
+            'events' => $events,
+            'selectedOwner' => $owner,
+            'selectedStatus' => $status,
+        ]);
     }
 
     /**
@@ -53,8 +75,6 @@ class EventController extends Controller
      */
     public function edit(Event $event): View
     {
-        $this->authorizeOwner($event);
-
         return view('admin.events.edit', [
             'event' => $event,
             'categories' => Category::orderBy('name')->get(),
@@ -63,11 +83,13 @@ class EventController extends Controller
 
     /**
      * Update an event.
+     *
+     * Neither owner column is in StoreEventRequest::rules(), so a moderating
+     * admin editing an organizer's event cannot take ownership of it and the
+     * Event::saving invariant stays satisfied.
      */
     public function update(UpdateEventRequest $request, Event $event): RedirectResponse
     {
-        $this->authorizeOwner($event);
-
         $event->update($request->validated());
 
         return redirect()->route('admin.events.index')
@@ -79,8 +101,6 @@ class EventController extends Controller
      */
     public function destroy(Event $event): RedirectResponse
     {
-        $this->authorizeOwner($event);
-
         $event->delete();
 
         return redirect()->route('admin.events.index')
@@ -92,8 +112,6 @@ class EventController extends Controller
      */
     public function togglePublish(Event $event): RedirectResponse
     {
-        $this->authorizeOwner($event);
-
         $event->update(['is_active' => ! $event->is_active]);
 
         return back()->with('success', $event->is_active ? 'Event published.' : 'Event unpublished.');
@@ -104,18 +122,28 @@ class EventController extends Controller
      */
     public function registrations(Event $event): View
     {
-        $this->authorizeOwner($event);
-
         $event->load('registeredUsers');
 
         return view('admin.events.registrations', ['event' => $event]);
     }
 
     /**
-     * Ensure the current admin owns the given event.
+     * The chosen owner-type filter, or null when it is absent or not one of ours.
      */
-    private function authorizeOwner(Event $event): void
+    private function owner(Request $request): ?string
     {
-        abort_unless($event->admin_id === Auth::guard('admin')->id(), 403);
+        $owner = (string) $request->query('owner', '');
+
+        return in_array($owner, ['admin', 'organizer'], true) ? $owner : null;
+    }
+
+    /**
+     * The chosen publish-status filter, or null when it is not one of ours.
+     */
+    private function status(Request $request): ?string
+    {
+        $status = (string) $request->query('status', '');
+
+        return in_array($status, ['published', 'draft'], true) ? $status : null;
     }
 }
