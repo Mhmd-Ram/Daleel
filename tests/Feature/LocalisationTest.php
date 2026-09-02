@@ -109,3 +109,28 @@ it('pluralises a count in Arabic', function () {
         ->assertDontSee('event found')
         ->assertDontSee('events found');
 });
+
+it('renders the organizer area in Arabic', function () {
+    $organizer = User::factory()->organizer()->create();
+
+    $this->actingAs($organizer)
+        ->withSession(['locale' => 'ar'])
+        ->get(route('organizer.events.index'))
+        ->assertOk()
+        ->assertSee('الفعاليات التي تنظّمها', false)
+        ->assertDontSee('Events you organize');
+});
+
+it('keeps the delete confirmation usable in Arabic', function () {
+    $organizer = User::factory()->organizer()->create();
+    Event::factory()->organizedBy($organizer)->create();
+
+    // The confirm() text sits inside a single-quoted JS string inside a
+    // double-quoted attribute, so an apostrophe in either language would
+    // break the markup. Neither has one; this pins that.
+    $this->actingAs($organizer)
+        ->withSession(['locale' => 'ar'])
+        ->get(route('organizer.events.index'))
+        ->assertOk()
+        ->assertDontSee('&#039;', false);
+});

@@ -20,22 +20,22 @@
         <nav class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-4">
             <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2 font-semibold tracking-tight">
                 <span class="grid h-8 w-8 place-items-center rounded-lg bg-emerald-600 text-sm font-bold text-white">E</span>
-                <span>{{ config('app.name') }} <span class="text-stone-400">Admin</span></span>
+                <span>{{ config('app.name') }} <span class="text-stone-400">{{ __('app.admin.label') }}</span></span>
             </a>
 
             @auth('admin')
                 <div class="flex items-center gap-1 text-sm">
-                    <a href="{{ route('admin.dashboard') }}" @class(['nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white']) @if(request()->routeIs('admin.dashboard')) aria-current="page" @endif>Dashboard</a>
-                    <a href="{{ route('admin.events.index') }}" @class(['nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white']) @if(request()->routeIs('admin.events.*')) aria-current="page" @endif>Events</a>
-                    <a href="{{ route('admin.users.index') }}" @class(['nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white']) @if(request()->routeIs('admin.users.*')) aria-current="page" @endif>Users</a>
-                    <a href="{{ route('admin.reports.index') }}" @class(['nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white']) @if(request()->routeIs('admin.reports.*')) aria-current="page" @endif>Reports</a>
-                    <a href="{{ route('admin.categories.index') }}" @class(['nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white']) @if(request()->routeIs('admin.categories.*')) aria-current="page" @endif>Categories</a>
-                    <a href="{{ route('admin.organizer-applications.index') }}" @class(['nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white']) @if(request()->routeIs('admin.organizer-applications.*')) aria-current="page" @endif>Organizers</a>
-                    <a href="{{ route('home') }}" class="nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white">View site</a>
+                    <a href="{{ route('admin.dashboard') }}" @class(['nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white']) @if(request()->routeIs('admin.dashboard')) aria-current="page" @endif>{{ __('app.admin.dashboard') }}</a>
+                    <a href="{{ route('admin.events.index') }}" @class(['nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white']) @if(request()->routeIs('admin.events.*')) aria-current="page" @endif>{{ __('app.admin.events') }}</a>
+                    <a href="{{ route('admin.users.index') }}" @class(['nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white']) @if(request()->routeIs('admin.users.*')) aria-current="page" @endif>{{ __('app.admin.users') }}</a>
+                    <a href="{{ route('admin.reports.index') }}" @class(['nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white']) @if(request()->routeIs('admin.reports.*')) aria-current="page" @endif>{{ __('app.admin.reports') }}</a>
+                    <a href="{{ route('admin.categories.index') }}" @class(['nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white']) @if(request()->routeIs('admin.categories.*')) aria-current="page" @endif>{{ __('app.admin.categories') }}</a>
+                    <a href="{{ route('admin.organizer-applications.index') }}" @class(['nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white']) @if(request()->routeIs('admin.organizer-applications.*')) aria-current="page" @endif>{{ __('app.admin.organizers') }}</a>
+                    <a href="{{ route('home') }}" class="nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white">{{ __('app.admin.view_site') }}</a>
                     <span class="mx-2 hidden text-stone-500 sm:inline">{{ auth('admin')->user()->name }}</span>
                     <form method="POST" action="{{ route('admin.logout') }}">
                         @csrf
-                        <button type="submit" class="rounded-md px-3 py-2 text-stone-300 transition hover:bg-stone-800 hover:text-white">Log out</button>
+                        <button type="submit" class="rounded-md px-3 py-2 text-stone-300 transition hover:bg-stone-800 hover:text-white">{{ __('app.nav.log_out') }}</button>
                     </form>
                 </div>
             @endauth
