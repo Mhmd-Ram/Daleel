@@ -232,6 +232,13 @@ return [
         'ends' => 'تنتهي',
         'location' => 'المكان',
         'ticket' => 'التذكرة',
+
+        // Carbon translates the day and month names and the meridiem (ص/م);
+        // numerals stay Latin, as everywhere else in the interface.
+        'date_format' => 'l، j F Y',
+        'time_format' => 'g:i A',
+        'date_at_time' => ':date في :time',
+        'ticket_price' => ':amount د.ل',
         'view_the_event' => 'عرض الفعالية',
         'cannot_make_it' => 'لا تستطيع الحضور؟ أزلها من تقويمك في أي وقت من',
         'plans_changed' => 'تغيّرت خططك؟ أزلها من تقويمك في أي وقت من',

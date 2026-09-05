@@ -232,6 +232,14 @@ return [
         'ends' => 'Ends',
         'location' => 'Location',
         'ticket' => 'Ticket',
+
+        // Carbon formats, translated per locale so day and month names follow
+        // the reader's language. Numerals stay Latin in both, matching the rest
+        // of the interface.
+        'date_format' => 'l, M j, Y',
+        'time_format' => 'g:i A',
+        'date_at_time' => ':date at :time',
+        'ticket_price' => ':amount LYD',
         'view_the_event' => 'View the event',
         'cannot_make_it' => 'Cannot make it? Remove it from your calendar any time from',
         'plans_changed' => 'Plans changed? Remove it from your calendar any time from',
