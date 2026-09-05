@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -18,7 +19,7 @@ class EnsureUserIsOrganizer
      */
     public function handle(Request $request, Closure $next): Response
     {
-        abort_unless($request->user()?->isOrganizer(), 403, 'You are not an event organizer.');
+        abort_unless(Auth::guard('web')->user()?->isOrganizer(), 403, 'You are not an event organizer.');
 
         return $next($request);
     }

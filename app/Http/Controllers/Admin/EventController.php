@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Concerns\HandlesEventImages;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
@@ -22,6 +23,8 @@ use Illuminate\View\View;
  */
 class EventController extends Controller
 {
+    use HandlesEventImages;
+
     /**
      * Every event on the platform, whoever created it (SRS FR-12.2).
      *
@@ -64,6 +67,7 @@ class EventController extends Controller
     {
         $event = new Event($request->validated());
         $event->admin_id = Auth::guard('admin')->id();
+        $this->syncImage($event, $request);
         $event->save();
 
         return redirect()->route('admin.events.index')
@@ -90,7 +94,9 @@ class EventController extends Controller
      */
     public function update(UpdateEventRequest $request, Event $event): RedirectResponse
     {
-        $event->update($request->validated());
+        $event->fill($request->validated());
+        $this->syncImage($event, $request);
+        $event->save();
 
         return redirect()->route('admin.events.index')
             ->with('success', __('app.flash.event_updated'));
@@ -122,9 +128,13 @@ class EventController extends Controller
      */
     public function registrations(Event $event): View
     {
-        $event->load('registeredUsers');
-
-        return view('admin.events.registrations', ['event' => $event]);
+        return view('admin.events.registrations', [
+            'event' => $event,
+            // Paginated rather than loaded onto the event: attendee lists grow
+            // without a ceiling, and a sold-out event would otherwise render
+            // every row on one page.
+            'registrations' => $event->registeredUsers()->paginate(25),
+        ]);
     }
 
     /**

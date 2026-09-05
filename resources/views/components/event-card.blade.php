@@ -4,7 +4,7 @@
    class="reveal group block">
     <article class="event-card relative flex h-full flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white/90 shadow-sm backdrop-blur-sm">
         <div class="relative aspect-[16/10] overflow-hidden bg-stone-100">
-            <img src="https://picsum.photos/seed/event-{{ $event->id }}/800/500" alt=""
+            <img src="{{ $event->imageUrl(800, 500) }}" alt=""
                  class="h-full w-full object-cover" loading="lazy">
             <div class="absolute inset-0 bg-gradient-to-t from-stone-900/35 via-transparent to-transparent"></div>
 

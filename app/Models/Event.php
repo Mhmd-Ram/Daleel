@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 use LogicException;
 
 #[Fillable([
@@ -66,6 +67,34 @@ class Event extends Model
             // resolve.
             $event->reports()->delete();
         });
+
+        static::forceDeleted(function (Event $event): void {
+            // Only on a force delete. A soft-deleted event can be restored, and
+            // deleting its cover here would bring it back without one.
+            if ($event->image_path) {
+                Storage::disk('public')->delete($event->image_path);
+            }
+        });
+    }
+
+    /**
+     * A URL for this event's cover image at roughly the given size.
+     *
+     * An uploaded cover is served at its own size and cropped by CSS; without
+     * one we fall back to the seeded placeholder the app has always shown, so
+     * every event still has artwork. The dimensions only steer the fallback.
+     */
+    public function imageUrl(int $width = 800, int $height = 500): string
+    {
+        if ($this->image_path) {
+            // `asset()` rather than the disk's own url(): the disk builds from
+            // APP_URL, so any mismatch (a dev server on another port, a staging
+            // host) serves 404s. `asset()` follows the current request, and is
+            // what the rest of the app already uses for public files.
+            return asset('storage/'.$this->image_path);
+        }
+
+        return "https://picsum.photos/seed/event-{$this->id}/{$width}/{$height}";
     }
 
     /**

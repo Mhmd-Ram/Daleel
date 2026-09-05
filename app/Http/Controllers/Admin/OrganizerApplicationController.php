@@ -16,12 +16,15 @@ class OrganizerApplicationController extends Controller
     public function index(): View
     {
         return view('admin.organizer-applications.index', [
-            'pending' => OrganizerApplication::with('user')->pending()->oldest()->get(),
+            'pending' => OrganizerApplication::with('user')->pending()->oldest()
+                ->paginate(20, ['*'], 'pending_page'),
+            // Named page parameters: two paginators share this page, and the
+            // default `page` would move both at once. `limit(20)` used to hide
+            // the 21st decision outright.
             'reviewed' => OrganizerApplication::with(['user', 'reviewer'])
                 ->whereNotNull('reviewed_at')
                 ->latest('reviewed_at')
-                ->limit(20)
-                ->get(),
+                ->paginate(20, ['*'], 'reviewed_page'),
         ]);
     }
 

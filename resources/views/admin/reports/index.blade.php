@@ -8,7 +8,23 @@
         <p class="mt-1 text-sm text-stone-500">{{ __('app.admin.reports_subtitle') }}</p>
     </div>
 
-    @if ($mostReported->isNotEmpty())
+    {{-- Say so when the queue is narrowed, and offer the way back out. Without
+         this the filtered view is indistinguishable from a quiet week. --}}
+    @if ($filteredEvent)
+        <div class="reveal mb-8 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-stone-200 bg-white px-5 py-4"
+             style="--reveal-delay: 40ms">
+            <p class="text-sm text-stone-600">
+                {{ __('app.admin.reports_filtered_to') }}
+                <span class="font-medium text-stone-900">{{ $filteredEvent->name }}</span>
+            </p>
+            <a href="{{ route('admin.reports.index') }}"
+               class="text-sm font-medium text-emerald-700 transition hover:underline">
+                {{ __('app.admin.show_all_reports') }}
+            </a>
+        </div>
+    @endif
+
+    @if (! $filteredEvent && $mostReported->isNotEmpty())
         <div class="reveal mb-8 rounded-xl border border-stone-200 bg-white p-5" style="--reveal-delay: 40ms">
             <h2 class="text-sm font-medium text-stone-900">{{ __('app.admin.most_reported') }}</h2>
             <ul class="mt-3 divide-y divide-stone-100">
@@ -17,9 +33,10 @@
                         <a href="{{ route('admin.events.edit', $event) }}" class="text-sm text-stone-700 hover:underline">
                             {{ $event->name }}
                         </a>
-                        <span class="inline-flex shrink-0 rounded-full bg-rose-50 px-2.5 py-0.5 text-xs font-medium text-rose-700">
+                        <a href="{{ route('admin.reports.index', ['event' => $event->id]) }}"
+                           class="inline-flex shrink-0 rounded-full bg-bad-50 px-2.5 py-0.5 text-xs font-medium text-bad-700 transition hover:bg-bad-200/60">
                             {{ trans_choice('app.admin.reports_badge', $event->reports_count, ['count' => $event->reports_count]) }}
-                        </span>
+                        </a>
                     </li>
                 @endforeach
             </ul>
@@ -32,15 +49,15 @@
             <p class="mt-1 text-stone-500">{{ __('app.admin.nothing_reported_body') }}</p>
         </div>
     @else
-        <div class="reveal overflow-hidden rounded-xl border border-stone-200 bg-white" style="--reveal-delay: 80ms">
+        <div class="reveal overflow-x-auto rounded-xl border border-stone-200 bg-white" style="--reveal-delay: 80ms">
             <table class="w-full text-start text-sm">
                 <thead class="border-b border-stone-200 bg-stone-50 text-stone-500">
                     <tr>
                         <th class="px-5 py-3 font-medium">{{ __('app.common.event') }}</th>
                         <th class="px-5 py-3 font-medium">{{ __('app.admin.reported_by') }}</th>
                         <th class="px-5 py-3 font-medium">{{ __('app.admin.reason') }}</th>
-                        <th class="px-5 py-3 font-medium">{{ __('app.admin.when') }}</th>
-                        <th class="px-5 py-3"></th>
+                        <th class="px-5 py-3 font-medium whitespace-nowrap">{{ __('app.admin.when') }}</th>
+                        <th class="px-5 py-3 text-end font-medium">{{ __('app.admin.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-stone-100">
@@ -56,7 +73,7 @@
                                     {{ $report->reason->label() }}
                                 </span>
                             </td>
-                            <td class="px-5 py-3 text-stone-500">{{ $report->created_at->format('M j, Y') }}</td>
+                            <td class="px-5 py-3 text-stone-500 whitespace-nowrap">{{ $report->created_at->format('M j, Y') }}</td>
                             <td class="px-5 py-3">
                                 <div class="flex items-center justify-end gap-2">
                                     <a href="{{ route('admin.events.edit', $report->event) }}"

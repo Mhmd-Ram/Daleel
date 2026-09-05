@@ -55,3 +55,12 @@ it('names the creator of each recent event, admin or organizer', function () {
         ->assertSee('Site Admin')
         ->assertSee('Amal Zarrouk');
 });
+
+it('lands an admin on the dashboard after signing in', function () {
+    $admin = Admin::factory()->create(['email' => 'staff@daleel.ly']);
+
+    $this->post(route('admin.login'), [
+        'email' => $admin->email,
+        'password' => 'password',
+    ])->assertRedirect(route('admin.dashboard'));
+});

@@ -229,3 +229,19 @@ it('shows the list of users registered for an event', function () {
         ->assertOk()
         ->assertSee('Registered Person');
 });
+
+it('paginates the attendee list rather than loading every registration', function () {
+    $admin = Admin::factory()->create();
+    $event = Event::factory()->create(['admin_id' => $admin->id, 'organizer_id' => null]);
+
+    $event->registeredUsers()->attach(
+        User::factory()->count(30)->create()->pluck('id'),
+        ['created_at' => now()],
+    );
+
+    $this->actingAs($admin, 'admin')
+        ->get(route('admin.events.registrations', $event))
+        ->assertOk()
+        ->assertViewHas('registrations', fn ($registrations) => $registrations->count() === 25
+            && $registrations->total() === 30);
+});

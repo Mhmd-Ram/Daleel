@@ -23,6 +23,7 @@ return [
         'my_calendar' => 'My calendar',
         'organize' => 'Organize',
         'profile' => 'Profile',
+        'your_profile' => 'Your profile, :name',
         'log_out' => 'Log out',
         'log_in' => 'Log in',
         'sign_up' => 'Sign up',
@@ -79,6 +80,10 @@ return [
         'max_capacity' => 'Max capacity',
         'capacity_hint' => 'Leave blank for no limit.',
         'published_label' => 'Published (visible to users)',
+        'cover_image' => 'Cover image',
+        'cover_image_hint' => 'JPG, PNG or WebP, up to 2 MB. At least 600×375. Leave empty to keep the current one.',
+        'remove_image' => 'Remove the current cover',
+        'no_image' => 'No image',
         'pin_on_map' => 'Pin on the map',
         'pin_hint' => 'Optional. Search for the venue, or click the map.',
         'address_search_placeholder' => 'Search an address or venue',
@@ -98,6 +103,11 @@ return [
         'categories' => 'Categories',
         'organizers' => 'Organizers',
         'view_site' => 'View site',
+        'browsing_as_admin' => 'You are browsing the site as an admin.',
+        'signed_in_as_admin' => 'You are signed in as an admin.',
+        'browse_as_user' => 'Browse as a user',
+        'back_to_dashboard' => 'Back to dashboard',
+        'exit_admin_mode' => 'Exit admin mode',
 
         // Sign in
         'login_title' => 'Admin log in',
@@ -134,6 +144,7 @@ return [
         // Registrations
         'registrations_title' => 'Registrations',
         'registered_attendees' => 'Registered attendees',
+        'registered_count' => ':count registered',
         'no_registrations' => 'No registrations yet',
         'no_registrations_body' => "When users register for this event, they'll appear here.",
 
@@ -170,6 +181,8 @@ return [
         // Reports
         'reports_subtitle' => 'Events attendees have flagged for review.',
         'most_reported' => 'Most reported',
+        'reports_filtered_to' => 'Showing reports for',
+        'show_all_reports' => 'Show all reports',
         'nothing_reported' => 'Nothing reported',
         'nothing_reported_body' => 'Reports from attendees will appear here for review.',
         'reported_by' => 'Reported by',
@@ -422,7 +435,11 @@ return [
         'verify_your_email' => 'Verify your email',
         'become_organizer' => 'Become an organizer',
         'why_organize' => 'Why you want to organize',
-        'few_sentences' => 'A few sentences is plenty.',
+        'min_chars_hint' => 'At least :min characters — a few sentences is plenty.',
+        'application_too_short' => 'Tell the admins a little more about the events you want to run — at least :min characters.',
+        'application_sent_ago' => 'Sent :ago. An admin will get back to you.',
+        'application_rejected_retry' => 'Your last application was not approved. You are welcome to apply again.',
+        'application_intro' => 'Tell the admins what you would like to run and they will review your request.',
         'send_application' => 'Send application',
 
         'edit_title' => 'Edit profile',

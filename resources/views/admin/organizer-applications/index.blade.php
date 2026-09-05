@@ -52,12 +52,16 @@
                 </div>
             @endforeach
         </div>
+
+        <div class="mt-8">
+            {{ $pending->links() }}
+        </div>
     @endif
 
     @if ($reviewed->isNotEmpty())
         <h2 class="mb-4 mt-10 text-lg font-semibold tracking-tight text-stone-900">{{ __('app.admin.recent_decisions') }}</h2>
 
-        <div class="overflow-hidden rounded-xl border border-stone-200 bg-white">
+        <div class="overflow-x-auto rounded-xl border border-stone-200 bg-white">
             <table class="w-full text-start text-sm">
                 <thead class="border-b border-stone-200 bg-stone-50 text-stone-500">
                     <tr>
@@ -76,7 +80,7 @@
                             </td>
                             <td class="px-5 py-3">
                                 @if ($application->status === \App\Enums\OrganizerApplicationStatus::Approved)
-                                    <span class="inline-flex rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">{{ __('app.admin.approved') }}</span>
+                                    <span class="inline-flex rounded-full bg-ok-50 px-2.5 py-0.5 text-xs font-medium text-ok-700">{{ __('app.admin.approved') }}</span>
                                 @else
                                     <span class="inline-flex rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-medium text-stone-500">{{ __('app.admin.rejected') }}</span>
                                 @endif
@@ -87,6 +91,10 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+
+        <div class="mt-8">
+            {{ $reviewed->links() }}
         </div>
     @endif
 @endsection

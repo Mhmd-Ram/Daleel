@@ -43,9 +43,9 @@ class DashboardController extends Controller
                 ->where('end_date_time', '>', now())
                 ->count(),
             'registrations' => DB::table('user_regestrations')->count(),
-            'users' => User::count(),
-            'organizers' => User::where('role', UserRole::Organizer)->count(),
-            'bannedUsers' => User::where('is_banned', true)->count(),
+            'users' => User::real()->count(),
+            'organizers' => User::real()->where('role', UserRole::Organizer)->count(),
+            'bannedUsers' => User::real()->where('is_banned', true)->count(),
             'pendingApplications' => OrganizerApplication::pending()->count(),
             'reports' => Report::count(),
         ];

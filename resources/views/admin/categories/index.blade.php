@@ -20,20 +20,20 @@
             <p class="mt-1 text-stone-500">{{ __('app.admin.no_categories_body') }}</p>
         </div>
     @else
-        <div class="reveal overflow-hidden rounded-xl border border-stone-200 bg-white" style="--reveal-delay: 80ms">
+        <div class="reveal overflow-x-auto rounded-xl border border-stone-200 bg-white" style="--reveal-delay: 80ms">
             <table class="w-full text-start text-sm">
                 <thead class="border-b border-stone-200 bg-stone-50 text-stone-500">
                     <tr>
                         <th class="px-5 py-3 font-medium">{{ __('app.admin.name') }}</th>
-                        <th class="px-5 py-3 font-medium">{{ __('app.admin.events') }}</th>
-                        <th class="px-5 py-3"></th>
+                        <th class="px-5 py-3 text-end font-medium whitespace-nowrap">{{ __('app.admin.events') }}</th>
+                        <th class="px-5 py-3 text-end font-medium">{{ __('app.admin.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-stone-100">
                     @foreach ($categories as $category)
                         <tr>
                             <td class="px-5 py-3 font-medium text-stone-900">{{ $category->name }}</td>
-                            <td class="px-5 py-3 text-stone-500">{{ $category->events_count }}</td>
+                            <td class="px-5 py-3 text-end tabular-nums text-stone-500">{{ $category->events_count }}</td>
                             <td class="px-5 py-3">
                                 <div class="flex items-center justify-end gap-2">
                                     <a href="{{ route('admin.categories.edit', $category) }}"
@@ -50,6 +50,10 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+
+        <div class="mt-8">
+            {{ $categories->links() }}
         </div>
     @endif
 @endsection

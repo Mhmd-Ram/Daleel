@@ -42,6 +42,17 @@ class StoreEventRequest extends FormRequest
             'tiket_cost' => ['required', 'numeric', 'min:0'],
             'max_capacity' => ['nullable', 'integer', 'min:1'],
             'is_active' => ['boolean'],
+
+            // `nullable` is what makes an edit that does not touch the file
+            // input keep the cover it already has. `mimes` on top of `image`
+            // rules out SVG, which can carry script. The 2 MB ceiling matches
+            // PHP's stock upload_max_filesize: a larger limit here would fail
+            // silently, because the file never reaches the request at all.
+            'image' => [
+                'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048',
+                'dimensions:min_width=600,min_height=375',
+            ],
+            'remove_image' => ['boolean'],
         ];
     }
 

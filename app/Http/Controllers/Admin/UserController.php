@@ -30,6 +30,7 @@ class UserController extends Controller
         $keyword = $this->keyword($request);
 
         $users = User::query()
+            ->real()
             ->withCount(['registrations', 'organizedEvents'])
             ->when($role, fn ($query, $value) => $query->where('role', $value))
             ->when($status, fn ($query, $value) => $query->where('is_banned', $value === 'banned'))

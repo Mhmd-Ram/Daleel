@@ -89,6 +89,7 @@ return [
         'end_date_time' => 'وقت النهاية',
         'tiket_cost' => 'سعر التذكرة',
         'max_capacity' => 'الحد الأقصى للحضور',
+        'image' => 'صورة الغلاف',
         'reason' => 'السبب',
         'message' => 'الرسالة',
     ],

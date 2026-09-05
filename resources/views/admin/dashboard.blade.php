@@ -67,15 +67,15 @@
                 <p class="mt-1 text-stone-500">{{ __('app.admin.nothing_created_body') }}</p>
             </div>
         @else
-            <div class="overflow-hidden rounded-xl border border-stone-200 bg-white">
+            <div class="overflow-x-auto rounded-xl border border-stone-200 bg-white">
                 <table class="w-full text-start text-sm">
                     <thead class="border-b border-stone-200 bg-stone-50 text-stone-500">
                         <tr>
                             <th class="px-5 py-3 font-medium">{{ __('app.common.event') }}</th>
                             <th class="px-5 py-3 font-medium">{{ __('app.admin.created_by') }}</th>
-                            <th class="px-5 py-3 font-medium">{{ __('app.common.starts') }}</th>
+                            <th class="px-5 py-3 font-medium whitespace-nowrap">{{ __('app.common.starts') }}</th>
                             <th class="px-5 py-3 font-medium">{{ __('app.common.status') }}</th>
-                            <th class="px-5 py-3 font-medium">{{ __('app.common.registered') }}</th>
+                            <th class="px-5 py-3 text-end font-medium whitespace-nowrap">{{ __('app.common.registered') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-stone-100">
@@ -86,15 +86,15 @@
                                     {{ $event->owner()->name }}
                                     <span class="ms-1 text-xs text-stone-400">{{ $event->admin_id ? 'admin' : 'organizer' }}</span>
                                 </td>
-                                <td class="px-5 py-3 text-stone-500">{{ $event->start_date_time->format('M j, Y') }}</td>
+                                <td class="px-5 py-3 text-stone-500 whitespace-nowrap">{{ $event->start_date_time->format('M j, Y') }}</td>
                                 <td class="px-5 py-3">
                                     @if ($event->is_active)
-                                        <span class="inline-flex rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">{{ __('app.common.published') }}</span>
+                                        <span class="inline-flex rounded-full bg-ok-50 px-2.5 py-0.5 text-xs font-medium text-ok-700">{{ __('app.common.published') }}</span>
                                     @else
                                         <span class="inline-flex rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-medium text-stone-500">{{ __('app.common.draft') }}</span>
                                     @endif
                                 </td>
-                                <td class="px-5 py-3 text-stone-500">{{ $event->registered_users_count }}</td>
+                                <td class="px-5 py-3 text-end tabular-nums text-stone-500">{{ $event->registered_users_count }}</td>
                             </tr>
                         @endforeach
                     </tbody>

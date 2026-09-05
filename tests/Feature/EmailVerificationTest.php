@@ -2,7 +2,10 @@
 
 use App\Models\Event;
 use App\Models\User;
+use App\Notifications\QueuedVerifyEmail;
 use Illuminate\Contracts\Notifications\Dispatcher;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 use Mockery\MockInterface;
 use Symfony\Component\Mailer\Exception\TransportException;
@@ -126,4 +129,26 @@ it('still creates the account and signs the user in when the welcome email fails
     // The account is real and usable even though the email never left.
     $this->assertAuthenticated();
     expect(User::where('email', 'nour@example.com')->exists())->toBeTrue();
+});
+
+it('queues the verification email instead of sending it inline', function () {
+    Notification::fake();
+
+    $this->post(route('register'), [
+        'name' => 'Nadia Fathi',
+        'email' => 'nadia@example.com',
+        'phone_number' => '+218913334455',
+        'dob' => '1996-04-11',
+        'location' => 'Tripoli',
+        'password' => 'password123',
+        'password_confirmation' => 'password123',
+    ]);
+
+    $user = User::firstWhere('email', 'nadia@example.com');
+
+    Notification::assertSentTo($user, QueuedVerifyEmail::class);
+
+    // The point of the subclass: an unreachable mail server must not be able to
+    // fail the registration request.
+    expect(new QueuedVerifyEmail)->toBeInstanceOf(ShouldQueue::class);
 });

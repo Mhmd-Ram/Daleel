@@ -15,7 +15,7 @@
         {{-- Main: banner + details --}}
         <div class="flex-1">
             <div class="relative aspect-[16/10] w-full overflow-hidden bg-stone-100 sm:aspect-[2/1]">
-                <img src="https://picsum.photos/seed/event-{{ $event->id }}/1280/640" alt=""
+                <img src="{{ $event->imageUrl(1280, 640) }}" alt="{{ $event->name }}"
                      class="h-full w-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-stone-950/85 via-stone-950/25 to-transparent"></div>
 

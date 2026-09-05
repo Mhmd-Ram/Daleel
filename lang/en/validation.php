@@ -208,6 +208,24 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => 'name',
+        'email' => 'email address',
+        'password' => 'password',
+        'current_password' => 'current password',
+        'phone_number' => 'phone number',
+        'dob' => 'date of birth',
+        'location' => 'location',
+        'city' => 'city',
+        'description' => 'description',
+        'category_id' => 'category',
+        'start_date_time' => 'start time',
+        'end_date_time' => 'end time',
+        'tiket_cost' => 'ticket cost',
+        'max_capacity' => 'maximum capacity',
+        'image' => 'cover image',
+        'reason' => 'reason',
+        'message' => 'message',
+    ],
 
 ];

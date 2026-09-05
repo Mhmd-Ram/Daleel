@@ -29,19 +29,91 @@
                 <span>{{ config('app.name') }}</span>
             </a>
 
-            <button type="button" data-menu-toggle aria-expanded="false" aria-controls="main-menu" aria-label="{{ __('app.nav.toggle_menu') }}"
-                    class="group flex items-center gap-3 rounded-full border border-stone-200 bg-white/80 py-1.5 ps-4 pe-2 text-sm font-medium text-stone-700 shadow-sm transition hover:border-stone-300 hover:shadow-md">
-                <span>{{ __('app.nav.menu') }}</span>
-                <span class="relative grid h-7 w-7 place-items-center rounded-full bg-stone-900 text-white">
-                    <span class="relative block h-3 w-4">
-                        <span class="bar bar-top absolute start-0 top-0 h-0.5 w-4 rounded bg-current"></span>
-                        <span class="bar bar-mid absolute start-0 top-[5px] h-0.5 w-4 rounded bg-current"></span>
-                        <span class="bar bar-bot absolute start-0 top-2.5 h-0.5 w-4 rounded bg-current"></span>
+            <div class="flex items-center gap-2">
+                {{-- Who you are, next to the menu. A link straight to the profile
+                     rather than a dropdown: the overlay menu already lists every
+                     destination, and a second menu would only duplicate it. --}}
+                @auth
+                    <a href="{{ route('profile.show') }}"
+                       class="flex items-center gap-2 rounded-full border border-stone-200 bg-white/80 py-1.5 pe-4 ps-1.5 text-sm font-medium text-stone-700 shadow-sm transition hover:border-stone-300 hover:shadow-md"
+                       aria-label="{{ __('app.nav.your_profile', ['name' => auth()->user()->name]) }}">
+                        <span aria-hidden="true"
+                              class="grid h-7 w-7 place-items-center rounded-full bg-emerald-600 text-xs font-semibold text-white">
+                            {{ auth()->user()->initials() }}
+                        </span>
+                        <span class="hidden max-w-32 truncate sm:inline" dir="auto">
+                            {{ \Illuminate\Support\Str::before(auth()->user()->name, ' ') }}
+                        </span>
+                    </a>
+                @else
+                    <a href="{{ route('login') }}"
+                       class="rounded-full px-3 py-1.5 text-sm font-medium text-stone-600 transition hover:text-stone-900">
+                        {{ __('app.nav.log_in') }}
+                    </a>
+                @endauth
+
+                <button type="button" data-menu-toggle aria-expanded="false" aria-controls="main-menu" aria-label="{{ __('app.nav.toggle_menu') }}"
+                        class="group flex items-center gap-3 rounded-full border border-stone-200 bg-white/80 py-1.5 ps-4 pe-2 text-sm font-medium text-stone-700 shadow-sm transition hover:border-stone-300 hover:shadow-md">
+                    <span class="hidden sm:inline">{{ __('app.nav.menu') }}</span>
+                    <span class="relative grid h-7 w-7 place-items-center rounded-full bg-stone-900 text-white">
+                        <span class="relative block h-3 w-4">
+                            <span class="bar bar-top absolute start-0 top-0 h-0.5 w-4 rounded bg-current"></span>
+                            <span class="bar bar-mid absolute start-0 top-[5px] h-0.5 w-4 rounded bg-current"></span>
+                            <span class="bar bar-bot absolute start-0 top-2.5 h-0.5 w-4 rounded bg-current"></span>
+                        </span>
                     </span>
-                </span>
-            </button>
+                </button>
+            </div>
         </nav>
     </header>
+
+    {{-- Admin mode. Gated on the `admin` guard by name: a bare @auth is the web
+         guard and would show this to every signed-in visitor.
+
+         Two states, because the admin session and the visitor session are
+         separate: an admin can be on the site as a signed-in user, or just as
+         an admin looking around. The bar says which, and offers the move that
+         is actually available. --}}
+    @auth('admin')
+        <div class="relative z-40 border-b border-stone-700 bg-stone-900 text-stone-100">
+            <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-2 text-sm">
+                <p class="flex items-center gap-2 text-stone-300">
+                    <x-icon name="user" class="h-4 w-4 shrink-0" />
+                    @auth
+                        {{ __('app.admin.browsing_as_admin') }}
+                    @else
+                        {{ __('app.admin.signed_in_as_admin') }}
+                    @endauth
+                </p>
+
+                <div class="flex items-center gap-1">
+                    <a href="{{ route('admin.dashboard') }}"
+                       class="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 font-medium text-stone-200 transition hover:bg-stone-800 hover:text-white">
+                        <x-icon name="arrow-left" class="h-4 w-4 rtl:rotate-180" />
+                        {{ __('app.admin.back_to_dashboard') }}
+                    </a>
+
+                    @auth
+                        <form method="POST" action="{{ route('admin.exit-site') }}">
+                            @csrf
+                            <button type="submit"
+                                    class="rounded-md px-3 py-1.5 text-stone-400 transition hover:bg-stone-800 hover:text-white">
+                                {{ __('app.admin.exit_admin_mode') }}
+                            </button>
+                        </form>
+                    @else
+                        <form method="POST" action="{{ route('admin.view-site') }}">
+                            @csrf
+                            <button type="submit"
+                                    class="rounded-md px-3 py-1.5 text-stone-400 transition hover:bg-stone-800 hover:text-white">
+                                {{ __('app.admin.browse_as_user') }}
+                            </button>
+                        </form>
+                    @endauth
+                </div>
+            </div>
+        </div>
+    @endauth
 
     {{-- Full-screen overlay menu (desktop + mobile) --}}
     <div data-menu id="main-menu" role="dialog" aria-modal="true" aria-label="{{ __('app.nav.site_menu') }}">

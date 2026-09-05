@@ -20,16 +20,16 @@
             <p class="mt-1 text-stone-500">{{ __('app.organizer.empty_body') }}</p>
         </div>
     @else
-        <div class="reveal overflow-hidden rounded-xl border border-stone-200 bg-white" style="--reveal-delay: 80ms">
+        <div class="reveal overflow-x-auto rounded-xl border border-stone-200 bg-white" style="--reveal-delay: 80ms">
             <table class="w-full text-start text-sm">
                 <thead class="border-b border-stone-200 bg-stone-50 text-stone-500">
                     <tr>
                         <th class="px-5 py-3 font-medium">{{ __('app.common.event') }}</th>
                         <th class="px-5 py-3 font-medium">{{ __('app.common.category') }}</th>
-                        <th class="px-5 py-3 font-medium">{{ __('app.common.starts') }}</th>
+                        <th class="px-5 py-3 font-medium whitespace-nowrap">{{ __('app.common.starts') }}</th>
                         <th class="px-5 py-3 font-medium">{{ __('app.common.status') }}</th>
-                        <th class="px-5 py-3 font-medium">{{ __('app.common.registered') }}</th>
-                        <th class="px-5 py-3"></th>
+                        <th class="px-5 py-3 text-end font-medium whitespace-nowrap">{{ __('app.common.registered') }}</th>
+                        <th class="px-5 py-3 text-end font-medium">{{ __('app.admin.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-stone-100">
@@ -37,15 +37,15 @@
                         <tr>
                             <td class="px-5 py-3 font-medium text-stone-900">{{ $event->name }}</td>
                             <td class="px-5 py-3 text-stone-500">{{ $event->category->name }}</td>
-                            <td class="px-5 py-3 text-stone-500">{{ $event->start_date_time->format('M j, Y g:i A') }}</td>
+                            <td class="px-5 py-3 text-stone-500 whitespace-nowrap">{{ $event->start_date_time->format('M j, Y g:i A') }}</td>
                             <td class="px-5 py-3">
                                 @if ($event->is_active)
-                                    <span class="inline-flex rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">{{ __('app.common.published') }}</span>
+                                    <span class="inline-flex rounded-full bg-ok-50 px-2.5 py-0.5 text-xs font-medium text-ok-700">{{ __('app.common.published') }}</span>
                                 @else
                                     <span class="inline-flex rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-medium text-stone-500">{{ __('app.common.draft') }}</span>
                                 @endif
                             </td>
-                            <td class="px-5 py-3 text-stone-500">{{ $event->registered_users_count }}</td>
+                            <td class="px-5 py-3 text-end tabular-nums text-stone-500">{{ $event->registered_users_count }}</td>
                             <td class="px-5 py-3">
                                 <div class="flex items-center justify-end gap-2">
                                     <a href="{{ route('events.show', $event) }}"
@@ -64,6 +64,10 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+
+        <div class="mt-8">
+            {{ $events->links() }}
         </div>
     @endif
 @endsection

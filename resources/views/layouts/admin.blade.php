@@ -35,8 +35,12 @@
                     <a href="{{ route('admin.reports.index') }}" @class(['nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white']) @if(request()->routeIs('admin.reports.*')) aria-current="page" @endif>{{ __('app.admin.reports') }}</a>
                     <a href="{{ route('admin.categories.index') }}" @class(['nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white']) @if(request()->routeIs('admin.categories.*')) aria-current="page" @endif>{{ __('app.admin.categories') }}</a>
                     <a href="{{ route('admin.organizer-applications.index') }}" @class(['nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white']) @if(request()->routeIs('admin.organizer-applications.*')) aria-current="page" @endif>{{ __('app.admin.organizers') }}</a>
-                    <a href="{{ route('home') }}" class="nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white">{{ __('app.admin.view_site') }}</a>
-                    <span class="mx-2 hidden text-stone-500 sm:inline">{{ auth('admin')->user()->name }}</span>
+                    {{-- A form, not a link: this signs the admin into the web
+                         guard as well, so it needs CSRF. --}}
+                    <form method="POST" action="{{ route('admin.view-site') }}">
+                        @csrf
+                        <button type="submit" class="nav-link rounded-md px-3 py-2 text-stone-300 transition hover:text-white">{{ __('app.admin.view_site') }}</button>
+                    </form>
                     <form method="POST" action="{{ route('admin.logout') }}">
                         @csrf
                         <button type="submit" class="rounded-md px-3 py-2 text-stone-300 transition hover:bg-stone-800 hover:text-white">{{ __('app.nav.log_out') }}</button>
