@@ -59,10 +59,8 @@ class Admin extends Authenticatable
      * events, reports, organizer applications - has nothing to point at. Giving
      * them a real user row is what lets an admin do what a visitor can do.
      *
-     * The address is synthetic on purpose. Adopting an existing account that
-     * happens to share the admin's email would let anyone who registers with
-     * that address hand the admin their account, so the id is namespaced into
-     * `.invalid`, a reserved TLD (RFC 2606) that can never receive mail.
+     * See siteUserEmail() for how the address is chosen; the row is always a
+     * new one, never an existing account claimed by matching on email.
      */
     public function ensureSiteUser(): User
     {
@@ -76,7 +74,7 @@ class Admin extends Authenticatable
     {
         $user = new User([
             'name' => $this->name,
-            'email' => "admin-{$this->id}@staff.invalid",
+            'email' => $this->siteUserEmail(),
             // `users.phone_number` is unique and not nullable. Real accounts are
             // +2189[1-5]-------, so this prefix cannot collide with one.
             'phone_number' => '+218900'.str_pad((string) $this->id, 5, '0', STR_PAD_LEFT),
@@ -96,5 +94,24 @@ class Admin extends Authenticatable
         $user->save();
 
         return $user;
+    }
+
+    /**
+     * The address for this admin's site account.
+     *
+     * Their own, so a confirmation raised while they are testing the site
+     * actually reaches them rather than bouncing.
+     *
+     * When a real account already holds that address the synthetic form is used
+     * instead: `users.email` is unique, and taking the existing row over would
+     * let anyone who registers with the admin's address hand the admin their
+     * account. `.invalid` is reserved (RFC 2606), so that fallback can never
+     * reach a real inbox by accident.
+     */
+    private function siteUserEmail(): string
+    {
+        return User::where('email', $this->email)->exists()
+            ? "admin-{$this->id}@staff.invalid"
+            : $this->email;
     }
 }

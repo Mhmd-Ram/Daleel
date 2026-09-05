@@ -41,6 +41,20 @@ it('creates the paired account once and reuses it', function () {
         ->and($first->email_verified_at)->not->toBeNull();
 });
 
+it('gives the paired account the admin own address so mail reaches them', function () {
+    $admin = Admin::factory()->create(['email' => 'staff@daleel.ly']);
+
+    expect($admin->ensureSiteUser()->email)->toBe('staff@daleel.ly');
+});
+
+it('falls back to an unroutable address when a real account holds the email', function () {
+    $admin = Admin::factory()->create(['email' => 'taken@example.com']);
+    User::factory()->create(['email' => 'taken@example.com']);
+
+    // Reserved TLD, so the fallback cannot reach anyone by accident.
+    expect($admin->ensureSiteUser()->email)->toBe("admin-{$admin->id}@staff.invalid");
+});
+
 it('does not adopt a real account that shares the admin email', function () {
     $admin = Admin::factory()->create(['email' => 'shared@example.com']);
     $impostor = User::factory()->create(['email' => 'shared@example.com']);
