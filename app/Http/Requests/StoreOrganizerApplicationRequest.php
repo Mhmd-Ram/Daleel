@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\OrganizerApplication;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreOrganizerApplicationRequest extends FormRequest
@@ -29,7 +30,12 @@ class StoreOrganizerApplicationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'message' => ['required', 'string', 'min:30', 'max:1000'],
+            'message' => [
+                'required',
+                'string',
+                'min:'.OrganizerApplication::MIN_MESSAGE_LENGTH,
+                'max:'.OrganizerApplication::MAX_MESSAGE_LENGTH,
+            ],
         ];
     }
 
@@ -41,7 +47,9 @@ class StoreOrganizerApplicationRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'message.min' => 'Tell the admins a little more about the events you want to run (at least 30 characters).',
+            'message.min' => __('app.profile.application_too_short', [
+                'min' => OrganizerApplication::MIN_MESSAGE_LENGTH,
+            ]),
         ];
     }
 }

@@ -1,6 +1,5 @@
 @import 'tailwindcss';
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
 @theme {
@@ -43,12 +42,47 @@
     --color-stone-800: #2a2118;
     --color-stone-900: #1c160f;
     --color-stone-950: #0d0905;
+
+    /*
+     * Status colours.
+     *
+     * These exist because the accent scale above is a lie: `emerald-*` reads
+     * red here, so the usual "emerald for success" would paint a successful
+     * save in the same claret as a failure. `ok-*` and `bad-*` are the only
+     * scales in the app that mean what they say, and every success/error
+     * surface must use them.
+     */
+    --color-ok-50: #ecfdf5;
+    --color-ok-200: #a7f3d0;
+    --color-ok-700: #047857;
+
+    --color-bad-50: #fef2f2;
+    --color-bad-200: #fecaca;
+    --color-bad-500: #ef4444;
+    --color-bad-700: #b91c1c;
 }
 
 :root {
     /* Solid base behind the animated backdrop; reused for ticket notch circles
        so they blend with the page no matter where the card sits. */
     --page-base: #f1e9da;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Table headers
+|--------------------------------------------------------------------------
+| The user-agent stylesheet centres `th`, and that beats the `text-start` the
+| tables themselves declare - so every column header floated centred above
+| start-aligned data. Inheriting instead puts each header over its own values.
+|
+| In `@layer base` on purpose: unlayered CSS would outrank Tailwind's
+| utilities, and the numeric and action columns rely on `text-end` winning.
+*/
+@layer base {
+    th {
+        text-align: inherit;
+    }
 }
 
 /* Heavy condensed display face for the landing-page headlines. The @fonts

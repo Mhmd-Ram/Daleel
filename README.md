@@ -63,6 +63,39 @@ php artisan queue:work --tries=3
 The reminder command is idempotent: a `reminder_sent` flag on each calendar
 entry means an extra run, or a run after a failed one, never sends a duplicate.
 
+## Email
+
+Locally the app points at [Mailpit](https://mailpit.axllent.org/), a local SMTP
+sink with a web inbox at `http://localhost:8025`. Nothing leaves the machine, so
+a fresh checkout cannot email real people.
+
+For real delivery over Gmail, swap in the commented block in `.env.example` and
+set `MAIL_PASSWORD` to a Google [App Password](https://myaccount.google.com/apppasswords)
+(16 characters, spaces removed). It requires 2-Step Verification and is *not*
+your normal Google password. Two things Gmail is strict about:
+
+- Port **587** goes with `MAIL_SCHEME=smtp` (STARTTLS). `smtps` is port 465, and
+  the wrong pairing hangs rather than reporting an error.
+- `MAIL_FROM_ADDRESS` must be the authenticated account or a verified alias.
+  Gmail rewrites or rejects any other sender.
+
+Check the configuration end to end:
+
+```
+php artisan mail:test you@example.com
+```
+
+It sends synchronously and prints the transport's own error, which is what tells
+a bad app password apart from a queue worker that is not running.
+
+**If mail seems to vanish, check the queue worker first.** The registration
+confirmation and the reminder are both `ShouldQueue`, so with SMTP configured
+perfectly and no worker running they sit in the `jobs` table and nothing is
+delivered. The verification email is queued too.
+
+In production prefer `MAIL_MAILER=failover`, already configured as smtp then
+log: an outage then degrades to a log line instead of throwing inside the worker.
+
 ## Contributing
 
 Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).

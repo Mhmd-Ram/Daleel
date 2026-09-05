@@ -5,10 +5,12 @@ namespace App\Models;
 use App\Enums\LibyanCity;
 use App\Enums\OrganizerApplicationStatus;
 use App\Enums\UserRole;
+use App\Notifications\QueuedVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -83,6 +85,30 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Real people, excluding the accounts that exist only so an admin can
+     * browse the public site.
+     *
+     * A local scope rather than a global one on purpose: a global scope
+     * would also filter the auth provider's lookups and make those accounts
+     * impossible to sign in as, which is the one thing they exist for.
+     *
+     * @param  Builder<User>  $query
+     */
+    public function scopeReal(Builder $query): void
+    {
+        $query->whereNull('staff_admin_id');
+    }
+
+    /**
+     * Whether this account exists only to give an admin a presence on the
+     * public site, rather than belonging to a person who signed up.
+     */
+    public function isStaffAccount(): bool
+    {
+        return $this->staff_admin_id !== null;
+    }
+
+    /**
      * Whether this user may create and manage their own events.
      */
     public function isOrganizer(): bool
@@ -96,6 +122,38 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isBanned(): bool
     {
         return $this->is_banned;
+    }
+
+    /**
+     * Send the verification email through the queue rather than inline.
+     *
+     * The stock notification sends synchronously, which puts an SMTP
+     * round-trip inside the registration request - slow against Gmail, and
+     * a 500 on the user's first action if the mail server is unreachable.
+     */
+    public function sendEmailVerificationNotification(): void
+    {
+        $this->notify(new QueuedVerifyEmail);
+    }
+
+    /**
+     * One or two letters standing in for an avatar in the site header.
+     *
+     * First and last word rather than the first two, so "Amal bint Yusuf"
+     * reads AY. Multibyte throughout: Arabic names must not be sliced by byte.
+     */
+    public function initials(): string
+    {
+        $words = preg_split('/\s+/u', trim($this->name), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+
+        if ($words === []) {
+            return '?';
+        }
+
+        $initials = mb_substr($words[0], 0, 1)
+            .(count($words) > 1 ? mb_substr((string) end($words), 0, 1) : '');
+
+        return mb_strtoupper($initials);
     }
 
     /**

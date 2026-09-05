@@ -20,6 +20,17 @@ class OrganizerApplication extends Model
     use HasFactory;
 
     /**
+     * How much an applicant has to write before an admin will see it.
+     *
+     * Lives here rather than in the form request because the form shows the
+     * number and holds its submit button closed until the textarea reaches it;
+     * two copies of "30" would drift apart the first time anyone tuned it.
+     */
+    public const MIN_MESSAGE_LENGTH = 30;
+
+    public const MAX_MESSAGE_LENGTH = 1000;
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

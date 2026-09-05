@@ -37,7 +37,10 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('admin.events.index'));
+        // The dashboard, not the event list: it is the overview an admin wants
+        // first. `intended()` still wins, so a deep link they were bounced from
+        // survives the detour through the login screen.
+        return redirect()->intended(route('admin.dashboard'));
     }
 
     /**
@@ -46,6 +49,9 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('admin')->logout();
+        // Ending the admin session ends the site-mode session it created. Said
+        // out loud rather than left to invalidate() as a side effect.
+        Auth::guard('web')->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

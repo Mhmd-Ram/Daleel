@@ -53,7 +53,7 @@
             <p class="mt-1 text-stone-500">{{ __('app.admin.no_users_match_body') }}</p>
         </div>
     @else
-        <div class="reveal overflow-hidden rounded-xl border border-stone-200 bg-white" style="--reveal-delay: 80ms">
+        <div class="reveal overflow-x-auto rounded-xl border border-stone-200 bg-white" style="--reveal-delay: 80ms">
             <table class="w-full text-start text-sm">
                 <thead class="border-b border-stone-200 bg-stone-50 text-stone-500">
                     <tr>
@@ -61,8 +61,8 @@
                         <th class="px-5 py-3 font-medium">{{ __('app.common.email') }}</th>
                         <th class="px-5 py-3 font-medium">{{ __('app.admin.role') }}</th>
                         <th class="px-5 py-3 font-medium">{{ __('app.common.status') }}</th>
-                        <th class="px-5 py-3 font-medium">{{ __('app.admin.joined') }}</th>
-                        <th class="px-5 py-3 font-medium">{{ __('app.admin.actions') }}</th>
+                        <th class="px-5 py-3 font-medium whitespace-nowrap">{{ __('app.admin.joined') }}</th>
+                        <th class="px-5 py-3 text-end font-medium">{{ __('app.admin.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-stone-100">
@@ -82,14 +82,14 @@
                             </td>
                             <td class="px-5 py-3">
                                 @if ($listedUser->isBanned())
-                                    <span class="inline-flex rounded-full bg-rose-50 px-2.5 py-0.5 text-xs font-medium text-rose-700">{{ __('app.admin.banned') }}</span>
+                                    <span class="inline-flex rounded-full bg-bad-50 px-2.5 py-0.5 text-xs font-medium text-bad-700">{{ __('app.admin.banned') }}</span>
                                 @else
-                                    <span class="inline-flex rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">{{ __('app.admin.active') }}</span>
+                                    <span class="inline-flex rounded-full bg-ok-50 px-2.5 py-0.5 text-xs font-medium text-ok-700">{{ __('app.admin.active') }}</span>
                                 @endif
                             </td>
-                            <td class="px-5 py-3 text-stone-500">{{ $listedUser->created_at->format('M j, Y') }}</td>
+                            <td class="px-5 py-3 text-stone-500 whitespace-nowrap">{{ $listedUser->created_at->format('M j, Y') }}</td>
                             <td class="px-5 py-3">
-                                <div class="flex items-center gap-2">
+                                <div class="flex items-center justify-end gap-2">
                                     @if ($listedUser->isOrganizer())
                                         <form method="POST" action="{{ route('admin.users.revert-role', $listedUser) }}">
                                             @csrf

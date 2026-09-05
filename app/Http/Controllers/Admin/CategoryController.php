@@ -15,7 +15,7 @@ class CategoryController extends Controller
      */
     public function index(): View
     {
-        $categories = Category::withCount('events')->orderBy('name')->get();
+        $categories = Category::withCount('events')->orderBy('name')->paginate(25);
 
         return view('admin.categories.index', ['categories' => $categories]);
     }

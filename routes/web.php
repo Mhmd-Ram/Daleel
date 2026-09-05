@@ -116,6 +116,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('/', [Admin\DashboardController::class, 'index'])->name('dashboard');
 
+        // POST, not GET: both change session state, so they need CSRF and must
+        // not be reachable by a link prefetch.
+        Route::post('/view-site', [Admin\ViewSiteController::class, 'store'])->name('view-site');
+        Route::post('/exit-site', [Admin\ViewSiteController::class, 'destroy'])->name('exit-site');
+
         Route::resource('categories', Admin\CategoryController::class)->except('show');
         Route::resource('events', Admin\EventController::class)->except('show');
         Route::patch('/events/{event}/publish', [Admin\EventController::class, 'togglePublish'])->name('events.publish');

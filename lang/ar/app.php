@@ -23,6 +23,7 @@ return [
         'my_calendar' => 'تقويمي',
         'organize' => 'تنظيم',
         'profile' => 'الملف الشخصي',
+        'your_profile' => 'ملفك الشخصي، :name',
         'log_out' => 'تسجيل الخروج',
         'log_in' => 'تسجيل الدخول',
         'sign_up' => 'إنشاء حساب',
@@ -79,6 +80,10 @@ return [
         'max_capacity' => 'الحد الأقصى للحضور',
         'capacity_hint' => 'اتركه فارغًا بلا حد أقصى.',
         'published_label' => 'منشورة (ظاهرة للمستخدمين)',
+        'cover_image' => 'صورة الغلاف',
+        'cover_image_hint' => 'JPG أو PNG أو WebP، حتى 2 ميجابايت. 600×375 على الأقل. اتركه فارغًا للإبقاء على الصورة الحالية.',
+        'remove_image' => 'إزالة الغلاف الحالي',
+        'no_image' => 'لا توجد صورة',
         'pin_on_map' => 'حدّد الموقع على الخريطة',
         'pin_hint' => 'اختياري. ابحث عن المكان أو انقر على الخريطة.',
         'address_search_placeholder' => 'ابحث عن عنوان أو مكان',
@@ -98,6 +103,11 @@ return [
         'categories' => 'التصنيفات',
         'organizers' => 'المنظّمون',
         'view_site' => 'عرض الموقع',
+        'browsing_as_admin' => 'أنت تتصفح الموقع بصفتك مشرفًا.',
+        'signed_in_as_admin' => 'أنت مسجّل الدخول بصفتك مشرفًا.',
+        'browse_as_user' => 'التصفح كمستخدم',
+        'back_to_dashboard' => 'العودة إلى لوحة التحكم',
+        'exit_admin_mode' => 'إنهاء وضع المشرف',
 
         // تسجيل الدخول
         'login_title' => 'دخول المشرفين',
@@ -134,6 +144,7 @@ return [
         // التسجيلات
         'registrations_title' => 'التسجيلات',
         'registered_attendees' => 'الحضور المسجّلون',
+        'registered_count' => ':count مسجّل',
         'no_registrations' => 'لا توجد تسجيلات بعد',
         'no_registrations_body' => 'عندما يسجّل المستخدمون في هذه الفعالية سيظهرون هنا.',
 
@@ -170,6 +181,8 @@ return [
         // البلاغات
         'reports_subtitle' => 'الفعاليات التي أبلغ عنها الحاضرون للمراجعة.',
         'most_reported' => 'الأكثر إبلاغًا',
+        'reports_filtered_to' => 'عرض بلاغات',
+        'show_all_reports' => 'عرض كل البلاغات',
         'nothing_reported' => 'لا توجد بلاغات',
         'nothing_reported_body' => 'ستظهر هنا بلاغات الحاضرين للمراجعة.',
         'reported_by' => 'أبلغ عنها',
@@ -219,6 +232,13 @@ return [
         'ends' => 'تنتهي',
         'location' => 'المكان',
         'ticket' => 'التذكرة',
+
+        // Carbon translates the day and month names and the meridiem (ص/م);
+        // numerals stay Latin, as everywhere else in the interface.
+        'date_format' => 'l، j F Y',
+        'time_format' => 'g:i A',
+        'date_at_time' => ':date في :time',
+        'ticket_price' => ':amount د.ل',
         'view_the_event' => 'عرض الفعالية',
         'cannot_make_it' => 'لا تستطيع الحضور؟ أزلها من تقويمك في أي وقت من',
         'plans_changed' => 'تغيّرت خططك؟ أزلها من تقويمك في أي وقت من',
@@ -422,7 +442,11 @@ return [
         'verify_your_email' => 'أكّد بريدك الإلكتروني',
         'become_organizer' => 'كن منظّمًا',
         'why_organize' => 'لماذا تريد التنظيم',
-        'few_sentences' => 'بضع جمل تكفي.',
+        'min_chars_hint' => ':min حرفًا على الأقل — بضع جمل تكفي.',
+        'application_too_short' => 'أخبر المشرفين المزيد عن الفعاليات التي تريد تنظيمها — :min حرفًا على الأقل.',
+        'application_sent_ago' => 'أُرسل :ago. سيرد عليك أحد المشرفين.',
+        'application_rejected_retry' => 'لم يُقبل طلبك السابق. يمكنك التقديم مرة أخرى.',
+        'application_intro' => 'أخبر المشرفين بما تود تنظيمه وسيراجعون طلبك.',
         'send_application' => 'إرسال الطلب',
 
         'edit_title' => 'تعديل الملف الشخصي',

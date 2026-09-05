@@ -4,6 +4,8 @@
  * - Scroll-reveal: `.reveal` elements fade/slide in once as they enter view.
  * - Header: gains `.is-scrolled` once a top sentinel leaves the viewport.
  * - Menu: a toggle opens/closes a full-screen overlay menu (desktop + mobile).
+ * - Char count: length-gated fields show progress and hold submit closed.
+ * - Image preview: the event cover field shows the picked file immediately.
  * - Particles: a field of soft, multi-colored dots that fall continuously.
  *
  * Everything degrades gracefully: without JS the page is fully visible, and
@@ -83,6 +85,90 @@ function setupMenu() {
             close();
             toggle.focus();
         }
+    });
+}
+
+/**
+ * Character-count gates.
+ *
+ * A `[data-charcount-input]` field reports how much has been written and holds
+ * its form's submit button closed until `data-charcount-min` is reached.
+ *
+ * The button ships enabled in the HTML and is only ever disabled from here, so
+ * without JS the form still submits and the server's own `min:` rule is what
+ * rejects it. Lengths are measured on the trimmed value because Laravel's
+ * TrimStrings middleware trims before validating - counting the raw value would
+ * let trailing spaces satisfy a counter the server then rejects.
+ */
+function setupCharCount() {
+    document.querySelectorAll('[data-charcount-input]').forEach((input) => {
+        const form = input.closest('form');
+        const output = form?.querySelector('[data-charcount-output]');
+
+        if (!form || !output) {
+            return;
+        }
+
+        const submit = form.querySelector('[data-charcount-submit]');
+        const min = Number(input.dataset.charcountMin) || 0;
+        const max = Number(input.getAttribute('maxlength')) || 0;
+
+        const update = () => {
+            const length = input.value.trim().length;
+            const tooShort = length < min;
+
+            // Count towards the minimum while it is the thing standing in the
+            // way, then towards the maximum once it no longer is.
+            output.textContent = `${length} / ${tooShort || !max ? min : max}`;
+            output.classList.toggle('text-bad-700', tooShort);
+            output.classList.toggle('text-stone-400', !tooShort);
+
+            if (submit) {
+                submit.disabled = tooShort;
+            }
+        };
+
+        input.addEventListener('input', update);
+        update();
+    });
+}
+
+/**
+ * Cover-image preview.
+ *
+ * Swaps the thumbnail for the file the user just picked, so they can see what
+ * they chose before saving. Purely additive: without JS the file input still
+ * uploads, it just shows the existing cover until the page reloads.
+ */
+function setupImagePreview() {
+    document.querySelectorAll('[data-image-input]').forEach((input) => {
+        const field = input.closest('[data-image-field]');
+        const preview = field?.querySelector('[data-image-preview]');
+        const empty = field?.querySelector('[data-image-empty]');
+
+        if (!preview || !('FileReader' in window)) {
+            return;
+        }
+
+        input.addEventListener('change', () => {
+            const file = input.files?.[0];
+
+            if (!file) {
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.addEventListener('load', () => {
+                preview.src = reader.result;
+                preview.hidden = false;
+                if (empty) {
+                    empty.hidden = true;
+                }
+            });
+
+            reader.readAsDataURL(file);
+        });
     });
 }
 
@@ -170,4 +256,6 @@ function setupParticles() {
 setupScrollReveal();
 setupHeaderState();
 setupMenu();
+setupCharCount();
+setupImagePreview();
 setupParticles();

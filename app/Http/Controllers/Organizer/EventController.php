@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Organizer;
 
+use App\Http\Controllers\Concerns\HandlesEventImages;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
@@ -13,6 +14,8 @@ use Illuminate\View\View;
 
 class EventController extends Controller
 {
+    use HandlesEventImages;
+
     /**
      * List the events this organizer owns.
      */
@@ -22,7 +25,7 @@ class EventController extends Controller
             ->with('category')
             ->withCount('registeredUsers')
             ->latest()
-            ->get();
+            ->paginate(15);
 
         return view('organizer.events.index', ['events' => $events]);
     }
@@ -42,6 +45,7 @@ class EventController extends Controller
     {
         $event = new Event($request->validated());
         $event->organizer_id = Auth::id();
+        $this->syncImage($event, $request);
         $event->save();
 
         return redirect()->route('organizer.events.index')
@@ -68,7 +72,9 @@ class EventController extends Controller
     {
         $this->authorizeOwner($event);
 
-        $event->update($request->validated());
+        $event->fill($request->validated());
+        $this->syncImage($event, $request);
+        $event->save();
 
         return redirect()->route('organizer.events.index')
             ->with('success', __('app.flash.event_updated'));

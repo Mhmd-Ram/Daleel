@@ -56,6 +56,15 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        // An admin browsing the site holds both guards in one session, so
+        // invalidating it here would sign them out of the admin area as well.
+        // Drop the visitor session only and put them back where they came from.
+        if (Auth::guard('admin')->check()) {
+            Auth::guard('web')->logout();
+
+            return redirect()->route('admin.dashboard');
+        }
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

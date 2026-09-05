@@ -162,3 +162,16 @@ it("hides a removed event from the organizer's own list", function () {
         ->assertSee('Still Running Gig')
         ->assertDontSee('Withdrawn Gig');
 });
+
+it('paginates an organizer with more events than fit on a page', function () {
+    $organizer = User::factory()->organizer()->create();
+    Event::factory()->count(20)->create([
+        'organizer_id' => $organizer->id,
+        'admin_id' => null,
+    ]);
+
+    $this->actingAs($organizer)
+        ->get(route('organizer.events.index'))
+        ->assertOk()
+        ->assertViewHas('events', fn ($events) => $events->count() === 15 && $events->total() === 20);
+});

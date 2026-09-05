@@ -1,17 +1,23 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Pagination Language Lines (Arabic)
-|--------------------------------------------------------------------------
-|
-| The arrows point the other way round in Arabic: previous is to the right.
-| These strings are rendered by four paginated listings, so leaving them in
-| English would have shown Latin arrows pointing the wrong way on every one.
-|
-*/
-
 return [
-    'previous' => '&raquo; السابق',
-    'next' => 'التالي &laquo;',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Pagination Language Lines
+    |--------------------------------------------------------------------------
+    |
+    | Numerals stay Latin here to match the rest of the interface, which shows
+    | dates and counts in Latin digits in both languages.
+    |
+    */
+
+    'previous' => 'السابق',
+    'next' => 'التالي',
+
+    'navigation' => 'ترقيم الصفحات',
+    'showing_range' => 'عرض :first–:last من :total',
+    'showing_total' => 'عرض :total',
+    'go_to_page' => 'الانتقال إلى الصفحة :page',
+
 ];

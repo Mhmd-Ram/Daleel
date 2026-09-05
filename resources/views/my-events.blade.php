@@ -98,7 +98,7 @@
             @foreach ($events as $event)
                 <div style="--reveal-delay: {{ min($loop->index, 6) * 70 }}ms"
                      class="reveal reveal--left flex flex-col gap-4 rounded-xl border border-stone-200 bg-white p-4 transition duration-300 hover:border-stone-300 hover:shadow-md sm:flex-row sm:items-center">
-                    <img src="https://picsum.photos/seed/event-{{ $event->id }}/200/200" alt=""
+                    <img src="{{ $event->imageUrl(200, 200) }}" alt=""
                          class="h-24 w-full rounded-lg object-cover sm:w-24" loading="lazy">
                     <div class="flex-1">
                         <span class="inline-flex rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">{{ $event->category->name }}</span>

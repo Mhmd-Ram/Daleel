@@ -142,9 +142,12 @@
                 <p class="mt-3 max-w-md text-stone-300">
                     {{ __('app.home.organizing_sub') }}
                 </p>
-                <a href="{{ route('admin.login') }}"
+                {{-- An admin already signed in does not need the sign-in screen;
+                     send them where they were actually going. --}}
+                <a href="{{ auth('admin')->check() ? route('admin.dashboard') : route('admin.login') }}"
                    class="mt-6 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-3 font-medium text-white transition hover:bg-emerald-700 active:scale-[0.98]">
-                    {{ __('app.home.admin_sign_in') }} <x-icon name="arrow-right" class="h-5 w-5" />
+                    {{ auth('admin')->check() ? __('app.admin.back_to_dashboard') : __('app.home.admin_sign_in') }}
+                    <x-icon name="arrow-right" class="h-5 w-5 rtl:rotate-180" />
                 </a>
             </div>
             <div class="hidden gap-3 sm:grid sm:grid-cols-2">

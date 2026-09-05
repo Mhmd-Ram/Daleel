@@ -1,3 +1,5 @@
+@use('App\Models\OrganizerApplication')
+
 @extends('layouts.app')
 
 @section('title', __('app.profile.title'))
@@ -88,7 +90,7 @@
             @elseif ($organizerApplication?->isPending())
                 <h2 class="text-lg font-semibold tracking-tight text-stone-900">{{ __('app.profile.under_review') }}</h2>
                 <p class="mt-1 text-sm text-stone-500">
-                    Sent {{ $organizerApplication->created_at->diffForHumans() }}. An admin will get back to you.
+                    {{ __('app.profile.application_sent_ago', ['ago' => $organizerApplication->created_at->diffForHumans()]) }}
                 </p>
             @elseif (! $user->hasVerifiedEmail())
                 <h2 class="text-lg font-semibold tracking-tight text-stone-900">{{ __('app.profile.want_to_run') }}</h2>
@@ -103,9 +105,9 @@
                 <h2 class="text-lg font-semibold tracking-tight text-stone-900">{{ __('app.profile.become_organizer') }}</h2>
                 <p class="mt-1 text-sm text-stone-500">
                     @if ($organizerApplication)
-                        Your last application was not approved. You are welcome to apply again.
+                        {{ __('app.profile.application_rejected_retry') }}
                     @else
-                        Tell the admins what you would like to run and they will review your request.
+                        {{ __('app.profile.application_intro') }}
                     @endif
                 </p>
 
@@ -114,11 +116,27 @@
                     <div class="flex flex-col gap-2">
                         <label for="message" class="text-sm font-medium text-stone-700">{{ __('app.profile.why_organize') }}</label>
                         <textarea id="message" name="message" rows="4" required
-                                  class="rounded-lg border border-stone-300 px-3 py-2 text-stone-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30">{{ old('message') }}</textarea>
-                        <span class="text-xs text-stone-400">{{ __('app.profile.few_sentences') }}</span>
+                                  minlength="{{ OrganizerApplication::MIN_MESSAGE_LENGTH }}"
+                                  maxlength="{{ OrganizerApplication::MAX_MESSAGE_LENGTH }}"
+                                  data-charcount-input data-charcount-min="{{ OrganizerApplication::MIN_MESSAGE_LENGTH }}"
+                                  aria-describedby="message-hint"
+                                  @error('message') aria-invalid="true" @enderror
+                                  class="@error('message') border-bad-500 focus:border-bad-500 focus:ring-bad-500/30 @else border-stone-300 focus:border-emerald-500 focus:ring-emerald-500/30 @enderror rounded-lg border px-3 py-2 text-stone-900 outline-none transition focus:ring-2">{{ old('message') }}</textarea>
+
+                        <div class="flex flex-wrap items-baseline justify-between gap-2">
+                            <span id="message-hint" class="text-xs text-stone-400">
+                                {{ __('app.profile.min_chars_hint', ['min' => OrganizerApplication::MIN_MESSAGE_LENGTH]) }}
+                            </span>
+                            {{-- Numbers only, so it needs no translation; the hint
+                                 beside it carries the words. --}}
+                            <span data-charcount-output aria-hidden="true"
+                                  class="text-xs tabular-nums text-stone-400"></span>
+                        </div>
+
+                        <x-field-error for="message" />
                     </div>
-                    <button type="submit"
-                            class="mt-4 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-700 active:scale-[0.98]">
+                    <button type="submit" data-charcount-submit
+                            class="mt-4 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-700 active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-stone-300 disabled:hover:bg-stone-300 disabled:active:scale-100">
                         {{ __('app.profile.send_application') }}
                     </button>
                 </form>

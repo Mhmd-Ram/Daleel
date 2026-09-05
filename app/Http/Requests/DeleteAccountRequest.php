@@ -8,10 +8,17 @@ class DeleteAccountRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     *
+     * An admin's site-mode account is refused outright: it is not theirs to
+     * delete, it would orphan their identity mid-session, and the cascade would
+     * take their saved events with it. Checked here rather than in the
+     * controller so it decides before the password rule gets a say.
      */
     public function authorize(): bool
     {
-        return $this->user() !== null;
+        $user = $this->user();
+
+        return $user !== null && ! $user->isStaffAccount();
     }
 
     /**

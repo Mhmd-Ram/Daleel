@@ -159,3 +159,36 @@ it('shows pending applications in the admin queue', function () {
         ->assertSee($application->user->name)
         ->assertSee($application->message);
 });
+
+it('paginates the two application lists independently', function () {
+    $admin = Admin::factory()->create();
+
+    OrganizerApplication::factory()->count(25)->create();
+    OrganizerApplication::factory()->count(25)->create([
+        'status' => OrganizerApplicationStatus::Approved,
+        'reviewed_by' => $admin->id,
+        'reviewed_at' => now(),
+    ]);
+
+    // Distinct page parameters, or paging the decisions would silently page the
+    // pending queue with it.
+    $this->actingAs($admin, 'admin')
+        ->get(route('admin.organizer-applications.index'))
+        ->assertOk()
+        ->assertSee('pending_page=2', escape: false)
+        ->assertSee('reviewed_page=2', escape: false);
+});
+
+it('no longer hides decisions past the first twenty', function () {
+    $admin = Admin::factory()->create();
+
+    OrganizerApplication::factory()->count(25)->create([
+        'status' => OrganizerApplicationStatus::Approved,
+        'reviewed_by' => $admin->id,
+        'reviewed_at' => now(),
+    ]);
+
+    $this->actingAs($admin, 'admin')
+        ->get(route('admin.organizer-applications.index', ['reviewed_page' => 2]))
+        ->assertOk();
+});

@@ -23,10 +23,16 @@ class EnsureUserIsNotBanned
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user()?->isBanned()) {
+        if (Auth::guard('web')->user()?->isBanned()) {
             Auth::guard('web')->logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
+
+            // Only tear the whole session down when it is the visitor's alone.
+            // An admin in site mode shares it, and would be signed out of the
+            // admin area by a ban applied to their browsing account.
+            if (! Auth::guard('admin')->check()) {
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+            }
 
             return redirect()->route('login')
                 ->with('error', __('app.flash.account_banned'));

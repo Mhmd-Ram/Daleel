@@ -7,7 +7,7 @@
         <a href="{{ route('admin.events.index') }}" class="mb-6 inline-flex text-sm text-stone-500 transition hover:text-stone-900">&larr; {{ __('app.admin.events') }}</a>
         <h1 class="text-2xl font-semibold tracking-tight text-stone-900">{{ __('app.common.edit_event') }}</h1>
 
-        <form method="POST" action="{{ route('admin.events.update', $event) }}" class="mt-8 rounded-2xl border border-stone-200 bg-white p-6">
+        <form method="POST" enctype="multipart/form-data" action="{{ route('admin.events.update', $event) }}" class="mt-8 rounded-2xl border border-stone-200 bg-white p-6">
             @csrf
             @method('PUT')
             @include('partials.event-form')
