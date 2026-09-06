@@ -91,7 +91,13 @@ a bad app password apart from a queue worker that is not running.
 **If mail seems to vanish, check the queue worker first.** The registration
 confirmation and the reminder are both `ShouldQueue`, so with SMTP configured
 perfectly and no worker running they sit in the `jobs` table and nothing is
-delivered. The verification email is queued too.
+delivered.
+
+The email verification notice is the exception: it sends inline, on purpose. A
+queued verification that never runs strands every new account with no way to
+activate it and nothing on screen to explain why, so it is worth the couple of
+seconds it adds to the signup request. `RegisteredUserController` already
+catches a refused SMTP connection rather than failing the registration.
 
 In production prefer `MAIL_MAILER=failover`, already configured as smtp then
 log: an outage then degrades to a log line instead of throwing inside the worker.

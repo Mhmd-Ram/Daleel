@@ -2,7 +2,7 @@
 
 use App\Models\Event;
 use App\Models\User;
-use App\Notifications\QueuedVerifyEmail;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Contracts\Notifications\Dispatcher;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Notification;
@@ -131,7 +131,7 @@ it('still creates the account and signs the user in when the welcome email fails
     expect(User::where('email', 'nour@example.com')->exists())->toBeTrue();
 });
 
-it('queues the verification email instead of sending it inline', function () {
+it('sends the verification email immediately rather than queuing it', function () {
     Notification::fake();
 
     $this->post(route('register'), [
@@ -146,9 +146,11 @@ it('queues the verification email instead of sending it inline', function () {
 
     $user = User::firstWhere('email', 'nadia@example.com');
 
-    Notification::assertSentTo($user, QueuedVerifyEmail::class);
+    Notification::assertSentTo($user, VerifyEmail::class);
 
-    // The point of the subclass: an unreachable mail server must not be able to
-    // fail the registration request.
-    expect(new QueuedVerifyEmail)->toBeInstanceOf(ShouldQueue::class);
+    // Deliberately not queued. A queued verification depends on a worker being
+    // alive, and when one is not, every new account is stranded with no way to
+    // activate it and nothing on screen to say so. Registration already
+    // tolerates a refused SMTP connection, so inline is the safer failure.
+    expect(new VerifyEmail)->not->toBeInstanceOf(ShouldQueue::class);
 });

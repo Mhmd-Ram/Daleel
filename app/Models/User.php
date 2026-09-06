@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Enums\LibyanCity;
 use App\Enums\OrganizerApplicationStatus;
 use App\Enums\UserRole;
-use App\Notifications\QueuedVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -122,18 +121,6 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isBanned(): bool
     {
         return $this->is_banned;
-    }
-
-    /**
-     * Send the verification email through the queue rather than inline.
-     *
-     * The stock notification sends synchronously, which puts an SMTP
-     * round-trip inside the registration request - slow against Gmail, and
-     * a 500 on the user's first action if the mail server is unreachable.
-     */
-    public function sendEmailVerificationNotification(): void
-    {
-        $this->notify(new QueuedVerifyEmail);
     }
 
     /**
