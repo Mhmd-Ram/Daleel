@@ -4,6 +4,7 @@ use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Event;
 use App\Models\User;
+use App\Support\CoverImage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
@@ -130,14 +131,50 @@ it('rejects a file that is not an image', function () {
     expect(Event::where('name', 'Tripoli Jazz Night')->exists())->toBeFalse();
 });
 
-it('rejects an image below the minimum dimensions', function () {
+it('accepts an image of any size or shape', function () {
+    $category = Category::factory()->create();
+
+    // Previously rejected by a min-dimensions rule. A small square is a
+    // perfectly good cover: every slot crops it.
+    $this->actingAs(Admin::factory()->create(), 'admin')
+        ->post(route('admin.events.store'), coverPayload($category, [
+            'image' => UploadedFile::fake()->image('tiny.jpg', 120, 120),
+        ]))
+        ->assertSessionHasNoErrors();
+
+    expect(Event::firstWhere('name', 'Tripoli Jazz Night')->image_path)->not->toBeNull();
+});
+
+it('shrinks an oversized cover on the way in', function () {
     $category = Category::factory()->create();
 
     $this->actingAs(Admin::factory()->create(), 'admin')
         ->post(route('admin.events.store'), coverPayload($category, [
-            'image' => UploadedFile::fake()->image('tiny.jpg', 100, 60),
-        ]))
-        ->assertSessionHasErrors('image');
+            'image' => UploadedFile::fake()->image('huge.jpg', 2000, 2000),
+        ]));
+
+    $stored = Event::firstWhere('name', 'Tripoli Jazz Night')->image_path;
+    [$width, $height] = getimagesize(Storage::disk('public')->path($stored));
+
+    expect($width)->toBeLessThanOrEqual(CoverImage::MAX_WIDTH)
+        ->and($height)->toBeLessThanOrEqual(CoverImage::MAX_HEIGHT)
+        // Shrunk, not squashed: a square stays square.
+        ->and($width)->toBe($height);
+});
+
+it('leaves an already-small cover untouched', function () {
+    $category = Category::factory()->create();
+
+    $this->actingAs(Admin::factory()->create(), 'admin')
+        ->post(route('admin.events.store'), coverPayload($category, [
+            'image' => UploadedFile::fake()->image('small.jpg', 800, 500),
+        ]));
+
+    $stored = Event::firstWhere('name', 'Tripoli Jazz Night')->image_path;
+
+    // Never upscaled - that would only add bytes and blur.
+    expect(getimagesize(Storage::disk('public')->path($stored)))
+        ->toMatchArray([0 => 800, 1 => 500]);
 });
 
 it('falls back to a placeholder when an event has no cover', function () {

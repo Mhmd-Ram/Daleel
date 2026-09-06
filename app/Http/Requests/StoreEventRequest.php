@@ -48,10 +48,11 @@ class StoreEventRequest extends FormRequest
             // rules out SVG, which can carry script. The 2 MB ceiling matches
             // PHP's stock upload_max_filesize: a larger limit here would fail
             // silently, because the file never reaches the request at all.
-            'image' => [
-                'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048',
-                'dimensions:min_width=600,min_height=375',
-            ],
+            //
+            // No dimension rule on purpose. Any shape is accepted - every slot
+            // that shows a cover crops with `object-cover` - and CoverImage
+            // shrinks anything oversized on the way in.
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'remove_image' => ['boolean'],
         ];
     }

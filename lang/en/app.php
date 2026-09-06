@@ -81,7 +81,7 @@ return [
         'capacity_hint' => 'Leave blank for no limit.',
         'published_label' => 'Published (visible to users)',
         'cover_image' => 'Cover image',
-        'cover_image_hint' => 'JPG, PNG or WebP, up to 2 MB. At least 600×375. Leave empty to keep the current one.',
+        'cover_image_hint' => 'JPG, PNG or WebP, up to 2 MB. Any size - it is resized and cropped to fit. Leave empty to keep the current one.',
         'remove_image' => 'Remove the current cover',
         'no_image' => 'No image',
         'pin_on_map' => 'Pin on the map',

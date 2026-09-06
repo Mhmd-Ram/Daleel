@@ -23,6 +23,15 @@ import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 // Leaflet resolves its default marker images by relative path, which breaks
 // once Vite fingerprints them. Point it at the bundled URLs instead.
+//
+// Deleting `_getIconUrl` first is the part that matters. Icon.Default overrides
+// it to PREPEND its own auto-detected image path to whatever `iconUrl` says, so
+// handing it a resolved URL produced that URL twice over - ".../images/http://
+// .../images/marker-icon.png" - which 404s, leaving a marker element with no
+// picture in it. Removing the override falls back to Icon's plain accessor,
+// which returns the option untouched.
+delete L.Icon.Default.prototype._getIconUrl;
+
 L.Icon.Default.mergeOptions({
     iconUrl: markerIcon,
     iconRetinaUrl: markerIcon2x,

@@ -12,8 +12,13 @@
     </a>
 
     <article class="reveal relative flex flex-col overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-xl shadow-stone-300/30 lg:flex-row">
-        {{-- Main: banner + details --}}
-        <div class="flex-1">
+        {{-- Main: banner + details.
+
+             `min-w-0` matters: a flex item defaults to `min-width: auto`, which
+             refuses to shrink below its content's intrinsic width. A wide cover
+             would then push the article past the page and scroll the whole
+             layout sideways. --}}
+        <div class="min-w-0 flex-1">
             <div class="relative aspect-[16/10] w-full overflow-hidden bg-stone-100 sm:aspect-[2/1]">
                 <img src="{{ $event->imageUrl(1280, 640) }}" alt="{{ $event->name }}"
                      class="h-full w-full object-cover">

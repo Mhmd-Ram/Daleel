@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Concerns;
 
 use App\Models\Event;
+use App\Support\CoverImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -31,10 +32,11 @@ trait HandlesEventImages
             // orphaned on disk with nothing left pointing at it.
             $this->forgetImage($event);
 
-            // The `public` disk by name, never the default - FILESYSTEM_DISK is
-            // `local`, which writes to storage/app/private and is unreachable
-            // from the web.
-            $event->image_path = $file->store('events', 'public');
+            // CoverImage stores on the `public` disk by name, never the
+            // default - FILESYSTEM_DISK is `local`, which writes to
+            // storage/app/private and is unreachable from the web - and shrinks
+            // anything larger than the site ever displays.
+            $event->image_path = CoverImage::store($file);
         }
     }
 
